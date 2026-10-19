@@ -40,6 +40,22 @@ namespace OmniPdf.App
         private readonly SpeechReaderService _speechService = new();
         private Point? _measureStartPoint = null;
 
+        public enum PageViewMode
+        {
+            Continuous,
+            SinglePage,
+            TwoPageSpread
+        }
+
+        private PageViewMode _currentViewMode = PageViewMode.Continuous;
+        private bool _isDarkReadingMode = false;
+        private bool _isProgrammaticScroll = false;
+        private bool _isSnapshotDragging = false;
+        private Point _snapshotStartPoint;
+        private readonly List<Border> _pageCards = new();
+        private readonly List<Image> _pageImages = new();
+        private readonly List<TextBox> _pageTextBoxes = new();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -424,35 +440,258 @@ namespace OmniPdf.App
             }
 
             if (NotesCanvas != null) NotesCanvas.Children.Clear();
-            DisplayActivePage();
+            RebuildPageCards();
             UpdateStatus();
+        }
+
+        private void RebuildPageCards()
+        {
+            if (_activeDoc == null || PagesStackPanel == null || PageBorder == null) return;
+
+            _pageCards.Clear();
+            _pageImages.Clear();
+            _pageTextBoxes.Clear();
+            PagesStackPanel.Children.Clear();
+
+            if (_activeDoc.Pages.Count == 0) return;
+
+            // Page 0 uses the designer PageBorder to preserve XAML wiring
+            PagesStackPanel.Children.Add(PageBorder);
+            _pageCards.Add(PageBorder);
+            _pageImages.Add(ImgPageRender);
+            _pageTextBoxes.Add(TxtPageContent);
+
+            UpdatePageCardAppearance(PageBorder, ImgPageRender, TxtPageContent, _activeDoc.Pages[0], 0);
+
+            // Additional pages for Continuous / Multi-Page flow
+            for (int i = 1; i < _activeDoc.Pages.Count; i++)
+            {
+                var (cardBorder, img, txt) = CreateDynamicPageCard(i, _activeDoc.Pages[i]);
+                PagesStackPanel.Children.Add(cardBorder);
+                _pageCards.Add(cardBorder);
+                _pageImages.Add(img);
+                _pageTextBoxes.Add(txt);
+            }
+
+            ApplyViewModeLayout();
+        }
+
+        private (Border Card, Image Img, TextBox Txt) CreateDynamicPageCard(int index, PdfPageModel page)
+        {
+            var border = new Border
+            {
+                Background = _isDarkReadingMode ? new SolidColorBrush(Color.FromRgb(30, 30, 36)) : Brushes.White,
+                CornerRadius = new CornerRadius(4),
+                Margin = new Thickness(0, 0, 0, 18),
+                Width = page.Width > 0 ? page.Width : 612.0,
+                Height = page.Height > 0 ? page.Height : 792.0,
+                Tag = index,
+                Effect = new DropShadowEffect
+                {
+                    BlurRadius = 20,
+                    ShadowDepth = 4,
+                    Opacity = 0.45,
+                    Color = Colors.Black
+                }
+            };
+
+            var grid = new Grid();
+            grid.MouseLeftButtonDown += (s, e) =>
+            {
+                if (_activeDoc != null) _activeDoc.CurrentPageIndex = index;
+                UpdateStatus();
+                if (ThumbnailList != null && ThumbnailList.SelectedIndex != index)
+                {
+                    ThumbnailList.SelectedIndex = index;
+                }
+            };
+
+            var img = new Image
+            {
+                Stretch = Stretch.Uniform,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            var txt = new TextBox
+            {
+                Margin = new Thickness(40),
+                Background = Brushes.Transparent,
+                Foreground = _isDarkReadingMode ? new SolidColorBrush(Color.FromRgb(228, 228, 231)) : new SolidColorBrush(Color.FromRgb(24, 24, 27)),
+                BorderThickness = new Thickness(0),
+                TextWrapping = TextWrapping.Wrap,
+                AcceptsReturn = true,
+                FontSize = 13,
+                FontFamily = new FontFamily("Georgia"),
+                Text = page.ContentText
+            };
+
+            if (page.RenderedImage != null)
+            {
+                img.Source = page.RenderedImage;
+                img.Visibility = Visibility.Visible;
+                txt.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                img.Visibility = Visibility.Collapsed;
+                txt.Visibility = Visibility.Visible;
+            }
+
+            grid.Children.Add(img);
+            grid.Children.Add(txt);
+            border.Child = grid;
+
+            return (border, img, txt);
+        }
+
+        private void UpdatePageCardAppearance(Border border, Image img, TextBox txt, PdfPageModel page, int index)
+        {
+            border.Width = page.Width > 0 ? page.Width : 612.0;
+            border.Height = page.Height > 0 ? page.Height : 792.0;
+            border.Background = _isDarkReadingMode ? new SolidColorBrush(Color.FromRgb(30, 30, 36)) : Brushes.White;
+
+            if (page.RenderedImage != null)
+            {
+                img.Source = page.RenderedImage;
+                img.Visibility = Visibility.Visible;
+                txt.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                img.Visibility = Visibility.Collapsed;
+                txt.Visibility = Visibility.Visible;
+                txt.Text = page.ContentText;
+                txt.Foreground = _isDarkReadingMode ? new SolidColorBrush(Color.FromRgb(228, 228, 231)) : new SolidColorBrush(Color.FromRgb(24, 24, 27));
+            }
+
+            if (index == 0)
+            {
+                UpdatePageRotation(page.Rotation);
+            }
         }
 
         private void DisplayActivePage()
         {
-            if (ImgPageRender == null || TxtPageContent == null || PageBorder == null) return;
-            if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
-
+            if (_activeDoc == null || _pageCards.Count == 0) return;
             int idx = Math.Clamp(_activeDoc.CurrentPageIndex, 0, _activeDoc.Pages.Count - 1);
-            var page = _activeDoc.Pages[idx];
-
-            PageBorder.Width = page.Width > 0 ? page.Width : 612.0;
-            PageBorder.Height = page.Height > 0 ? page.Height : 792.0;
-
-            if (page.RenderedImage != null)
+            if (idx < _pageCards.Count)
             {
-                ImgPageRender.Source = page.RenderedImage;
-                ImgPageRender.Visibility = Visibility.Visible;
-                TxtPageContent.Visibility = Visibility.Collapsed;
+                UpdatePageCardAppearance(_pageCards[idx], _pageImages[idx], _pageTextBoxes[idx], _activeDoc.Pages[idx], idx);
+            }
+            UpdateStatus();
+        }
+
+        private void ApplyViewModeLayout()
+        {
+            if (_activeDoc == null || _pageCards.Count == 0 || PagesStackPanel == null) return;
+
+            if (_currentViewMode == PageViewMode.Continuous)
+            {
+                PagesStackPanel.Orientation = Orientation.Vertical;
+                for (int i = 0; i < _pageCards.Count; i++)
+                {
+                    _pageCards[i].Visibility = Visibility.Visible;
+                    _pageCards[i].Margin = new Thickness(0, 0, 0, 18);
+                }
+            }
+            else if (_currentViewMode == PageViewMode.SinglePage)
+            {
+                int activeIdx = Math.Clamp(_activeDoc.CurrentPageIndex, 0, _pageCards.Count - 1);
+                for (int i = 0; i < _pageCards.Count; i++)
+                {
+                    _pageCards[i].Visibility = i == activeIdx ? Visibility.Visible : Visibility.Collapsed;
+                    _pageCards[i].Margin = new Thickness(0);
+                }
+            }
+            else if (_currentViewMode == PageViewMode.TwoPageSpread)
+            {
+                PagesStackPanel.Orientation = Orientation.Vertical;
+                for (int i = 0; i < _pageCards.Count; i++)
+                {
+                    _pageCards[i].Visibility = Visibility.Visible;
+                    _pageCards[i].Margin = new Thickness(0, 0, 0, 18);
+                }
+            }
+
+            UpdateViewModeButtons();
+        }
+
+        private void UpdateViewModeButtons()
+        {
+            if (BtnViewContinuous == null || BtnViewSinglePage == null || BtnViewTwoPage == null) return;
+            var accent = (Style)FindResource("AccentBtn");
+            var modern = (Style)FindResource("ModernBtn");
+
+            BtnViewContinuous.Style = _currentViewMode == PageViewMode.Continuous ? accent : modern;
+            BtnViewSinglePage.Style = _currentViewMode == PageViewMode.SinglePage ? accent : modern;
+            BtnViewTwoPage.Style = _currentViewMode == PageViewMode.TwoPageSpread ? accent : modern;
+        }
+
+        public void ScrollToPage(int targetIndex)
+        {
+            if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
+            targetIndex = Math.Clamp(targetIndex, 0, _activeDoc.Pages.Count - 1);
+            _activeDoc.CurrentPageIndex = targetIndex;
+
+            if (_currentViewMode == PageViewMode.Continuous)
+            {
+                if (targetIndex < _pageCards.Count)
+                {
+                    _isProgrammaticScroll = true;
+                    try
+                    {
+                        _pageCards[targetIndex].BringIntoView();
+                    }
+                    finally
+                    {
+                        _isProgrammaticScroll = false;
+                    }
+                }
             }
             else
             {
-                ImgPageRender.Visibility = Visibility.Collapsed;
-                TxtPageContent.Visibility = Visibility.Visible;
-                TxtPageContent.Text = page.ContentText;
+                ApplyViewModeLayout();
             }
 
-            UpdatePageRotation(page.Rotation);
+            UpdateStatus();
+            if (ThumbnailList != null && ThumbnailList.SelectedIndex != targetIndex)
+            {
+                ThumbnailList.SelectedIndex = targetIndex;
+                ThumbnailList.ScrollIntoView(ThumbnailList.SelectedItem);
+            }
+        }
+
+        private void MainScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_isProgrammaticScroll || _activeDoc == null || _activeDoc.Pages.Count <= 1 || MainScrollViewer == null) return;
+            if (_currentViewMode != PageViewMode.Continuous) return;
+
+            double offset = MainScrollViewer.VerticalOffset;
+            double accumulated = 0;
+            int visible = 0;
+
+            for (int i = 0; i < _pageCards.Count; i++)
+            {
+                double h = _pageCards[i].ActualHeight > 0 ? _pageCards[i].ActualHeight + 18 : (_pageCards[i].Height + 18);
+                if (accumulated + (h * 0.4) >= offset)
+                {
+                    visible = i;
+                    break;
+                }
+                accumulated += h;
+            }
+
+            if (visible != _activeDoc.CurrentPageIndex && visible < _activeDoc.Pages.Count)
+            {
+                _activeDoc.CurrentPageIndex = visible;
+                UpdateStatus();
+                if (ThumbnailList != null && ThumbnailList.SelectedIndex != visible)
+                {
+                    ThumbnailList.SelectedIndex = visible;
+                    ThumbnailList.ScrollIntoView(ThumbnailList.SelectedItem);
+                }
+            }
         }
 
         private async Task RenderDocumentPagesAsync(PdfDocumentModel doc)
@@ -464,7 +703,15 @@ namespace OmniPdf.App
             if (activeImg != null)
             {
                 doc.Pages[activeIdx].RenderedImage = activeImg;
-                DisplayActivePage();
+                Dispatcher.Invoke(() =>
+                {
+                    if (activeIdx < _pageImages.Count)
+                    {
+                        _pageImages[activeIdx].Source = activeImg;
+                        _pageImages[activeIdx].Visibility = Visibility.Visible;
+                        _pageTextBoxes[activeIdx].Visibility = Visibility.Collapsed;
+                    }
+                });
             }
 
             _ = Task.Run(async () =>
@@ -472,7 +719,7 @@ namespace OmniPdf.App
                 for (int i = 0; i < doc.Pages.Count; i++)
                 {
                     if (i == activeIdx) continue;
-                    var img = await RealPdfRenderer.RenderPdfPageAsync(doc.FilePath, i, 400);
+                    var img = await RealPdfRenderer.RenderPdfPageAsync(doc.FilePath, i, 1400);
                     if (img != null)
                     {
                         int pIdx = i;
@@ -481,6 +728,12 @@ namespace OmniPdf.App
                             if (pIdx < doc.Pages.Count)
                             {
                                 doc.Pages[pIdx].RenderedImage = img;
+                                if (pIdx < _pageImages.Count)
+                                {
+                                    _pageImages[pIdx].Source = img;
+                                    _pageImages[pIdx].Visibility = Visibility.Visible;
+                                    _pageTextBoxes[pIdx].Visibility = Visibility.Collapsed;
+                                }
                             }
                         });
                     }
@@ -500,38 +753,194 @@ namespace OmniPdf.App
             int cur = _activeDoc.CurrentPageIndex + 1;
             int total = Math.Max(1, _activeDoc.Pages.Count);
 
-            if (TxtNavPageIndicator != null) TxtNavPageIndicator.Text = $"Page {cur} / {total}";
+            if (TxtJumpPage != null) TxtJumpPage.Text = cur.ToString();
+            if (TxtNavPageIndicator != null) TxtNavPageIndicator.Text = $" / {total}";
             if (StatusPage != null) StatusPage.Text = $"Page {cur} of {total}";
             if (StatusDimensions != null && _activeDoc.Pages.Count > 0)
             {
-                var p = _activeDoc.Pages[_activeDoc.CurrentPageIndex];
+                var p = _activeDoc.Pages[Math.Clamp(_activeDoc.CurrentPageIndex, 0, _activeDoc.Pages.Count - 1)];
                 StatusDimensions.Text = $"Dimensions: {(int)p.Width} x {(int)p.Height} pt";
             }
             if (StatusToolIndicator != null) StatusToolIndicator.Text = $"Tool: {_activeTool}";
             if (StatusLru != null) StatusLru.Text = $"LRU: {_lruCache.CurrentBytes / (1024.0 * 1024.0):0.1} MB / 64 MB Cap";
         }
 
+        private void BtnFirstPage_Click(object sender, RoutedEventArgs e) => ScrollToPage(0);
+
+        private void BtnLastPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activeDoc != null && _activeDoc.Pages.Count > 0)
+                ScrollToPage(_activeDoc.Pages.Count - 1);
+        }
+
         private void BtnPrevPage_Click(object sender, RoutedEventArgs e)
         {
-            if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
-            if (_activeDoc.CurrentPageIndex > 0)
-            {
-                _activeDoc.CurrentPageIndex--;
-                DisplayActivePage();
-                UpdateStatus();
-                if (ThumbnailList != null) ThumbnailList.SelectedIndex = _activeDoc.CurrentPageIndex;
-            }
+            if (_activeDoc != null && _activeDoc.CurrentPageIndex > 0)
+                ScrollToPage(_activeDoc.CurrentPageIndex - 1);
         }
 
         private void BtnNextPage_Click(object sender, RoutedEventArgs e)
         {
-            if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
-            if (_activeDoc.CurrentPageIndex < _activeDoc.Pages.Count - 1)
+            if (_activeDoc != null && _activeDoc.CurrentPageIndex < _activeDoc.Pages.Count - 1)
+                ScrollToPage(_activeDoc.CurrentPageIndex + 1);
+        }
+
+        private void TxtJumpPage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && int.TryParse(TxtJumpPage.Text.Trim(), out int pageNum))
             {
-                _activeDoc.CurrentPageIndex++;
-                DisplayActivePage();
+                ScrollToPage(pageNum - 1);
+                e.Handled = true;
+            }
+        }
+
+        private void BtnViewContinuous_Click(object sender, RoutedEventArgs e)
+        {
+            _currentViewMode = PageViewMode.Continuous;
+            ApplyViewModeLayout();
+            ScrollToPage(_activeDoc?.CurrentPageIndex ?? 0);
+        }
+
+        private void BtnViewSinglePage_Click(object sender, RoutedEventArgs e)
+        {
+            _currentViewMode = PageViewMode.SinglePage;
+            ApplyViewModeLayout();
+        }
+
+        private void BtnViewTwoPage_Click(object sender, RoutedEventArgs e)
+        {
+            _currentViewMode = PageViewMode.TwoPageSpread;
+            ApplyViewModeLayout();
+        }
+
+        private void BtnDarkModeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            _isDarkReadingMode = !_isDarkReadingMode;
+            if (BtnDarkModeToggle != null)
+            {
+                BtnDarkModeToggle.Foreground = _isDarkReadingMode ? new SolidColorBrush(Color.FromRgb(250, 204, 21)) : (Brush)FindResource("WindowFgBrush");
+            }
+
+            var bg = _isDarkReadingMode ? new SolidColorBrush(Color.FromRgb(30, 30, 36)) : Brushes.White;
+            var fg = _isDarkReadingMode ? new SolidColorBrush(Color.FromRgb(228, 228, 231)) : new SolidColorBrush(Color.FromRgb(24, 24, 27));
+
+            foreach (var card in _pageCards)
+            {
+                card.Background = bg;
+            }
+            foreach (var txt in _pageTextBoxes)
+            {
+                txt.Foreground = fg;
+            }
+        }
+
+        private void BtnToolSnapshot_Click(object sender, RoutedEventArgs e)
+        {
+            _activeTool = "Snapshot";
+            if (MainScrollViewer != null) MainScrollViewer.Cursor = Cursors.Cross;
+            UpdateStatus();
+        }
+
+        private void MainScrollViewer_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_activeTool == "Snapshot" && e.LeftButton == MouseButtonState.Pressed && CanvasContainer != null && SnapshotOverlayCanvas != null && SnapshotSelectionRect != null)
+            {
+                _snapshotStartPoint = e.GetPosition(CanvasContainer);
+                SnapshotOverlayCanvas.Visibility = Visibility.Visible;
+                Canvas.SetLeft(SnapshotSelectionRect, _snapshotStartPoint.X);
+                Canvas.SetTop(SnapshotSelectionRect, _snapshotStartPoint.Y);
+                SnapshotSelectionRect.Width = 0;
+                SnapshotSelectionRect.Height = 0;
+                SnapshotSelectionRect.Visibility = Visibility.Visible;
+                _isSnapshotDragging = true;
+                e.Handled = true;
+            }
+        }
+
+        private void MainScrollViewer_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isSnapshotDragging && CanvasContainer != null && SnapshotSelectionRect != null)
+            {
+                Point cur = e.GetPosition(CanvasContainer);
+                double x = Math.Min(cur.X, _snapshotStartPoint.X);
+                double y = Math.Min(cur.Y, _snapshotStartPoint.Y);
+                double w = Math.Abs(cur.X - _snapshotStartPoint.X);
+                double h = Math.Abs(cur.Y - _snapshotStartPoint.Y);
+
+                Canvas.SetLeft(SnapshotSelectionRect, x);
+                Canvas.SetTop(SnapshotSelectionRect, y);
+                SnapshotSelectionRect.Width = w;
+                SnapshotSelectionRect.Height = h;
+                e.Handled = true;
+            }
+        }
+
+        private void MainScrollViewer_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_isSnapshotDragging && CanvasContainer != null && SnapshotOverlayCanvas != null && SnapshotSelectionRect != null)
+            {
+                _isSnapshotDragging = false;
+                SnapshotOverlayCanvas.Visibility = Visibility.Collapsed;
+                SnapshotSelectionRect.Visibility = Visibility.Collapsed;
+                _activeTool = "Pointer";
+                if (MainScrollViewer != null) MainScrollViewer.Cursor = Cursors.Arrow;
                 UpdateStatus();
-                if (ThumbnailList != null) ThumbnailList.SelectedIndex = _activeDoc.CurrentPageIndex;
+
+                Point cur = e.GetPosition(CanvasContainer);
+                double x = Math.Min(cur.X, _snapshotStartPoint.X);
+                double y = Math.Min(cur.Y, _snapshotStartPoint.Y);
+                double w = Math.Abs(cur.X - _snapshotStartPoint.X);
+                double h = Math.Abs(cur.Y - _snapshotStartPoint.Y);
+
+                if (w > 15 && h > 15)
+                {
+                    try
+                    {
+                        int targetW = (int)Math.Max(1, CanvasContainer.ActualWidth);
+                        int targetH = (int)Math.Max(1, CanvasContainer.ActualHeight);
+                        var rtb = new RenderTargetBitmap(targetW, targetH, 96, 96, PixelFormats.Pbgra32);
+                        rtb.Render(CanvasContainer);
+
+                        int cropX = Math.Clamp((int)x, 0, targetW - 1);
+                        int cropY = Math.Clamp((int)y, 0, targetH - 1);
+                        int cropW = Math.Clamp((int)w, 1, targetW - cropX);
+                        int cropH = Math.Clamp((int)h, 1, targetH - cropY);
+
+                        var cropped = new CroppedBitmap(rtb, new Int32Rect(cropX, cropY, cropW, cropH));
+                        Clipboard.SetImage(cropped);
+
+                        MessageBox.Show($"✓ Selected snapshot area copied to Windows Clipboard!\n\nDimensions: {cropW} x {cropH} px\nYou can now paste it directly into Microsoft Word, Paint, Slack, Teams, or any document.", 
+                                        "Omni PDF Snapshot Tool", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Unable to capture snapshot: {ex.Message}", "Snapshot Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void BtnDocumentProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activeDoc == null) return;
+            var win = new DocumentPropertiesWindow(_activeDoc) { Owner = this };
+            if (win.ShowDialog() == true)
+            {
+                if (TabList != null) TabList.Items.Refresh();
+                UpdateStatus();
+            }
+        }
+
+        private void MenuCopy_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
+            int idx = Math.Clamp(_activeDoc.CurrentPageIndex, 0, _activeDoc.Pages.Count - 1);
+            string text = _activeDoc.Pages[idx].ContentText;
+            if (!string.IsNullOrEmpty(text))
+            {
+                Clipboard.SetText(text);
+                MessageBox.Show("✓ Page text copied to Windows Clipboard!", "Omni PDF Copy", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -539,9 +948,11 @@ namespace OmniPdf.App
         {
             if (ThumbnailList?.SelectedIndex >= 0 && _activeDoc != null)
             {
-                _activeDoc.CurrentPageIndex = ThumbnailList.SelectedIndex;
-                DisplayActivePage();
-                UpdateStatus();
+                int idx = ThumbnailList.SelectedIndex;
+                if (idx != _activeDoc.CurrentPageIndex)
+                {
+                    ScrollToPage(idx);
+                }
             }
         }
 
@@ -1021,6 +1432,21 @@ namespace OmniPdf.App
         private void MenuToolMeasure_Click(object sender, RoutedEventArgs e) => SetTool("Measure");
         private void MenuToolEraser_Click(object sender, RoutedEventArgs e) => SetTool("Eraser");
         private void MenuToolSignature_Click(object sender, RoutedEventArgs e) => StampDigitalSignature();
+
+        private void BtnToolPointer_Click(object sender, RoutedEventArgs e) => SetTool("Pointer");
+        private void BtnToolInk_Click(object sender, RoutedEventArgs e) => SetTool("Ink");
+        private void BtnToolHighlight_Click(object sender, RoutedEventArgs e) => SetTool("Highlight");
+        private void BtnToolSticky_Click(object sender, RoutedEventArgs e) => SetTool("Sticky");
+        private void BtnToolMeasure_Click(object sender, RoutedEventArgs e) => SetTool("Measure");
+        private void BtnRedactTool_Click(object sender, RoutedEventArgs e) => BtnSecurity_Click(sender, e);
+        private void BtnWordFont_Click(object sender, RoutedEventArgs e)
+        {
+            if (CmbWordFontFamily != null)
+            {
+                CmbWordFontFamily.IsDropDownOpen = true;
+                CmbWordFontFamily.Focus();
+            }
+        }
 
         private void SetTool(string toolName)
         {
@@ -1682,6 +2108,10 @@ namespace OmniPdf.App
                     e.Handled = true;
                 }
             }
+            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                if (e.Key == Key.C) { BtnToolSnapshot_Click(this, new RoutedEventArgs()); e.Handled = true; }
+            }
             else if (Keyboard.Modifiers == ModifierKeys.Control)
             {
                 if (e.Key == Key.O) { BtnOpenFile_Click(this, new RoutedEventArgs()); e.Handled = true; }
@@ -1691,6 +2121,11 @@ namespace OmniPdf.App
                 else if (e.Key == Key.F) { BtnToggleSearch_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.R) { BtnRotatePage_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.T) { BtnToggleThumbnails_Click(this, new RoutedEventArgs()); e.Handled = true; }
+                else if (e.Key == Key.D) { BtnDocumentProperties_Click(this, new RoutedEventArgs()); e.Handled = true; }
+                else if (e.Key == Key.I) { BtnDarkModeToggle_Click(this, new RoutedEventArgs()); e.Handled = true; }
+                else if (e.Key == Key.D1 || e.Key == Key.NumPad1) { BtnViewContinuous_Click(this, new RoutedEventArgs()); e.Handled = true; }
+                else if (e.Key == Key.D2 || e.Key == Key.NumPad2) { BtnViewSinglePage_Click(this, new RoutedEventArgs()); e.Handled = true; }
+                else if (e.Key == Key.D3 || e.Key == Key.NumPad3) { BtnViewTwoPage_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.OemPlus || e.Key == Key.Add) { BtnZoomIn_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.OemMinus || e.Key == Key.Subtract) { BtnZoomOut_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.D0 || e.Key == Key.NumPad0) { BtnZoomActual_Click(this, new RoutedEventArgs()); e.Handled = true; }

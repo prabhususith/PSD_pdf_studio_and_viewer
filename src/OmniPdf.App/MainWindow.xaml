@@ -135,6 +135,17 @@
             <Setter Property="FontWeight" Value="Medium"/>
         </Style>
 
+        <!-- Native ContextMenu High-Contrast Dynamic Styles -->
+        <Style TargetType="ContextMenu">
+            <Setter Property="Background" Value="{DynamicResource SubmenuBgBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4,4"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial"/>
+            <Setter Property="FontSize" Value="11.5"/>
+        </Style>
+
         <Style TargetType="Separator">
             <Setter Property="Background" Value="{DynamicResource BorderBrushLight}"/>
             <Setter Property="Margin" Value="2,2"/>
@@ -209,12 +220,17 @@
                         <MenuItem Header="Save _As..." InputGestureText="Ctrl+Shift+S" Click="BtnSaveAsFile_Click"/>
                         <MenuItem Header="_Print Document..." InputGestureText="Ctrl+P" Click="BtnPrint_Click"/>
                         <Separator/>
+                        <MenuItem Header="Document _Properties &amp; Metadata..." InputGestureText="Ctrl+D" Click="BtnDocumentProperties_Click"/>
+                        <Separator/>
                         <MenuItem Header="_Rescan Local Library" Click="BtnRescanLibrary_Click"/>
                         <Separator/>
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="BtnWinClose_Click"/>
                     </MenuItem>
 
                     <MenuItem Header="_Edit">
+                        <MenuItem Header="_Copy Text" InputGestureText="Ctrl+C" Click="MenuCopy_Click"/>
+                        <MenuItem Header="Take Area _Snapshot to Clipboard" InputGestureText="Ctrl+Shift+C" Click="BtnToolSnapshot_Click"/>
+                        <Separator/>
                         <MenuItem Header="_Find in Document..." InputGestureText="Ctrl+F" Click="BtnToggleSearch_Click"/>
                         <Separator/>
                         <MenuItem Header="_Clear Ink Sketches" Click="BtnClearInk_Click"/>
@@ -222,6 +238,12 @@
                     </MenuItem>
 
                     <MenuItem Header="_View">
+                        <MenuItem Header="📜  _Continuous Page Scroll" InputGestureText="Ctrl+1" Click="BtnViewContinuous_Click"/>
+                        <MenuItem Header="📄  _Single Page View" InputGestureText="Ctrl+2" Click="BtnViewSinglePage_Click"/>
+                        <MenuItem Header="📖  _Two-Page Book Spread" InputGestureText="Ctrl+3" Click="BtnViewTwoPage_Click"/>
+                        <Separator/>
+                        <MenuItem Header="🌙  _Dark Reading Mode (Invert)" InputGestureText="Ctrl+I" Click="BtnDarkModeToggle_Click"/>
+                        <Separator/>
                         <MenuItem Header="⛶  _Full Screen Presentation Mode" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
                         <MenuItem Header="◀  Toggle _Navigation Rail" InputGestureText="F4" Click="BtnToggleNavRail_Click"/>
                         <MenuItem Header="📑  Toggle _Thumbnails Panel" InputGestureText="Ctrl+T" Click="BtnToggleThumbnails_Click"/>
@@ -553,12 +575,25 @@
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
-                            <!-- Navigation Steppers -->
+                            <!-- Page View Modes: Continuous Scroll, Single Page, Two-Page Spread -->
+                            <Button x:Name="BtnViewContinuous" Content="📜 Continuous" ToolTip="Continuous Multi-Page Vertical Scroll (Ctrl+1)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnViewContinuous_Click"/>
+                            <Button x:Name="BtnViewSinglePage" Content="📄 Single" ToolTip="Single Page View (Ctrl+2)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnViewSinglePage_Click"/>
+                            <Button x:Name="BtnViewTwoPage" Content="📖 Two-Page" ToolTip="Two-Page Book Spread (Ctrl+3)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnViewTwoPage_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Navigation Steppers & Quick Jump -->
+                            <Button x:Name="BtnFirstPage" Content="⏮" ToolTip="First Page" Width="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFirstPage_Click"/>
                             <Button x:Name="BtnPrevPage" Content="◀ Prev" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnPrevPage_Click"/>
                             <Border Background="#27272A" CornerRadius="3" Padding="5,2" Margin="1" VerticalAlignment="Center">
-                                <TextBlock x:Name="TxtNavPageIndicator" Text="Page 1 / 1" FontSize="10.5" FontWeight="SemiBold" Foreground="#38BDF8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox x:Name="TxtJumpPage" Text="1" Width="28" Background="Transparent" Foreground="#38BDF8" BorderThickness="0" 
+                                             TextAlignment="Center" FontWeight="Bold" FontSize="10.5" KeyDown="TxtJumpPage_KeyDown"/>
+                                    <TextBlock x:Name="TxtNavPageIndicator" Text=" / 1" FontSize="10.5" FontWeight="SemiBold" Foreground="#A1A1AA" VerticalAlignment="Center"/>
+                                </StackPanel>
                             </Border>
                             <Button x:Name="BtnNextPage" Content="Next ▶" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnNextPage_Click"/>
+                            <Button x:Name="BtnLastPage" Content="⏭" ToolTip="Last Page" Width="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnLastPage_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
@@ -568,11 +603,13 @@
                             <Button x:Name="BtnZoomIn" Content="➕" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomIn_Click"/>
                             <Button x:Name="BtnFitWidth" Content="Fit Width" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFitWidth_Click"/>
                             <Button x:Name="BtnRotatePage" Content="Rotate 90°" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnRotatePage_Click"/>
+                            <Button x:Name="BtnDarkModeToggle" Content="🌙 Dark Mode" ToolTip="Toggle Night / Invert Reading Mode (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnDarkModeToggle_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Annotation Tools Suite -->
                             <Button x:Name="BtnToolPointer" Content="👆 Pointer" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolSnapshot" Content="📷 Snapshot" ToolTip="Capture Area Snapshot to Clipboard (Ctrl+Shift+C)" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnToolSnapshot_Click"/>
                             <Button x:Name="BtnToolInk" Content="✏️ Sketch" Style="{StaticResource ModernBtn}" Foreground="#F87171" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolHighlight" Content="🖍️ Highlight" Style="{StaticResource ModernBtn}" Foreground="#FACC15" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolSticky" Content="📌 Sticky Note" Style="{StaticResource ModernBtn}" Foreground="#FB923C" Margin="1" Click="BtnTool_Click"/>
@@ -593,6 +630,7 @@
                             <Button Content="🛡️ Security" ToolTip="AES-256 &amp; Redaction" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnSecurity_Click"/>
                             <Button Content="🗜️ Optimize" ToolTip="Compress PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnOptimizer_Click"/>
                             <Button Content="💧 Watermark" ToolTip="Watermark &amp; Headers" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWatermark_Click"/>
+                            <Button Content="ℹ️ Info" ToolTip="Document Properties &amp; Metadata (Ctrl+D)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnDocumentProperties_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
@@ -645,35 +683,78 @@
 
                         <!-- Main Canvas Viewport -->
                         <ScrollViewer x:Name="MainScrollViewer" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
-                                      Background="{DynamicResource CanvasBgBrush}" Padding="16">
+                                      Background="{DynamicResource CanvasBgBrush}" Padding="16"
+                                      ScrollChanged="MainScrollViewer_ScrollChanged"
+                                      PreviewMouseDown="MainScrollViewer_PreviewMouseDown"
+                                      PreviewMouseMove="MainScrollViewer_PreviewMouseMove"
+                                      PreviewMouseUp="MainScrollViewer_PreviewMouseUp">
+                            <ScrollViewer.ContextMenu>
+                                <ContextMenu x:Name="PdfContextMenu">
+                                    <MenuItem Header="📋  Copy Text" InputGestureText="Ctrl+C" Click="MenuCopy_Click"/>
+                                    <MenuItem Header="📷  Take Area Snapshot" InputGestureText="Ctrl+Shift+C" Click="BtnToolSnapshot_Click"/>
+                                    <Separator/>
+                                    <MenuItem Header="📜  Continuous Page Scroll" InputGestureText="Ctrl+1" Click="BtnViewContinuous_Click"/>
+                                    <MenuItem Header="📄  Single Page View" InputGestureText="Ctrl+2" Click="BtnViewSinglePage_Click"/>
+                                    <MenuItem Header="📖  Two-Page Book Spread" InputGestureText="Ctrl+3" Click="BtnViewTwoPage_Click"/>
+                                    <MenuItem Header="⛶  Presentation Full Screen" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
+                                    <Separator/>
+                                    <MenuItem Header="👆  Pointer / Hand Tool" Click="BtnToolPointer_Click"/>
+                                    <MenuItem Header="✏️  Ink Sketch Pen" Click="BtnToolInk_Click"/>
+                                    <MenuItem Header="🖍️  Highlighter Tool" Click="BtnToolHighlight_Click"/>
+                                    <MenuItem Header="📌  Add Sticky Note" Click="BtnToolSticky_Click"/>
+                                    <MenuItem Header="📐  Measure Calibration" Click="BtnToolMeasure_Click"/>
+                                    <MenuItem Header="✂️  Mark for Redaction" Click="BtnRedactTool_Click"/>
+                                    <Separator/>
+                                    <MenuItem Header="➕  Zoom In" InputGestureText="Ctrl++" Click="BtnZoomIn_Click"/>
+                                    <MenuItem Header="➖  Zoom Out" InputGestureText="Ctrl+-" Click="BtnZoomOut_Click"/>
+                                    <MenuItem Header="🔍  Actual Size (100%)" InputGestureText="Ctrl+0" Click="BtnZoomActual_Click"/>
+                                    <MenuItem Header="↔  Fit to Width" Click="BtnFitWidth_Click"/>
+                                    <MenuItem Header="↕  Fit Entire Page" Click="BtnFitPage_Click"/>
+                                    <MenuItem Header="🔄  Rotate Clockwise (90°)" InputGestureText="Ctrl+R" Click="BtnRotatePage_Click"/>
+                                    <MenuItem Header="🌙  Dark Reading Mode / Invert" InputGestureText="Ctrl+I" Click="BtnDarkModeToggle_Click"/>
+                                    <Separator/>
+                                    <MenuItem Header="🔊  Read Aloud Page" Click="BtnTtsPlay_Click"/>
+                                    <MenuItem Header="🖨️  Print Document..." InputGestureText="Ctrl+P" Click="BtnPrint_Click"/>
+                                    <MenuItem Header="ℹ️  Document Properties &amp; Security..." InputGestureText="Ctrl+D" Click="BtnDocumentProperties_Click"/>
+                                </ContextMenu>
+                            </ScrollViewer.ContextMenu>
+
                             <Grid x:Name="CanvasContainer" HorizontalAlignment="Center">
-                                <!-- Page Card Frame -->
-                                <Border x:Name="PageBorder" Background="#FFFFFF" CornerRadius="4">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.45" Color="#000000"/>
-                                    </Border.Effect>
+                                <!-- Continuous Page Stack for Multi-Page Flow -->
+                                <StackPanel x:Name="PagesStackPanel" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <!-- Primary Active Page Card Frame -->
+                                    <Border x:Name="PageBorder" Background="#FFFFFF" CornerRadius="4" Margin="0,0,0,18">
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.45" Color="#000000"/>
+                                        </Border.Effect>
 
-                                    <Grid x:Name="PageContentGrid" MouseLeftButtonDown="PageContentGrid_MouseLeftButtonDown">
-                                        <!-- High-DPI Real Rendered PDF Page -->
-                                        <Image x:Name="ImgPageRender" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Grid x:Name="PageContentGrid" MouseLeftButtonDown="PageContentGrid_MouseLeftButtonDown">
+                                            <!-- High-DPI Real Rendered PDF Page -->
+                                            <Image x:Name="ImgPageRender" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                                        <!-- Content Stream Text (Fallback/Search overlay) -->
-                                        <TextBox x:Name="TxtPageContent" Margin="40" Background="Transparent" Foreground="#18181B" 
-                                                 BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True" FontSize="13" FontFamily="Georgia"/>
+                                            <!-- Content Stream Text (Fallback/Search overlay) -->
+                                            <TextBox x:Name="TxtPageContent" Margin="40" Background="Transparent" Foreground="#18181B" 
+                                                     BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True" FontSize="13" FontFamily="Georgia"/>
 
-                                        <!-- Interactive Ink & Vector Overlay Canvas -->
-                                        <InkCanvas x:Name="PageInkCanvas" Background="Transparent" IsHitTestVisible="False"/>
+                                            <!-- Interactive Ink & Vector Overlay Canvas -->
+                                            <InkCanvas x:Name="PageInkCanvas" Background="Transparent" IsHitTestVisible="False"/>
 
-                                        <!-- Interactive Sticky Notes Overlay Canvas -->
-                                        <Canvas x:Name="NotesCanvas" Background="Transparent" IsHitTestVisible="True"/>
+                                            <!-- Interactive Sticky Notes Overlay Canvas -->
+                                            <Canvas x:Name="NotesCanvas" Background="Transparent" IsHitTestVisible="True"/>
 
-                                        <!-- PKCS#7 Digital Signature Badge -->
-                                        <Border x:Name="SignatureBadge" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                                Margin="16" Background="#EFF6FF" BorderBrush="#0284C7" BorderThickness="1.5" CornerRadius="4" Padding="8,4" Visibility="Collapsed">
-                                            <TextBlock Text="✓ PKCS#7 Verified Digital Signature" FontWeight="Bold" Foreground="#0284C7" FontSize="10"/>
-                                        </Border>
-                                    </Grid>
-                                </Border>
+                                            <!-- PKCS#7 Digital Signature Badge -->
+                                            <Border x:Name="SignatureBadge" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                                    Margin="16" Background="#EFF6FF" BorderBrush="#0284C7" BorderThickness="1.5" CornerRadius="4" Padding="8,4" Visibility="Collapsed">
+                                                <TextBlock Text="✓ PKCS#7 Verified Digital Signature" FontWeight="Bold" Foreground="#0284C7" FontSize="10"/>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Interactive Area Snapshot Drag Selection Overlay -->
+                                <Canvas x:Name="SnapshotOverlayCanvas" IsHitTestVisible="False" Visibility="Collapsed">
+                                    <Rectangle x:Name="SnapshotSelectionRect" Stroke="#0284C7" StrokeThickness="1.5" StrokeDashArray="4 2" Fill="#330284C7" Visibility="Collapsed"/>
+                                </Canvas>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
@@ -803,7 +884,29 @@
                                              BorderThickness="0" Margin="48" AcceptsReturn="True" AcceptsTab="True"
                                              SpellCheck.IsEnabled="True" FontSize="13" FontFamily="Segoe UI"
                                              SelectionChanged="RtbWordEditor_SelectionChanged"
-                                             TextChanged="RtbWordEditor_TextChanged"/>
+                                             TextChanged="RtbWordEditor_TextChanged">
+                                    <RichTextBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="✂️  Cut" Command="ApplicationCommands.Cut"/>
+                                            <MenuItem Header="📋  Copy" Command="ApplicationCommands.Copy"/>
+                                            <MenuItem Header="📄  Paste" Command="ApplicationCommands.Paste"/>
+                                            <Separator/>
+                                            <MenuItem Header="🔤  Font Dialog..." Click="BtnWordFont_Click"/>
+                                            <MenuItem Header="📏  Align Left" InputGestureText="Ctrl+L" Click="BtnWordAlignLeft_Click"/>
+                                            <MenuItem Header="📏  Align Center" InputGestureText="Ctrl+E" Click="BtnWordAlignCenter_Click"/>
+                                            <MenuItem Header="📏  Align Right" InputGestureText="Ctrl+R" Click="BtnWordAlignRight_Click"/>
+                                            <MenuItem Header="📏  Justify" InputGestureText="Ctrl+J" Click="BtnWordAlignJustify_Click"/>
+                                            <Separator/>
+                                            <MenuItem Header="🖼️  Insert Picture..." Click="BtnWordInsertImage_Click"/>
+                                            <MenuItem Header="⊞  Insert Table (3x3)..." Click="BtnWordInsertTable_Click"/>
+                                            <MenuItem Header="―  Insert Horizontal Line" Click="BtnWordInsertHr_Click"/>
+                                            <MenuItem Header="📅  Insert Date &amp; Time" Click="BtnWordInsertDate_Click"/>
+                                            <Separator/>
+                                            <MenuItem Header="💾  Save Document" InputGestureText="Ctrl+S" Click="BtnWordSave_Click"/>
+                                            <MenuItem Header="🖨️  Print Document..." InputGestureText="Ctrl+P" Click="BtnWordPrint_Click"/>
+                                        </ContextMenu>
+                                    </RichTextBox.ContextMenu>
+                                </RichTextBox>
                             </Border>
                         </Grid>
                     </ScrollViewer>
