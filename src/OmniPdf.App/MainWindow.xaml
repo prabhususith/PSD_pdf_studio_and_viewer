@@ -899,6 +899,19 @@
                             <Button x:Name="BtnWordSubscript" Content="X₂" ToolTip="Subscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSubscript_Click"/>
                             <Button x:Name="BtnWordSuperscript" Content="X²" ToolTip="Superscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSuperscript_Click"/>
                             <Button x:Name="BtnWordClearFormat" Content="🧹" ToolTip="Clear Formatting" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordClearFormat_Click"/>
+                            <Button x:Name="BtnWordChangeCase" Content="Aa ▾" ToolTip="Change Case (Shift+F3)" Style="{StaticResource ModernBtn}" Margin="1" Padding="4,2" Click="BtnWordChangeCase_Click"/>
+                            <Popup x:Name="PopupWordChangeCase" PlacementTarget="{Binding ElementName=BtnWordChangeCase}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                <Border Background="#18181B" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="6" Padding="6" Width="160">
+                                    <StackPanel>
+                                        <TextBlock Text="CHANGE CASE" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="4,0,0,4"/>
+                                        <Button Content="Sentence case." Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="ChangeCaseChip_Click" Tag="Sentence"/>
+                                        <Button Content="lowercase" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="ChangeCaseChip_Click" Tag="Lower"/>
+                                        <Button Content="UPPERCASE" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="ChangeCaseChip_Click" Tag="Upper"/>
+                                        <Button Content="Capitalize Each Word" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="ChangeCaseChip_Click" Tag="Title"/>
+                                        <Button Content="tOGGLE cASE" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="ChangeCaseChip_Click" Tag="Toggle"/>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
@@ -1107,6 +1120,25 @@
 
                             <!-- Find & Replace -->
                             <Button x:Name="BtnWordToggleFindReplace" Content="🔍 Replace" ToolTip="Find &amp; Replace (Ctrl+H)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordToggleFindReplace_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Document Templates Dropdown -->
+                            <Button x:Name="BtnWordTemplates" Content="📋 Templates ▾" ToolTip="Quick Starter Enterprise Templates" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordTemplates_Click"/>
+                            <Popup x:Name="PopupWordTemplates" PlacementTarget="{Binding ElementName=BtnWordTemplates}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                <Border Background="#18181B" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="6" Padding="6" Width="200">
+                                    <StackPanel>
+                                        <TextBlock Text="DOCUMENT TEMPLATES" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="4,0,0,4"/>
+                                        <Button Content="📊 Project Charter" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Project Charter"/>
+                                        <Button Content="👤 Modern Resume / CV" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Resume"/>
+                                        <Button Content="💼 Business Proposal" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Business Proposal"/>
+                                        <Button Content="🔒 Mutual NDA Agreement" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="NDA"/>
+                                        <Button Content="📝 Meeting Minutes" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Meeting Minutes"/>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
+
+                            <Button x:Name="BtnWordDetailedStats" Content="📊 Audit &amp; Readability" ToolTip="Detailed Document Word Count &amp; Readability Analysis" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordDetailedStats_Click"/>
                         </WrapPanel>
                     </Border>
 

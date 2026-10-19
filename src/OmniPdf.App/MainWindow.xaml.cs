@@ -1403,6 +1403,25 @@ namespace OmniPdf.App
             RtbWordEditor.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
         }
 
+        private void BtnWordChangeCase_Click(object sender, RoutedEventArgs e)
+        {
+            if (PopupWordChangeCase != null)
+            {
+                PopupWordChangeCase.IsOpen = !PopupWordChangeCase.IsOpen;
+            }
+        }
+
+        private void ChangeCaseChip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string caseType && RtbWordEditor != null)
+            {
+                WordDocumentService.ChangeSelectionCase(RtbWordEditor, caseType);
+                _isWordModified = true;
+                UpdateWordStats();
+            }
+            if (PopupWordChangeCase != null) PopupWordChangeCase.IsOpen = false;
+        }
+
         private void BtnWordTextColor_Click(object sender, RoutedEventArgs e)
         {
             if (PopupWordTextColor != null)
@@ -1691,6 +1710,136 @@ namespace OmniPdf.App
             _isWordModified = true;
             UpdateWordStats();
             if (TxtWordFindCount != null) TxtWordFindCount.Text = $"Replaced {count} occurrence{(count == 1 ? "" : "s")}";
+        }
+
+        private void BtnWordTemplates_Click(object sender, RoutedEventArgs e)
+        {
+            if (PopupWordTemplates != null)
+            {
+                PopupWordTemplates.IsOpen = !PopupWordTemplates.IsOpen;
+            }
+        }
+
+        private void WordTemplateChip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string template && RtbWordEditor != null)
+            {
+                if (_isWordModified)
+                {
+                    var res = MessageBox.Show("Loading a new template will replace current document content. Continue?", "Confirm Template", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (res != MessageBoxResult.Yes)
+                    {
+                        if (PopupWordTemplates != null) PopupWordTemplates.IsOpen = false;
+                        return;
+                    }
+                }
+                WordDocumentService.LoadTemplate(RtbWordEditor, template);
+                _isWordModified = false;
+                UpdateWordStats();
+            }
+            if (PopupWordTemplates != null) PopupWordTemplates.IsOpen = false;
+        }
+
+        private void BtnWordDetailedStats_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor == null) return;
+            var stats = WordDocumentService.GetDetailedDocumentStatistics(RtbWordEditor);
+
+            var win = new Window
+            {
+                Title = "Document Audit & Readability Metrics",
+                Width = 460,
+                Height = 440,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = this,
+                ResizeMode = ResizeMode.NoResize,
+                Background = new SolidColorBrush(Color.FromRgb(15, 15, 18)),
+                Foreground = Brushes.White,
+                WindowStyle = WindowStyle.ToolWindow
+            };
+
+            var root = new StackPanel { Margin = new Thickness(20) };
+
+            var header = new TextBlock
+            {
+                Text = "MICROSOFT WORD AUDIT & READABILITY",
+                FontSize = 13,
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(Color.FromRgb(56, 189, 248)),
+                Margin = new Thickness(0, 0, 0, 12)
+            };
+            root.Children.Add(header);
+
+            var statBorder = new Border
+            {
+                Background = new SolidColorBrush(Color.FromRgb(24, 24, 27)),
+                BorderBrush = new SolidColorBrush(Color.FromRgb(39, 39, 42)),
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(14),
+                Margin = new Thickness(0, 0, 0, 12)
+            };
+            var statGrid = new Grid();
+            statGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            statGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            for (int i = 0; i < 7; i++) statGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            AddStatRow(statGrid, 0, "Words:", $"{stats.Words:N0}");
+            AddStatRow(statGrid, 1, "Characters (no spaces):", $"{stats.CharactersNoSpaces:N0}");
+            AddStatRow(statGrid, 2, "Characters (with spaces):", $"{stats.CharactersWithSpaces:N0}");
+            AddStatRow(statGrid, 3, "Paragraphs:", $"{stats.Paragraphs:N0}");
+            AddStatRow(statGrid, 4, "Lines:", $"{stats.Lines:N0}");
+            AddStatRow(statGrid, 5, "Estimated Pages:", $"{stats.EstimatedPages}");
+            AddStatRow(statGrid, 6, "Est. Reading / Speaking Time:", $"~{stats.ReadingTimeMinutes}m / ~{stats.SpeakingTimeMinutes}m");
+
+            statBorder.Child = statGrid;
+            root.Children.Add(statBorder);
+
+            var readBorder = new Border
+            {
+                Background = new SolidColorBrush(Color.FromRgb(24, 24, 27)),
+                BorderBrush = new SolidColorBrush(Color.FromRgb(39, 39, 42)),
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(14),
+                Margin = new Thickness(0, 0, 0, 16)
+            };
+            var readStack = new StackPanel();
+            readStack.Children.Add(new TextBlock { Text = $"Flesch Reading Ease: {stats.FleschReadingEase} / 100", FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Color.FromRgb(74, 222, 128)), FontSize = 12 });
+            readStack.Children.Add(new TextBlock { Text = $"Readability Standard: {stats.ReadabilityLabel}", Foreground = new SolidColorBrush(Color.FromRgb(228, 228, 231)), Margin = new Thickness(0, 2, 0, 2), FontSize = 11 });
+            readStack.Children.Add(new TextBlock { Text = $"Grade Level Equivalent: {stats.GradeLevel}", Foreground = new SolidColorBrush(Color.FromRgb(161, 161, 170)), FontSize = 10.5 });
+            readBorder.Child = readStack;
+            root.Children.Add(readBorder);
+
+            var closeBtn = new Button
+            {
+                Content = "Close",
+                Width = 90,
+                Height = 28,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Background = new SolidColorBrush(Color.FromRgb(37, 99, 235)),
+                Foreground = Brushes.White,
+                BorderThickness = new Thickness(0),
+                IsDefault = true
+            };
+            closeBtn.Click += (s, ev) => win.Close();
+            root.Children.Add(closeBtn);
+
+            win.Content = root;
+            win.ShowDialog();
+        }
+
+        private static void AddStatRow(Grid grid, int row, string label, string value)
+        {
+            var lbl = new TextBlock { Text = label, Foreground = new SolidColorBrush(Color.FromRgb(161, 161, 170)), Margin = new Thickness(0, 2, 0, 2), FontSize = 11 };
+            Grid.SetRow(lbl, row);
+            Grid.SetColumn(lbl, 0);
+            grid.Children.Add(lbl);
+
+            var val = new TextBlock { Text = value, FontWeight = FontWeights.SemiBold, Foreground = Brushes.White, Margin = new Thickness(0, 2, 0, 2), HorizontalAlignment = HorizontalAlignment.Right, FontSize = 11 };
+            Grid.SetRow(val, row);
+            Grid.SetColumn(val, 1);
+            grid.Children.Add(val);
         }
 
         private static string? PromptInput(Window owner, string prompt, string title, string defaultText = "")
