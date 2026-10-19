@@ -58,7 +58,7 @@ namespace OmniPdf.App.Views
         private void UpdatePreview()
         {
             string name = TxtSignerName?.Text?.Trim() ?? "Signer";
-            string org = TxtSignerOrg?.Text?.Trim() ?? "Omni Global";
+            string org = TxtSignerOrg?.Text?.Trim() ?? "PSD Software Global";
             string loc = TxtSignerLocation?.Text?.Trim() ?? "Global";
 
             if (TxtCertSigner != null) TxtCertSigner.Text = $"Digitally Signed by: {name}";
@@ -102,7 +102,7 @@ namespace OmniPdf.App.Views
 
         private void BtnCopyCert_Click(object sender, RoutedEventArgs e)
         {
-            string auditData = $"=== OMNI STUDIO DIGITAL SIGNATURE AUDIT CERTIFICATE ===\n" +
+            string auditData = $"=== PSD PDF STUDIO DIGITAL SIGNATURE AUDIT CERTIFICATE ===\n" +
                                $"Signer Name: {TxtSignerName?.Text}\n" +
                                $"Title: {TxtSignerTitle?.Text}\n" +
                                $"Organization: {TxtSignerOrg?.Text}\n" +

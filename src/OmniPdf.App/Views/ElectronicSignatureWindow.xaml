@@ -113,12 +113,12 @@
 
                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,10">
                             <TextBlock Text="Email Address:" Foreground="#A1A1AA" FontSize="11" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtSignerEmail" Text="alexandra.chen@omnistudio.io" Height="28" Padding="6,3" Background="#27272A" Foreground="White" BorderBrush="#3F3F46"/>
+                            <TextBox x:Name="TxtSignerEmail" Text="alexandra.chen@psdsoftware.io" Height="28" Padding="6,3" Background="#27272A" Foreground="White" BorderBrush="#3F3F46"/>
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,10">
                             <TextBlock Text="Organization / Company:" Foreground="#A1A1AA" FontSize="11" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtSignerOrg" Text="Omni Studio Global Inc." Height="28" Padding="6,3" Background="#27272A" Foreground="White" BorderBrush="#3F3F46"/>
+                            <TextBox x:Name="TxtSignerOrg" Text="PSD Software Studio Global Inc." Height="28" Padding="6,3" Background="#27272A" Foreground="White" BorderBrush="#3F3F46"/>
                         </StackPanel>
 
                         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,10">
@@ -159,7 +159,7 @@
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                     <TextBlock x:Name="TxtCertSigner" Text="Digitally Signed by: Alexandra Chen" FontWeight="Bold" Foreground="#38BDF8" FontSize="11.5"/>
-                    <TextBlock x:Name="TxtCertMeta" Text="Organization: Omni Studio Global Inc. | Timestamp: 2026-10-19 UTC | Location: Seattle, WA" Foreground="#A1A1AA" FontSize="10"/>
+                    <TextBlock x:Name="TxtCertMeta" Text="Organization: PSD Software Studio Global Inc. | Timestamp: 2026-10-19 UTC | Location: Seattle, WA" Foreground="#A1A1AA" FontSize="10"/>
                     <TextBlock x:Name="TxtCertHash" Text="SHA-256 Checksum: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" Foreground="#71717A" FontSize="9"/>
                 </StackPanel>
             </Grid>

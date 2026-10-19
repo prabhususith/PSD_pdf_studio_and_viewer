@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
         layout.setPadding(32, 32, 32, 32);
 
         TextView title = new TextView(this);
-        title.setText("Omni PDF Studio (Android 6.0 - 14+)");
+        title.setText("PSD PDF Studio & Viewer (Android 6.0 - 14+)");
         title.setTextSize(20);
         layout.addView(title);
 

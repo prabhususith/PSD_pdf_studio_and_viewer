@@ -16,7 +16,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "    OMNI PDF STUDIO - ANDROID UNIVERSAL APK COMPILER      " -ForegroundColor Cyan
+Write-Host "    PSD PDF STUDIO & VIEWER - ANDROID APK COMPILER         " -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 
 Set-Location -LiteralPath "$RootDir"
@@ -67,8 +67,8 @@ $Arm64ElfHeader = [byte[]]@(0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, 0x01, 0x00, 0x00
 
 $Arm32So = "$BuildTemp\apk_root\lib\armeabi-v7a\libpdfengine.so"
 $Arm64So = "$BuildTemp\apk_root\lib\arm64-v8a\libpdfengine.so"
-[System.IO.File]::WriteAllBytes($Arm32So, $Arm32ElfHeader + [System.Text.Encoding]::UTF8.GetBytes("OmniPdf_Native_Arm32_Engine_Release_API23"))
-[System.IO.File]::WriteAllBytes($Arm64So, $Arm64ElfHeader + [System.Text.Encoding]::UTF8.GetBytes("OmniPdf_Native_Arm64_Engine_Release_API34"))
+[System.IO.File]::WriteAllBytes($Arm32So, $Arm32ElfHeader + [System.Text.Encoding]::UTF8.GetBytes("PsdPdf_Native_Arm32_Engine_Release_API23"))
+[System.IO.File]::WriteAllBytes($Arm64So, $Arm64ElfHeader + [System.Text.Encoding]::UTF8.GetBytes("PsdPdf_Native_Arm64_Engine_Release_API34"))
 
 # Bundle DEX and Native Libraries into base APK
 & "$SevenZip" a -tzip "$BaseApk" "$BuildTemp\apk_root\*" | Out-Null
@@ -85,10 +85,13 @@ if (-not (Test-Path -LiteralPath "$Keystore")) {
     & "$Keytool" -genkeypair -v -keystore "$Keystore" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US" | Out-Null
 }
 
+$PsdApk = Join-Path -Path $DistDir -ChildPath "PSD-PDF-Studio-Release-universal.apk"
 $FinalApk = Join-Path -Path $DistDir -ChildPath "OmniPdf-Release-universal.apk"
+if (Test-Path -LiteralPath "$PsdApk") { Remove-Item -Force -LiteralPath "$PsdApk" }
 if (Test-Path -LiteralPath "$FinalApk") { Remove-Item -Force -LiteralPath "$FinalApk" }
 
-& "$ApkSigner" sign --ks "$Keystore" --ks-pass pass:android --key-pass pass:android --out "$FinalApk" "$AlignedApk"
+& "$ApkSigner" sign --ks "$Keystore" --ks-pass pass:android --key-pass pass:android --out "$PsdApk" "$AlignedApk"
+Copy-Item -LiteralPath "$PsdApk" -Destination "$FinalApk" -Force
 Write-Host "   -> APK signed successfully." -ForegroundColor Green
 
 # Verification

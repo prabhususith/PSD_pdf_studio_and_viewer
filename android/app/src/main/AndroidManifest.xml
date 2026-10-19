@@ -11,7 +11,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <application
-        android:label="Omni PDF"
+        android:label="PSD PDF Studio &amp; Viewer"
         android:name="android.app.Application"
         android:requestLegacyExternalStorage="true"
         android:largeHeap="true"

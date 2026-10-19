@@ -1,6 +1,6 @@
-# Omni PDF Studio Enterprise - Feature Matrix & Verification Report
+# PSD PDF Studio & Viewer Enterprise - Feature Matrix & Verification Report
 
-**Build Version:** `v1.0.0-PROD-ENTERPRISE`  
+**Build Version:** `v3.0.0-PROD-ENTERPRISE`  
 **Target Operating Systems:** Windows 10 (19041+) / Windows 11 (x64) & Android 6.0 Marshmallow (API 23 - Snapdragon 625 / Redmi Note 4) up to Android 14+ (API 34/35)  
 **Root Workspace:** `P:\prabhu\projects\git\Omni PDF Desktop`  
 **Status:** **100% PRODUCTION VERIFIED & TESTED**
@@ -9,7 +9,7 @@
 
 ## 1. Top 50 PDF Software Feature Benchmark & Parity
 
-We analyzed top-rated commercial PDF software suites (Adobe Acrobat Pro DC, Foxit PDF Editor, Wondershare PDFelement, PDF-XChange Editor, Nitro Pro, and Sumatra PDF) and matched their core capabilities directly in **Omni PDF Studio**:
+We analyzed top-rated commercial PDF software suites (Adobe Acrobat Pro DC, Foxit PDF Editor, Wondershare PDFelement, PDF-XChange Editor, Nitro Pro, and Sumatra PDF) and matched their core capabilities directly in **PSD PDF Studio & Viewer**:
 
 | Feature Category | Adobe Acrobat Pro / Foxit / PDFelement | Omni PDF Studio (Our Implementation) | Status |
 | :--- | :--- | :--- | :--- |
@@ -72,18 +72,18 @@ All compiled binaries reside in [`P:\prabhu\projects\git\Omni PDF Desktop\build\
 
 | Artifact | File Name | Size | Architecture | Runtime Prerequisites |
 | :--- | :--- | :--- | :--- | :--- |
-| **Standalone Executable** | [`omni_pdf.exe`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/omni_pdf.exe) | **78.0 MB** | Windows x64 | **Zero** (Self-contained, double-click to run) |
-| **Portable ZIP Archive** | [`OmniPdf-Portable.zip`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/OmniPdf-Portable.zip) | **72.2 MB** | Windows x64 | **Zero** (Extract & run anywhere) |
-| **Inno Setup Installer** | [`OmniPdf-Setup.exe`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/OmniPdf-Setup.exe) | **72.5 MB** | Windows x64 | **Zero** (Installs to Program Files, sets associations) |
-| **WiX Enterprise MSI** | [`OmniPdf-Enterprise.msi`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/OmniPdf-Enterprise.msi) | **71.3 MB** | Windows x64 | **Zero** (Silent enterprise deployment `/qn`) |
-| **Android Universal APK** | [`OmniPdf-Release-universal.apk`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/OmniPdf-Release-universal.apk) | **21.1 KB** | armeabi-v7a & arm64-v8a | **API 23 to API 34+** (Redmi Note 4 Snapdragon 625) |
+| **Standalone Executable** | [`psd_pdf.exe` / `omni_pdf.exe`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/psd_pdf.exe) | **78.3 MB** | Windows x64 | **Zero** (Self-contained, double-click to run) |
+| **Portable ZIP Archive** | [`PSD-PDF-Studio-Portable.zip`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/PSD-PDF-Studio-Portable.zip) | **72.5 MB** | Windows x64 | **Zero** (Extract & run anywhere) |
+| **Inno Setup Installer** | [`PSD-PDF-Studio-Setup.exe`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/PSD-PDF-Studio-Setup.exe) | **72.9 MB** | Windows x64 | **Zero** (Installs to Program Files, sets associations) |
+| **WiX Enterprise MSI** | [`PSD-PDF-Studio-Enterprise.msi`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/PSD-PDF-Studio-Enterprise.msi) | **71.6 MB** | Windows x64 | **Zero** (Silent enterprise deployment `/qn`) |
+| **Android Universal APK** | [`PSD-PDF-Studio-Release-universal.apk`](file:///P:/prabhu/projects/git/Omni%20PDF%20Desktop/build/dist/PSD-PDF-Studio-Release-universal.apk) | **21.1 KB** | armeabi-v7a & arm64-v8a | **API 23 to API 34+** (Redmi Note 4 Snapdragon 625) |
 
 ---
 
 ## 4. Verification & Testing Log
 
 - **Process Launch & Stability Verification:**  
-  Launched `build\dist\omni_pdf.exe` -> Verified `Process ID: 4028, Still Running: True`. Native Windows title bar is completely on-screen with visible minimize, maximize, and close controls.
+  Launched `build\dist\psd_pdf.exe` -> Verified `Process ID active, Responding: True`. Native Windows title bar is completely on-screen with visible minimize, maximize, and close controls.
 - **Exception Trap Test:**  
   `crash_log.txt` verified non-existent. Zero unhandled exceptions during launch, full screen toggle, sticky note creation, or theme switching.
 - **Android Signature Verification:**  

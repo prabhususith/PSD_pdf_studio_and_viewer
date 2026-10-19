@@ -14,14 +14,14 @@ namespace OmniPdf.App
                 var ex = args.ExceptionObject as Exception;
                 string msg = $"Unhandled Exception:\n{ex?.Message}\n\nStack Trace:\n{ex?.StackTrace}";
                 try { File.WriteAllText("crash_log.txt", msg); } catch { }
-                MessageBox.Show(msg, "Omni PDF Studio Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(msg, "PSD PDF Studio & Viewer Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             };
 
             DispatcherUnhandledException += (s, args) =>
             {
                 string msg = $"UI Dispatcher Exception:\n{args.Exception?.Message}\n\nStack Trace:\n{args.Exception?.StackTrace}";
                 try { File.WriteAllText("crash_log.txt", msg); } catch { }
-                MessageBox.Show(msg, "Omni PDF Studio Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(msg, "PSD PDF Studio & Viewer Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 args.Handled = true;
             };
 

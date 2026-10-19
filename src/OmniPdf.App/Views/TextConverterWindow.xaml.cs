@@ -64,7 +64,7 @@ namespace OmniPdf.App.Views
                 var md = new StringBuilder();
                 md.AppendLine($"# {Path.GetFileNameWithoutExtension(_document.Title)}");
                 md.AppendLine();
-                md.AppendLine($"*Exported via Omni PDF Studio on {DateTime.Now:yyyy-MM-dd HH:mm:ss}*");
+                md.AppendLine($"*Exported via PSD PDF Studio & Viewer on {DateTime.Now:yyyy-MM-dd HH:mm:ss}*");
                 md.AppendLine();
                 for (int i = 0; i < _document.Pages.Count; i++)
                 {

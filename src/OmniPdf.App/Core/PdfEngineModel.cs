@@ -54,7 +54,7 @@ namespace OmniPdf.App.Core
                 doc.Pages.Add(new PdfPageModel
                 {
                     PageNumber = i + 1,
-                    ContentText = $"Omni PDF Studio - High-Performance Vector Document (Page {i + 1})\n\n" +
+                    ContentText = $"PSD PDF Studio & Viewer - High-Performance Vector Document (Page {i + 1})\n\n" +
                                   "Features Active:\n" +
                                   "• 64MB LRU Tile Rasterizer Cache Engine\n" +
                                   "• Full CRUD Document AST Object Model\n" +

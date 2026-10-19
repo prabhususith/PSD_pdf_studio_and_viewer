@@ -913,7 +913,7 @@ namespace OmniPdf.App
                         Clipboard.SetImage(cropped);
 
                         MessageBox.Show($"✓ Selected snapshot area copied to Windows Clipboard!\n\nDimensions: {cropW} x {cropH} px\nYou can now paste it directly into Microsoft Word, Paint, Slack, Teams, or any document.", 
-                                        "Omni PDF Snapshot Tool", MessageBoxButton.OK, MessageBoxImage.Information);
+                                        "PSD PDF Snapshot Tool", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     catch (Exception ex)
                     {
@@ -943,7 +943,7 @@ namespace OmniPdf.App
             if (!string.IsNullOrEmpty(text))
             {
                 Clipboard.SetText(text);
-                MessageBox.Show("✓ Page text copied to Windows Clipboard!", "Omni PDF Copy", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("✓ Page text copied to Windows Clipboard!", "PSD PDF Copy", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -1015,8 +1015,8 @@ namespace OmniPdf.App
         {
             var dlg = new OpenFileDialog
             {
-                Filter = "All Supported Documents|*.pdf;*.docx;*.rtf;*.txt;*.md;*.html|PDF Files (*.pdf)|*.pdf|Word Documents (*.docx)|*.docx|Rich Text Format (*.rtf)|*.rtf|Markdown (*.md)|*.md|HTML Files (*.html)|*.html|Plain Text (*.txt)|*.txt",
-                Title = "Open Document into Omni Studio"
+                Filter = "All Supported Documents|*.pdf;*.docx;*.rtf;*.txt;*.md;*.html;*.psd|PDF Files (*.pdf)|*.pdf|Word Documents (*.docx)|*.docx|Photoshop PSD (*.psd)|*.psd|Rich Text Format (*.rtf)|*.rtf|Markdown (*.md)|*.md|HTML Files (*.html)|*.html|Plain Text (*.txt)|*.txt|All Files (*.*)|*.*",
+                Title = "Open Document into PSD PDF Studio"
             };
 
             if (dlg.ShowDialog() == true)
@@ -1079,7 +1079,7 @@ namespace OmniPdf.App
         {
             if (ViewWordEditor?.Visibility == Visibility.Visible)
             {
-                WordDocumentService.PrintDocument(RtbWordEditor, "Omni Word Document");
+                WordDocumentService.PrintDocument(RtbWordEditor, "PSD Word Document");
             }
             else
             {
@@ -1239,7 +1239,7 @@ namespace OmniPdf.App
 
         private void BtnWordPrint_Click(object sender, RoutedEventArgs e)
         {
-            WordDocumentService.PrintDocument(RtbWordEditor, "Omni Word Document");
+            WordDocumentService.PrintDocument(RtbWordEditor, "PSD Word Document");
         }
 
         private void BtnWordUndo_Click(object sender, RoutedEventArgs e)
@@ -2913,11 +2913,11 @@ namespace OmniPdf.App
 
         private void BtnShortcuts_Click(object sender, RoutedEventArgs e)
         {
-            string msg = "Omni PDF Studio & Word Suite Keyboard Shortcuts:\n\n" +
+            string msg = "PSD PDF Studio & Viewer Keyboard Shortcuts:\n\n" +
                          "• F11: Dedicated Full Screen Presentation Mode\n" +
                          "• F4: Toggle Left Navigation Rail\n" +
                          "• Ctrl+T: Toggle Thumbnails Sidebar\n" +
-                         "• Ctrl+O: Open Document (PDF, Word, RTF, MD, HTML)\n" +
+                         "• Ctrl+O: Open Document (PDF, Word, RTF, MD, HTML, PSD)\n" +
                          "• Ctrl+N: New Word Document (.docx)\n" +
                          "• Ctrl+Shift+N: New Blank PDF Document\n" +
                          "• Ctrl+S: Save Incremental Updates\n" +
@@ -2933,15 +2933,17 @@ namespace OmniPdf.App
 
         private void BtnAbout_Click(object sender, RoutedEventArgs e)
         {
-            string msg = "Omni PDF Studio & Microsoft Word Suite Enterprise Edition v1.2.0\n\n" +
-                         "• Native Microsoft Word (.docx), RTF, Markdown, HTML & PDF Reader/Writer\n" +
+            string msg = "PSD PDF Studio & Viewer Enterprise Edition v3.0.0\n\n" +
+                         "• High-Performance Vector PDF Engine, Reader & Hardware Accelerated Viewport\n" +
+                         "• Native Microsoft Word (.docx), RTF, Markdown, HTML, Plain Text & PSD Reader/Writer\n" +
+                         "• Air-Gapped Offline AI Document Copilot & Clause Intelligence Suite\n" +
+                         "• Enterprise Electronic Signature Studio with PKCS#7 SHA-256 Audit Certification\n" +
                          "• Dedicated Borderless Full-Screen Presentation Mode with Floating Controls\n" +
                          "• Permanent Top Title Bar with 100% Screen-Visible Caption Buttons\n" +
                          "• Dynamic Multi-Theme Color Engine with High-Contrast Tools Menus\n" +
-                         "• DirectX WinRT Vector Rendering Engine with 64MB LRU RAM Ceiling\n" +
-                         "• Dual ABI Android 6.0 Marshmallow (API 23) to API 34+ Compatibility\n\n" +
-                         "Copyright © 2026 Omni Studio Inc. All rights reserved.";
-            MessageBox.Show(msg, "About Omni Studio Enterprise", MessageBoxButton.OK, MessageBoxImage.Information);
+                         "• DirectX WinRT Vector Rendering Engine with 64MB LRU RAM Ceiling\n\n" +
+                         "Copyright © 2026 PSD Software Studio. All rights reserved.";
+            MessageBox.Show(msg, "About PSD PDF Studio & Viewer Enterprise", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

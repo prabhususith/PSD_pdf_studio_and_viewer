@@ -18,13 +18,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "Omni Studio Inc."
-            VALUE "FileDescription", "Omni PDF Desktop Application"
+            VALUE "CompanyName", "PSD Software Studio"
+            VALUE "FileDescription", "PSD PDF Studio & Viewer Application"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "omni_pdf"
-            VALUE "LegalCopyright", "Copyright (C) 2026 Omni Studio Inc."
+            VALUE "LegalCopyright", "Copyright (C) 2026 PSD Software Studio"
             VALUE "OriginalFilename", "omni_pdf.exe"
-            VALUE "ProductName", "Omni PDF Desktop"
+            VALUE "ProductName", "PSD PDF Studio and Viewer"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END

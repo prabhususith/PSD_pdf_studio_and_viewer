@@ -86,9 +86,17 @@ namespace OmniPdf.App.Core
                             ReturnSpecialDirectories = false
                         };
 
-                        foreach (var filePath in Directory.EnumerateFiles(folder, "*.pdf", options))
+                        foreach (var filePath in Directory.EnumerateFiles(folder, "*.*", options))
                         {
                             if (cancellationToken.IsCancellationRequested) break;
+                            string ext = Path.GetExtension(filePath);
+                            if (string.IsNullOrEmpty(ext) || (!ext.Equals(".pdf", StringComparison.OrdinalIgnoreCase) &&
+                                                              !ext.Equals(".docx", StringComparison.OrdinalIgnoreCase) &&
+                                                              !ext.Equals(".psd", StringComparison.OrdinalIgnoreCase) &&
+                                                              !ext.Equals(".rtf", StringComparison.OrdinalIgnoreCase) &&
+                                                              !ext.Equals(".txt", StringComparison.OrdinalIgnoreCase)))
+                                continue;
+
                             if (discoveredFiles.Add(filePath))
                             {
                                 try
@@ -123,7 +131,7 @@ namespace OmniPdf.App.Core
 
                                     if (count % 5 == 0)
                                     {
-                                        onProgress?.Invoke(count, $"Found {count} PDF documents...");
+                                        onProgress?.Invoke(count, $"Found {count} documents (PDF, Word, PSD)...");
                                     }
 
                                     // Cap automatic scan to 250 items to keep UI lighting fast

@@ -6,5 +6,5 @@
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
-    <string name="app_name">Omni PDF</string>
+    <string name="app_name">PSD PDF Studio &amp; Viewer</string>
 </resources>

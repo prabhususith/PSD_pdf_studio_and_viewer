@@ -128,7 +128,7 @@ namespace OmniPdf.App.Core
             };
             rtb.Document.Blocks.Add(titlePara);
 
-            var bodyPara = new Paragraph(new Run("Type your document content here or import from Word (.docx), RTF, PDF, Markdown, or HTML. Omni Word Suite provides real-time formatting, tables, images, and high-performance vector export."))
+            var bodyPara = new Paragraph(new Run("Type your document content here or import from Word (.docx), RTF, PDF, Markdown, PSD, or HTML. PSD PDF Studio provides real-time formatting, tables, images, and high-performance vector export."))
             {
                 FontSize = 13,
                 Foreground = new SolidColorBrush(Color.FromRgb(71, 85, 105)),
@@ -245,7 +245,7 @@ namespace OmniPdf.App.Core
             rtb.Document.PagePadding = new Thickness(margin);
         }
 
-        public static void PrintDocument(RichTextBox rtb, string docTitle = "Omni Word Document")
+        public static void PrintDocument(RichTextBox rtb, string docTitle = "PSD Word Document")
         {
             var printDialog = new PrintDialog();
             if (printDialog.ShowDialog() == true)
@@ -439,7 +439,7 @@ namespace OmniPdf.App.Core
         private static void CreateResumeTemplate(FlowDocument doc)
         {
             doc.Blocks.Add(new Paragraph(new Run("ALEXANDRA CHEN, PMP")) { FontSize = 24, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Color.FromRgb(30, 41, 59)), Margin = new Thickness(0, 0, 0, 2) });
-            doc.Blocks.Add(new Paragraph(new Run("Principal Enterprise Architect & Product Director | alexandra.chen@omnistudio.io | (555) 019-2834 | Seattle, WA")) { FontSize = 10.5, Foreground = new SolidColorBrush(Color.FromRgb(100, 116, 139)), Margin = new Thickness(0, 0, 0, 16) });
+            doc.Blocks.Add(new Paragraph(new Run("Principal Enterprise Architect & Product Director | alexandra.chen@psdsoftware.io | (555) 019-2834 | Seattle, WA")) { FontSize = 10.5, Foreground = new SolidColorBrush(Color.FromRgb(100, 116, 139)), Margin = new Thickness(0, 0, 0, 16) });
 
             doc.Blocks.Add(new Paragraph(new Run("EXECUTIVE SUMMARY")) { FontSize = 13, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Color.FromRgb(2, 132, 199)), Margin = new Thickness(0, 8, 0, 2) });
             doc.Blocks.Add(new Paragraph(new Run("Accomplished engineering leader with 14+ years spearheading desktop software ecosystems, cloud document platforms, and high-throughput vector rendering pipelines across Fortune 500 enterprises.")) { FontSize = 11, Foreground = new SolidColorBrush(Color.FromRgb(51, 65, 85)), Margin = new Thickness(0, 0, 0, 12) });
@@ -452,13 +452,13 @@ namespace OmniPdf.App.Core
         private static void CreateBusinessProposalTemplate(FlowDocument doc)
         {
             doc.Blocks.Add(new Paragraph(new Run("STRATEGIC ENTERPRISE PROPOSAL")) { FontSize = 22, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Color.FromRgb(30, 41, 59)), Margin = new Thickness(0, 0, 0, 4) });
-            doc.Blocks.Add(new Paragraph(new Run("Prepared for: Strategic Enterprise Partner | Prepared by: Omni Studio Enterprise Services")) { FontSize = 11, FontStyle = FontStyles.Italic, Foreground = new SolidColorBrush(Color.FromRgb(100, 116, 139)), Margin = new Thickness(0, 0, 0, 16) });
+            doc.Blocks.Add(new Paragraph(new Run("Prepared for: Strategic Enterprise Partner | Prepared by: PSD Software Studio Enterprise Services")) { FontSize = 11, FontStyle = FontStyles.Italic, Foreground = new SolidColorBrush(Color.FromRgb(100, 116, 139)), Margin = new Thickness(0, 0, 0, 16) });
 
             doc.Blocks.Add(new Paragraph(new Run("1. Statement of Need")) { FontSize = 15, FontWeight = FontWeights.SemiBold, Foreground = new SolidColorBrush(Color.FromRgb(15, 23, 42)), Margin = new Thickness(0, 6, 0, 4) });
             doc.Blocks.Add(new Paragraph(new Run("Enterprise corporate workforces require secure, self-contained document editing and PDF inspection capabilities that run completely offline without transmitting proprietary documents over unauthorized third-party cloud infrastructure.")) { FontSize = 11, Foreground = new SolidColorBrush(Color.FromRgb(51, 65, 85)), Margin = new Thickness(0, 0, 0, 10) });
 
             doc.Blocks.Add(new Paragraph(new Run("2. Proposed Solution")) { FontSize = 15, FontWeight = FontWeights.SemiBold, Foreground = new SolidColorBrush(Color.FromRgb(15, 23, 42)), Margin = new Thickness(0, 6, 0, 4) });
-            doc.Blocks.Add(new Paragraph(new Run("Deployment of Omni PDF Studio Enterprise with centralized IT distribution via MSI/Intune, enforced AES-256 cryptographic sandboxing, and full OpenXML Word (.docx) document authorship.")) { FontSize = 11, Foreground = new SolidColorBrush(Color.FromRgb(51, 65, 85)), Margin = new Thickness(0, 0, 0, 10) });
+            doc.Blocks.Add(new Paragraph(new Run("Deployment of PSD PDF Studio & Viewer Enterprise with centralized IT distribution via MSI/Intune, enforced AES-256 cryptographic sandboxing, and full OpenXML Word (.docx) document authorship.")) { FontSize = 11, Foreground = new SolidColorBrush(Color.FromRgb(51, 65, 85)), Margin = new Thickness(0, 0, 0, 10) });
         }
 
         private static void CreateNdaTemplate(FlowDocument doc)

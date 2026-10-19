@@ -1,7 +1,7 @@
-; Inno Setup 6 Script for Omni PDF Desktop
-#define MyAppName "Omni PDF Desktop"
+; Inno Setup 6 Script for PSD PDF Studio and Viewer
+#define MyAppName "PSD PDF Studio and Viewer"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "Omni Studio Inc."
+#define MyAppPublisher "PSD Software Studio"
 #define MyAppURL "https://github.com/omni-pdf/desktop"
 #define MyAppExeName "omni_pdf.exe"
 
@@ -18,7 +18,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=
 OutputDir=P:\prabhu\projects\git\Omni PDF Desktop\build\dist
-OutputBaseFilename=OmniPdf-Setup
+OutputBaseFilename=PSD-PDF-Studio-Setup
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
@@ -32,17 +32,17 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "pdfassoc"; Description: "Associate Omni PDF with .pdf files"; GroupDescription: "File Associations:"
+Name: "pdfassoc"; Description: "Associate PSD PDF Studio and Viewer with .pdf files"; GroupDescription: "File Associations:"
 
 [Files]
 Source: "P:\prabhu\projects\git\Omni PDF Desktop\build\dist\portable\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Registry]
 ; PDF file association
-Root: HKA; Subkey: "Software\Classes\.pdf\OpenWithProgids"; ValueType: string; ValueName: "OmniPDF.Document"; ValueData: ""; Flags: uninsdeletevalue; Tasks: pdfassoc
-Root: HKA; Subkey: "Software\Classes\OmniPDF.Document"; ValueType: string; ValueName: ""; ValueData: "PDF Document"; Flags: uninsdeletekey; Tasks: pdfassoc
-Root: HKA; Subkey: "Software\Classes\OmniPDF.Document\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Tasks: pdfassoc
-Root: HKA; Subkey: "Software\Classes\OmniPDF.Document\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: pdfassoc
+Root: HKA; Subkey: "Software\Classes\.pdf\OpenWithProgids"; ValueType: string; ValueName: "PSDPDF.Document"; ValueData: ""; Flags: uninsdeletevalue; Tasks: pdfassoc
+Root: HKA; Subkey: "Software\Classes\PSDPDF.Document"; ValueType: string; ValueName: ""; ValueData: "PDF Document"; Flags: uninsdeletekey; Tasks: pdfassoc
+Root: HKA; Subkey: "Software\Classes\PSDPDF.Document\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Tasks: pdfassoc
+Root: HKA; Subkey: "Software\Classes\PSDPDF.Document\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: pdfassoc
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

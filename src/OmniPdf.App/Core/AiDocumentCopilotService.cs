@@ -442,7 +442,7 @@ namespace OmniPdf.App.Core
             }
 
             var sb = new StringBuilder();
-            sb.AppendLine($"**Omni AI Answer:**");
+            sb.AppendLine($"**PSD AI Answer:**");
             sb.AppendLine();
             sb.AppendLine(ranked[0].Text);
             sb.AppendLine();

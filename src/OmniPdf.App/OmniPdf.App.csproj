@@ -13,9 +13,9 @@
     <Version>1.0.0</Version>
     <FileVersion>1.0.0.0</FileVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <Company>Omni Studio Inc.</Company>
-    <Product>Omni PDF Studio</Product>
-    <Description>High-Performance Cross-Platform PDF Engine and Studio Suite</Description>
+    <Company>PSD Software Studio</Company>
+    <Product>PSD PDF Studio and Viewer</Product>
+    <Description>PSD PDF Studio and Viewer - Enterprise Vector PDF Engine, Reader &amp; Office Suite</Description>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
   </PropertyGroup>

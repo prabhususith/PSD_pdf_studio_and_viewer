@@ -1,6 +1,6 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-  <Package Name="Omni PDF Studio Enterprise"
-           Manufacturer="Omni Studio Inc."
+  <Package Name="PSD PDF Studio and Viewer Enterprise"
+           Manufacturer="PSD Software Studio"
            Version="1.0.0.0"
            UpgradeCode="9F8A8B7C-6D5E-4F3A-2B1C-0D9E8F7A6B5C"
            Scope="perMachine">
@@ -10,7 +10,7 @@
     <MediaTemplate EmbedCab="yes" />
 
     <StandardDirectory Id="ProgramFiles6432Folder">
-      <Directory Id="INSTALLFOLDER" Name="Omni PDF Studio" />
+      <Directory Id="INSTALLFOLDER" Name="PSD PDF Studio and Viewer" />
     </StandardDirectory>
 
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
@@ -21,7 +21,7 @@
       </Component>
     </ComponentGroup>
 
-    <Feature Id="MainFeature" Title="Omni PDF Studio Enterprise Core">
+    <Feature Id="MainFeature" Title="PSD PDF Studio and Viewer Enterprise Core">
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
   </Package>

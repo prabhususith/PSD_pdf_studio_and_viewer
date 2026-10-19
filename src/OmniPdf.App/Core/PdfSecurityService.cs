@@ -19,7 +19,7 @@ namespace OmniPdf.App.Core
 
     public class BatesNumberConfig
     {
-        public string Prefix { get; set; } = "OMNI-";
+        public string Prefix { get; set; } = "PSD-";
         public string Suffix { get; set; } = "";
         public int StartNumber { get; set; } = 1;
         public int NumberOfDigits { get; set; } = 6;
@@ -43,7 +43,7 @@ namespace OmniPdf.App.Core
         public string HeaderLeft { get; set; } = "";
         public string HeaderCenter { get; set; } = "";
         public string HeaderRight { get; set; } = "[Date]";
-        public string FooterLeft { get; set; } = "Omni Studio Enterprise";
+        public string FooterLeft { get; set; } = "PSD PDF Studio Enterprise";
         public string FooterCenter { get; set; } = "Page [Page] of [Pages]";
         public string FooterRight { get; set; } = "";
         public double FontSize { get; set; } = 9.0;
@@ -98,7 +98,7 @@ namespace OmniPdf.App.Core
             var sb = new StringBuilder();
             sb.AppendLine("%PDF-1.7");
             sb.AppendLine("%âãÏÓ");
-            sb.AppendLine("% Protected by Omni PDF Enterprise AES-256 Engine");
+            sb.AppendLine("% Protected by PSD PDF Enterprise AES-256 Engine");
             sb.AppendLine("1 0 obj");
             sb.AppendLine(encryptDict.ToString());
             sb.AppendLine("endobj");

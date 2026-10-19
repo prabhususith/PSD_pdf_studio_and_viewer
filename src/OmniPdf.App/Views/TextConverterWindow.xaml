@@ -72,7 +72,7 @@
                     <TextBox x:Name="TxtInputForPdf" Grid.Row="1" Background="#141414" Foreground="#DDDDDD" 
                              BorderBrush="#444444" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
                              FontFamily="Georgia" FontSize="13" Padding="12"
-                             Text="Omni PDF Studio - Standardized Vector Flow Document&#x0a;&#x0a;This document was generated using the dynamic Text-to-PDF compilation engine.&#x0a;It features automatic text wrapping, line spacing calculation, pagination stamps (Page N of M), and custom diagonal watermarking."/>
+                             Text="PSD PDF Studio &amp; Viewer - Standardized Vector Flow Document&#x0a;&#x0a;This document was generated using the dynamic Text-to-PDF compilation engine.&#x0a;It features automatic text wrapping, line spacing calculation, pagination stamps (Page N of M), and custom diagonal watermarking."/>
 
                     <WrapPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
                         <Button x:Name="BtnCompileTextPdf" Content="Compile into Standardized PDF Document" Padding="18,10" Background="#107C41" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnCompileTextPdf_Click"/>

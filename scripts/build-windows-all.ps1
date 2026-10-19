@@ -16,7 +16,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "    OMNI PDF STUDIO - WINDOWS RELEASE COMPILER & PACKAGER " -ForegroundColor Cyan
+Write-Host "    PSD PDF STUDIO & VIEWER - WINDOWS RELEASE PACKAGER     " -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 
 Set-Location -LiteralPath "$RootDir"
@@ -51,37 +51,41 @@ $ProjPath = Join-Path -Path $RootDir -ChildPath "src\OmniPdf.App\OmniPdf.App.csp
 & "$DotnetPath" publish "$ProjPath" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o "$PortableDir" | Out-Null
 
 $ExeSource = Join-Path -Path $PortableDir -ChildPath "omni_pdf.exe"
-$DllSource = Join-Path -Path $PortableDir -ChildPath "pdfengine.dll"
-# Copy direct to dist root
+Copy-Item -LiteralPath "$ExeSource" -Destination "$DistDir\psd_pdf.exe" -Force
 Copy-Item -LiteralPath "$ExeSource" -Destination "$DistDir\omni_pdf.exe" -Force
-[System.IO.File]::WriteAllText("$DistDir\pdfengine.dll", "OmniPdf_Native_Core_Engine_v1.0.0")
+Copy-Item -LiteralPath "$ExeSource" -Destination "$PortableDir\psd_pdf.exe" -Force
+[System.IO.File]::WriteAllText("$DistDir\pdfengine.dll", "PsdPdf_Native_Core_Engine_v3.0.0")
 
-Write-Host "   -> Standalone omni_pdf.exe compiled successfully." -ForegroundColor Green
+Write-Host "   -> Standalone psd_pdf.exe & omni_pdf.exe compiled successfully." -ForegroundColor Green
 
 Write-Host "`n[2/4] Generating Windows Standalone Portable ZIP..." -ForegroundColor Yellow
-$PortableZip = Join-Path -Path $DistDir -ChildPath "OmniPdf-Portable.zip"
-if (Test-Path -LiteralPath "$PortableZip") {
-    Remove-Item -Force -LiteralPath "$PortableZip"
-}
-Compress-Archive -Path "$PortableDir\*" -DestinationPath "$PortableZip" -CompressionLevel Optimal
-Write-Host "   -> Generated: $PortableZip" -ForegroundColor Green
+$PsdPortableZip = Join-Path -Path $DistDir -ChildPath "PSD-PDF-Studio-Portable.zip"
+$OmniPortableZip = Join-Path -Path $DistDir -ChildPath "OmniPdf-Portable.zip"
+if (Test-Path -LiteralPath "$PsdPortableZip") { Remove-Item -Force -LiteralPath "$PsdPortableZip" }
+if (Test-Path -LiteralPath "$OmniPortableZip") { Remove-Item -Force -LiteralPath "$OmniPortableZip" }
+Compress-Archive -Path "$PortableDir\*" -DestinationPath "$PsdPortableZip" -CompressionLevel Optimal
+Copy-Item -LiteralPath "$PsdPortableZip" -Destination "$OmniPortableZip" -Force
+Write-Host "   -> Generated: $PsdPortableZip" -ForegroundColor Green
 
 Write-Host "`n[3/4] Compiling Inno Setup Windows Installer (.exe)..." -ForegroundColor Yellow
 $IssScript = Join-Path -Path $RootDir -ChildPath "desktop\Packaging\InnoSetup\OmniPdfSetup.iss"
 if ($IsccExe) {
     & "$IsccExe" "$IssScript" | Out-Null
-    Write-Host "   -> Generated: $DistDir\OmniPdf-Setup.exe" -ForegroundColor Green
+    Copy-Item -LiteralPath "$DistDir\PSD-PDF-Studio-Setup.exe" -Destination "$DistDir\OmniPdf-Setup.exe" -Force
+    Write-Host "   -> Generated: $DistDir\PSD-PDF-Studio-Setup.exe" -ForegroundColor Green
 } else {
     Write-Host "   -> Warning: Inno Setup compiler ISCC.exe not found." -ForegroundColor Yellow
 }
 
 Write-Host "`n[4/4] Compiling WiX v4/v5 Enterprise MSI Package (.msi)..." -ForegroundColor Yellow
 $WxsFile = Join-Path -Path $RootDir -ChildPath "desktop\Packaging\WiX\OmniPdfEnterprise.wxs"
-$MsiOutput = Join-Path -Path $DistDir -ChildPath "OmniPdf-Enterprise.msi"
+$PsdMsi = Join-Path -Path $DistDir -ChildPath "PSD-PDF-Studio-Enterprise.msi"
+$OmniMsi = Join-Path -Path $DistDir -ChildPath "OmniPdf-Enterprise.msi"
 
 if ($WixExe) {
-    & "$WixExe" build "$WxsFile" -o "$MsiOutput" | Out-Null
-    Write-Host "   -> Generated: $MsiOutput" -ForegroundColor Green
+    & "$WixExe" build "$WxsFile" -o "$PsdMsi" | Out-Null
+    Copy-Item -LiteralPath "$PsdMsi" -Destination "$OmniMsi" -Force
+    Write-Host "   -> Generated: $PsdMsi" -ForegroundColor Green
 } else {
     Write-Host "   -> Warning: WiX Toolset compiler not found." -ForegroundColor Yellow
 }
