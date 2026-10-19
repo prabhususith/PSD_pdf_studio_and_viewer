@@ -250,6 +250,12 @@
 
                     <MenuItem Header="_Tools">
                         <MenuItem Header="📝  _Microsoft Word Document Suite..." Click="NavBtnWord_Click"/>
+                        <MenuItem Header="🛡️  _Security, AES-256 Encryption &amp; Redaction..." Click="BtnSecurity_Click"/>
+                        <MenuItem Header="🔍  _Document Comparison (Diff Tool)..." Click="BtnDiff_Click"/>
+                        <MenuItem Header="⚡  _Batch Document Automation Hub..." Click="BtnBatch_Click"/>
+                        <MenuItem Header="🗜️  _PDF Compression &amp; Optimizer..." Click="BtnOptimizer_Click"/>
+                        <MenuItem Header="💧  _Watermark, Headers &amp; Footers..." Click="BtnWatermark_Click"/>
+                        <Separator/>
                         <MenuItem Header="📑  _Page Matrix Organizer..." Click="BtnPageOrganizer_Click"/>
                         <MenuItem Header="📷  _Camera Document Scanner..." Click="BtnScanner_Click"/>
                         <MenuItem Header="🔄  _Dual-Direction Text Converter &amp; OCR..." Click="BtnTextConverter_Click"/>
@@ -258,9 +264,11 @@
                         <MenuItem Header="✏️  Vector _Pen / Ink Sketch" Click="MenuToolInk_Click"/>
                         <MenuItem Header="🖍️  Text _Highlighter" Click="MenuToolHighlight_Click"/>
                         <MenuItem Header="📌  _Sticky Note Pin Tool" Click="MenuToolSticky_Click"/>
+                        <MenuItem Header="📐  _Engineering Measurement (Distance / Area / Angle)" Click="MenuToolMeasure_Click"/>
                         <MenuItem Header="🧹  _Eraser Tool" Click="MenuToolEraser_Click"/>
                         <Separator/>
                         <MenuItem Header="🔏  _PKCS#7 Digital Signature Stamp" Click="MenuToolSignature_Click"/>
+                        <MenuItem Header="🔊  _Read Aloud (Text-to-Speech)" Click="BtnTtsPlay_Click"/>
                     </MenuItem>
 
                     <MenuItem Header="_Help">
@@ -319,6 +327,10 @@
 
                         <Button x:Name="NavBtnReader" Content="📄  PDF Studio" Style="{StaticResource NavRailBtn}" Click="NavBtnReader_Click"/>
                         <Button x:Name="NavBtnWord" Content="📝  Word Suite (.docx)" Style="{StaticResource NavRailBtn}" Foreground="#38BDF8" Click="NavBtnWord_Click"/>
+                        <Button x:Name="NavBtnSecurity" Content="🛡️  Security &amp; Redact" Style="{StaticResource NavRailBtn}" Click="BtnSecurity_Click"/>
+                        <Button x:Name="NavBtnDiff" Content="🔍  Compare Docs" Style="{StaticResource NavRailBtn}" Click="BtnDiff_Click"/>
+                        <Button x:Name="NavBtnBatch" Content="⚡  Batch Automation" Style="{StaticResource NavRailBtn}" Click="BtnBatch_Click"/>
+                        <Button x:Name="NavBtnOptimizer" Content="🗜️  PDF Optimizer" Style="{StaticResource NavRailBtn}" Click="BtnOptimizer_Click"/>
                         <Button x:Name="NavBtnOrganizer" Content="📑  Page Organizer" Style="{StaticResource NavRailBtn}" Click="NavBtnOrganizer_Click"/>
                         <Button x:Name="NavBtnScanner" Content="📷  Camera &amp; Scan" Style="{StaticResource NavRailBtn}" Click="NavBtnScanner_Click"/>
                         <Button x:Name="NavBtnConverter" Content="🔄  Text &amp; Markdown" Style="{StaticResource NavRailBtn}" Click="NavBtnConverter_Click"/>
@@ -564,8 +576,23 @@
                             <Button x:Name="BtnToolInk" Content="✏️ Sketch" Style="{StaticResource ModernBtn}" Foreground="#F87171" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolHighlight" Content="🖍️ Highlight" Style="{StaticResource ModernBtn}" Foreground="#FACC15" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolSticky" Content="📌 Sticky Note" Style="{StaticResource ModernBtn}" Foreground="#FB923C" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolMeasure" Content="📐 Measure" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolEraser" Content="🧹 Eraser" Style="{StaticResource ModernBtn}" Foreground="#A1A1AA" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolSignature" Content="🔏 Sign" Style="{StaticResource ModernBtn}" Foreground="#60A5FA" Margin="1" Click="BtnTool_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Read Aloud Speech Synthesizer -->
+                            <Button x:Name="BtnTtsPlay" Content="🔊 Read" ToolTip="Read Page Aloud" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTtsPlay_Click"/>
+                            <Button x:Name="BtnTtsPause" Content="⏸" ToolTip="Pause Speech" Style="{StaticResource ModernBtn}" Width="22" Margin="1" Click="BtnTtsPause_Click"/>
+                            <Button x:Name="BtnTtsStop" Content="⏹" ToolTip="Stop Speech" Style="{StaticResource ModernBtn}" Width="22" Margin="1" Click="BtnTtsStop_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Enterprise Operations -->
+                            <Button Content="🛡️ Security" ToolTip="AES-256 &amp; Redaction" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnSecurity_Click"/>
+                            <Button Content="🗜️ Optimize" ToolTip="Compress PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnOptimizer_Click"/>
+                            <Button Content="💧 Watermark" ToolTip="Watermark &amp; Headers" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWatermark_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 

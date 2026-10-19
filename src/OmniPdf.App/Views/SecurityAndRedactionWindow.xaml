@@ -1,0 +1,151 @@
+<Window x:Class="OmniPdf.App.Views.SecurityAndRedactionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Omni Studio Enterprise - Security, Redaction &amp; Bates Stamping"
+        Height="540" Width="720" MinHeight="420" MinWidth="580"
+        WindowStartupLocation="CenterOwner" Background="#121214" Foreground="#ECECEF"
+        FontFamily="Segoe UI, Segoe UI Variable, Arial">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Title Header -->
+            <RowDefinition Height="*"/>    <!-- Tabbed Configuration Control -->
+            <RowDefinition Height="Auto"/> <!-- Footer Action Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Margin="0,0,0,12">
+            <DockPanel>
+                <Border Width="32" Height="32" CornerRadius="6" Background="#991B1B" Margin="0,0,10,0">
+                    <TextBlock Text="🛡️" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Document Security, Legal Redaction &amp; Bates Hub" FontSize="16" FontWeight="Bold" Foreground="#F4F4F5"/>
+                    <TextBlock Text="AES-256 standard encryption, permanent pattern scrubbing, metadata sanitization, and legal Bates stamping" FontSize="11" Foreground="#A1A1AA"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Tabs -->
+        <TabControl Grid.Row="1" Background="#18181B" BorderBrush="#27272A" Margin="0,0,0,12">
+            <!-- TAB 1: ENCRYPTION & PERMISSIONS -->
+            <TabItem Header="🔐 AES-256 Password &amp; Permissions">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14">
+                    <StackPanel>
+                        <TextBlock Text="DOCUMENT PASSWORDS" FontWeight="Bold" FontSize="10.5" Foreground="#71717A" Margin="0,0,0,8"/>
+                        
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="User Open Password:" VerticalAlignment="Center" FontSize="11" Foreground="#E4E4E7"/>
+                            <PasswordBox Grid.Column="1" x:Name="TxtUserPass" Background="#121214" Foreground="White" BorderBrush="#3F3F46" Padding="6,3"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Owner/Perms Password:" VerticalAlignment="Center" FontSize="11" Foreground="#E4E4E7"/>
+                            <PasswordBox Grid.Column="1" x:Name="TxtOwnerPass" Background="#121214" Foreground="White" BorderBrush="#3F3F46" Padding="6,3"/>
+                        </Grid>
+
+                        <TextBlock Text="DOCUMENT PERMISSIONS RESTRICTIONS" FontWeight="Bold" FontSize="10.5" Foreground="#71717A" Margin="0,0,0,8"/>
+                        
+                        <Border Background="#121214" BorderBrush="#27272A" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,14">
+                            <StackPanel>
+                                <CheckBox x:Name="ChkAllowPrint" Content="Allow Document Printing (High Resolution)" IsChecked="True" Foreground="White" FontSize="11" Margin="0,3"/>
+                                <CheckBox x:Name="ChkAllowCopy" Content="Allow Content Copying &amp; Text Extraction" IsChecked="False" Foreground="White" FontSize="11" Margin="0,3"/>
+                                <CheckBox x:Name="ChkAllowModify" Content="Allow Document Modifications &amp; Page Extraction" IsChecked="False" Foreground="White" FontSize="11" Margin="0,3"/>
+                                <CheckBox x:Name="ChkAllowAnnotate" Content="Allow Adding Annotations &amp; Form Fill-in" IsChecked="True" Foreground="White" FontSize="11" Margin="0,3"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Content="🔒 Apply Encryption &amp; Save As Protected PDF..." Background="#0284C7" Foreground="White" BorderBrush="#38BDF8" Padding="12,6" FontWeight="Bold" FontSize="11" HorizontalAlignment="Left" Click="BtnApplyEncryption_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- TAB 2: PERMANENT REDACTION & SANITIZATION -->
+            <TabItem Header="✂️ Redaction &amp; Privacy Sanitization">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14">
+                    <StackPanel>
+                        <TextBlock Text="AUTOMATIC PATTERN SCRUBBING" FontWeight="Bold" FontSize="10.5" Foreground="#71717A" Margin="0,0,0,8"/>
+                        <TextBlock Text="Permanent removal replaces underlying text in content streams with black censor bars so data cannot be recovered:" FontSize="11" Foreground="#A1A1AA" Margin="0,0,0,10"/>
+
+                        <Border Background="#121214" BorderBrush="#27272A" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,14">
+                            <StackPanel>
+                                <CheckBox x:Name="ChkRedactSsn" Content="Scrub Social Security Numbers (SSN: xxx-xx-xxxx)" IsChecked="True" Foreground="White" FontSize="11" Margin="0,3"/>
+                                <CheckBox x:Name="ChkRedactCreditCard" Content="Scrub Credit Card Numbers (16-digit PANs)" IsChecked="True" Foreground="White" FontSize="11" Margin="0,3"/>
+                                <CheckBox x:Name="ChkRedactEmail" Content="Scrub Email Addresses (PII Contact Info)" IsChecked="True" Foreground="White" FontSize="11" Margin="0,3"/>
+                                <CheckBox x:Name="ChkSanitizeMetadata" Content="Sanitize Document Metadata (Remove Author, Producer, History, Keywords)" IsChecked="True" Foreground="#38BDF8" FontWeight="SemiBold" FontSize="11" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Content="✂️ Scrub &amp; Redact Document Layer Permanently" Background="#991B1B" Foreground="White" BorderBrush="#DC2626" Padding="12,6" FontWeight="Bold" FontSize="11" HorizontalAlignment="Left" Click="BtnApplyRedaction_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- TAB 3: BATES LEGAL NUMBERING -->
+            <TabItem Header="🔢 Bates Legal Numbering">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14">
+                    <StackPanel>
+                        <TextBlock Text="BATES STAMP NUMBERING FORMAT" FontWeight="Bold" FontSize="10.5" Foreground="#71717A" Margin="0,0,0,8"/>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Prefix String:" VerticalAlignment="Center" FontSize="11" Foreground="#E4E4E7"/>
+                            <TextBox Grid.Column="1" x:Name="TxtBatesPrefix" Text="LEGAL-DOC-" Background="#121214" Foreground="White" BorderBrush="#3F3F46" Padding="5,2" FontSize="11"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Start Number:" VerticalAlignment="Center" FontSize="11" Foreground="#E4E4E7"/>
+                            <TextBox Grid.Column="1" x:Name="TxtBatesStart" Text="1001" Background="#121214" Foreground="White" BorderBrush="#3F3F46" Padding="5,2" FontSize="11"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Number of Digits:" VerticalAlignment="Center" FontSize="11" Foreground="#E4E4E7"/>
+                            <TextBox Grid.Column="1" x:Name="TxtBatesDigits" Text="6" Background="#121214" Foreground="White" BorderBrush="#3F3F46" Padding="5,2" FontSize="11"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Stamp Position:" VerticalAlignment="Center" FontSize="11" Foreground="#E4E4E7"/>
+                            <ComboBox Grid.Column="1" x:Name="CmbBatesPosition" Background="#27272A" Foreground="White" BorderBrush="#3F3F46" FontSize="11" SelectedIndex="0">
+                                <ComboBoxItem Content="Bottom Right"/>
+                                <ComboBoxItem Content="Bottom Center"/>
+                                <ComboBoxItem Content="Top Right"/>
+                                <ComboBoxItem Content="Top Left"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <Button Content="🔢 Apply Bates Numbering to All Pages" Background="#0284C7" Foreground="White" BorderBrush="#38BDF8" Padding="12,6" FontWeight="Bold" FontSize="11" HorizontalAlignment="Left" Click="BtnApplyBates_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <!-- Footer -->
+        <DockPanel Grid.Row="2">
+            <TextBlock x:Name="TxtSecurityStatus" Text="Security engine ready" VerticalAlignment="Center" FontSize="11" Foreground="#A1A1AA"/>
+            <Button Content="Close" DockPanel.Dock="Right" HorizontalAlignment="Right" Background="#27272A" Foreground="White" BorderBrush="#3F3F46" Padding="16,5" FontWeight="SemiBold" FontSize="11" Click="BtnClose_Click"/>
+        </DockPanel>
+    </Grid>
+</Window>

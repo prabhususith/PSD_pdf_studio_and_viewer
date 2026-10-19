@@ -37,10 +37,13 @@ namespace OmniPdf.App
 
         private string? _currentWordFilePath = null;
         private bool _isWordModified = false;
+        private readonly SpeechReaderService _speechService = new();
+        private Point? _measureStartPoint = null;
 
         public MainWindow()
         {
             InitializeComponent();
+            Closing += (s, e) => _speechService.Dispose();
 
             // Responsive window sizing adapted dynamically to screen resolution
             try
@@ -1005,6 +1008,7 @@ namespace OmniPdf.App
                 else if (tag.Contains("Sketch") || tag.Contains("Ink")) SetTool("Ink");
                 else if (tag.Contains("Highlight")) SetTool("Highlight");
                 else if (tag.Contains("Sticky")) SetTool("Sticky");
+                else if (tag.Contains("Measure")) SetTool("Measure");
                 else if (tag.Contains("Eraser")) SetTool("Eraser");
                 else if (tag.Contains("Sign")) StampDigitalSignature();
             }
@@ -1014,12 +1018,14 @@ namespace OmniPdf.App
         private void MenuToolInk_Click(object sender, RoutedEventArgs e) => SetTool("Ink");
         private void MenuToolHighlight_Click(object sender, RoutedEventArgs e) => SetTool("Highlight");
         private void MenuToolSticky_Click(object sender, RoutedEventArgs e) => SetTool("Sticky");
+        private void MenuToolMeasure_Click(object sender, RoutedEventArgs e) => SetTool("Measure");
         private void MenuToolEraser_Click(object sender, RoutedEventArgs e) => SetTool("Eraser");
         private void MenuToolSignature_Click(object sender, RoutedEventArgs e) => StampDigitalSignature();
 
         private void SetTool(string toolName)
         {
             _activeTool = toolName;
+            _measureStartPoint = null;
             UpdateStatus();
 
             if (PageInkCanvas == null) return;
@@ -1071,6 +1077,28 @@ namespace OmniPdf.App
             {
                 Point pos = e.GetPosition(NotesCanvas);
                 CreateStickyNote(pos.X, pos.Y, "Review note: ");
+                e.Handled = true;
+            }
+            else if (_activeTool == "Measure")
+            {
+                Point pos = e.GetPosition(PageContentGrid);
+                if (_measureStartPoint == null)
+                {
+                    _measureStartPoint = pos;
+                    if (StatusToolIndicator != null) StatusToolIndicator.Text = $"Measure: Start at ({pos.X:0}, {pos.Y:0}). Click endpoint.";
+                }
+                else
+                {
+                    var scale = new MeasurementScale { UnitName = "in", RealWorldUnitsPerInch = 1.0 };
+                    var (dist, formattedDist) = EngineeringMeasurementService.MeasureDistance(_measureStartPoint.Value, pos, scale);
+                    var (area, formattedArea) = EngineeringMeasurementService.MeasureRectangleArea(_measureStartPoint.Value, pos, scale);
+                    double angle = EngineeringMeasurementService.MeasureAngle(_measureStartPoint.Value, pos);
+
+                    string summary = $"Measured: {formattedDist} | Area: {formattedArea} | Angle: {angle:0.1}°";
+                    if (StatusToolIndicator != null) StatusToolIndicator.Text = summary;
+                    CreateStickyNote(pos.X, pos.Y, $"📐 Measurement:\nDistance: {formattedDist}\nArea: {formattedArea}\nAngle: {angle:0.1}°");
+                    _measureStartPoint = null;
+                }
                 e.Handled = true;
             }
         }
@@ -1522,6 +1550,76 @@ namespace OmniPdf.App
             {
                 _documents.Add(win.GeneratedDocument);
                 SelectDocument(win.GeneratedDocument);
+            }
+        }
+
+        private void BtnTtsPlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activeDoc != null && _activeDoc.Pages.Count > 0)
+            {
+                int idx = Math.Clamp(_activeDoc.CurrentPageIndex, 0, _activeDoc.Pages.Count - 1);
+                string text = _activeDoc.Pages[idx].ContentText;
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    _speechService.SpeakText(text);
+                }
+            }
+            else if (ViewWordEditor?.Visibility == Visibility.Visible)
+            {
+                var range = new TextRange(RtbWordEditor.Document.ContentStart, RtbWordEditor.Document.ContentEnd);
+                if (!string.IsNullOrWhiteSpace(range.Text))
+                {
+                    _speechService.SpeakText(range.Text);
+                }
+            }
+        }
+
+        private void BtnTtsPause_Click(object sender, RoutedEventArgs e)
+        {
+            _speechService.Pause();
+        }
+
+        private void BtnTtsStop_Click(object sender, RoutedEventArgs e)
+        {
+            _speechService.Stop();
+        }
+
+        private void BtnSecurity_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activeDoc == null) return;
+            var win = new SecurityAndRedactionWindow(_activeDoc) { Owner = this };
+            if (win.ShowDialog() == true)
+            {
+                DisplayActivePage();
+            }
+        }
+
+        private void BtnDiff_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new DocumentDiffWindow(_activeDoc?.FilePath) { Owner = this };
+            win.ShowDialog();
+        }
+
+        private void BtnBatch_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new BatchProcessingWindow { Owner = this };
+            win.ShowDialog();
+        }
+
+        private void BtnOptimizer_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activeDoc == null) return;
+            var win = new PdfOptimizerWindow(_activeDoc) { Owner = this };
+            win.ShowDialog();
+        }
+
+        private void BtnWatermark_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activeDoc == null) return;
+            var win = new WatermarkAndHeaderWindow(_activeDoc) { Owner = this };
+            if (win.ShowDialog() == true)
+            {
+                DisplayActivePage();
             }
         }
 

@@ -42,6 +42,9 @@ namespace OmniPdf.App.Core
         public int CurrentPageIndex { get; set; } = 0;
         public double ZoomLevel { get; set; } = 1.0;
         public bool IsModified { get; set; } = false;
+        public string Author { get; set; } = "";
+        public string Subject { get; set; } = "";
+        public string Keywords { get; set; } = "";
 
         public static PdfDocumentModel CreateDefault(string title, int pageCount = 3)
         {
@@ -369,7 +372,8 @@ namespace OmniPdf.App.Core
         public int CapacityBytes => _maxSizeBytes;
     }
 
-    public static class PdfSecurityService
+    // Consolidated into Core/PdfSecurityService.cs
+    public static class LegacyPdfSecurityService
     {
         public static string ComputeSha256Hex(byte[] data)
         {
