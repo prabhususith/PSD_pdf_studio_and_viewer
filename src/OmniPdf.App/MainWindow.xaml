@@ -1,16 +1,37 @@
 <Window x:Class="OmniPdf.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Omni PDF Studio - High-Performance Vector PDF Engine &amp; Studio Suite"
-        Height="630" Width="1140" MinHeight="450" MinWidth="750"
+        Title="Omni PDF Studio &amp; Word Suite - Enterprise Edition"
+        Height="590" Width="1140" MinHeight="420" MinWidth="750"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResizeWithGrip"
-        Background="#0F0F12" Foreground="#ECECEF"
+        Background="{DynamicResource WindowBgBrush}" 
+        Foreground="{DynamicResource WindowFgBrush}"
         FontFamily="Segoe UI, Segoe UI Variable, Arial"
         PreviewKeyDown="Window_PreviewKeyDown">
 
     <Window.Resources>
+        <!-- Dynamic Theme Brushes (Instantiated with default Fluent Dark values) -->
+        <SolidColorBrush x:Key="WindowBgBrush" Color="#0F0F12"/>
+        <SolidColorBrush x:Key="WindowFgBrush" Color="#ECECEF"/>
+        <SolidColorBrush x:Key="HeaderBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="HeaderFgBrush" Color="#F4F4F5"/>
+        <SolidColorBrush x:Key="MenuBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="MenuFgBrush" Color="#ECECEF"/>
+        <SolidColorBrush x:Key="SubmenuBgBrush" Color="#27272A"/>
+        <SolidColorBrush x:Key="SubmenuFgBrush" Color="#F4F4F5"/>
+        <SolidColorBrush x:Key="ItemHoverBgBrush" Color="#3F3F46"/>
+        <SolidColorBrush x:Key="NavRailBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="CanvasBgBrush" Color="#09090B"/>
+        <SolidColorBrush x:Key="CardBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="BorderBrushDefault" Color="#27272A"/>
+        <SolidColorBrush x:Key="BorderBrushLight" Color="#3F3F46"/>
+        <SolidColorBrush x:Key="AccentBrushDefault" Color="#0284C7"/>
+        <SolidColorBrush x:Key="AccentHoverBrush" Color="#0369A1"/>
+        <SolidColorBrush x:Key="StatusBarBgBrush" Color="#0284C7"/>
+        <SolidColorBrush x:Key="StatusBarFgBrush" Color="#FFFFFF"/>
+
         <!-- Modern ScrollBar Style -->
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="Transparent"/>
@@ -20,12 +41,12 @@
         <!-- Modern Button Style -->
         <Style x:Key="ModernBtn" TargetType="Button">
             <Setter Property="Background" Value="#27272A"/>
-            <Setter Property="Foreground" Value="#F4F4F5"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowFgBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#3F3F46"/>
-            <Setter Property="Padding" Value="9,5"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushLight}"/>
+            <Setter Property="Padding" Value="8,4"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="11"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -33,13 +54,12 @@
                         <Border x:Name="border" Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="5" Padding="{TemplateBinding Padding}">
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#3F3F46"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#52525B"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource ItemHoverBgBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#18181B"/>
@@ -52,7 +72,7 @@
 
         <!-- Primary Accent Button Style -->
         <Style x:Key="AccentBtn" TargetType="Button" BasedOn="{StaticResource ModernBtn}">
-            <Setter Property="Background" Value="#0284C7"/>
+            <Setter Property="Background" Value="{DynamicResource AccentBrushDefault}"/>
             <Setter Property="BorderBrush" Value="#38BDF8"/>
             <Setter Property="Foreground" Value="#FFFFFF"/>
             <Setter Property="Template">
@@ -61,15 +81,12 @@
                         <Border x:Name="border" Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="5" Padding="{TemplateBinding Padding}">
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#0369A1"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#075985"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -80,9 +97,9 @@
         <!-- Nav Rail Button Style -->
         <Style x:Key="NavRailBtn" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#A1A1AA"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowFgBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Padding" Value="10,7"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="12"/>
@@ -96,11 +113,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#27272A"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#18181B"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource ItemHoverBgBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -108,213 +121,264 @@
             </Setter>
         </Style>
 
-        <!-- Native Menu Styles -->
+        <!-- Native Menu & MenuItem High-Contrast Dynamic Styles -->
         <Style TargetType="Menu">
-            <Setter Property="Background" Value="#18181B"/>
-            <Setter Property="Foreground" Value="#ECECEF"/>
-            <Setter Property="BorderBrush" Value="#27272A"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource MenuFgBrush}"/>
         </Style>
 
         <Style TargetType="MenuItem">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#ECECEF"/>
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{DynamicResource MenuFgBrush}"/>
+            <Setter Property="Padding" Value="7,3"/>
+            <Setter Property="FontSize" Value="11.5"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+
+        <Style TargetType="Separator">
+            <Setter Property="Background" Value="{DynamicResource BorderBrushLight}"/>
+            <Setter Property="Margin" Value="2,2"/>
         </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <!-- Native Windows Menu Bar -->
-            <RowDefinition Height="*"/>    <!-- Main Application Canvas -->
+            <RowDefinition Height="Auto"/> <!-- Dedicated Top-Level App Header Bar with Native Menu + Window Caption Buttons -->
+            <RowDefinition Height="*"/>    <!-- Master Content Area: Left Rail + Workspaces -->
         </Grid.RowDefinitions>
 
         <!-- ============================================================== -->
-        <!-- 0. NATIVE WINDOWS MENU BAR (File, Edit, View, Tools, Help)     -->
+        <!-- 0. DEDICATED TOP-LEVEL APP HEADER BAR                          -->
+        <!-- ALWAYS VISIBLE: Logo, Menu Bar, Themes, Window Controls        -->
         <!-- ============================================================== -->
-        <Menu Grid.Row="0" x:Name="AppMenuBar" Background="#18181B" Foreground="#ECECEF" 
-              BorderBrush="#27272A" BorderThickness="0,0,0,1" Padding="6,2">
-            
-            <MenuItem Header="_File">
-                <MenuItem Header="_Open PDF Document..." InputGestureText="Ctrl+O" Click="BtnOpenFile_Click"/>
-                <MenuItem Header="_New Blank Document" InputGestureText="Ctrl+N" Click="BtnNewTab_Click"/>
-                <MenuItem Header="_Save Incremental" InputGestureText="Ctrl+S" Click="BtnSaveFile_Click"/>
-                <Separator/>
-                <MenuItem Header="_Rescan Device Library" Click="BtnRescanLibrary_Click"/>
-                <Separator/>
-                <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="BtnWinClose_Click"/>
-            </MenuItem>
+        <Border Grid.Row="0" x:Name="TopHeaderBar" Background="{DynamicResource HeaderBgBrush}" 
+                BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" 
+                Padding="6,3" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <DockPanel LastChildFill="True">
+                <!-- Right: Permanent In-App Window Caption Controls (Minimize, Maximize/Restore, Close) -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,2,0">
+                    <!-- Quick Theme Selector in Header -->
+                    <TextBlock Text="🎨" VerticalAlignment="Center" Margin="0,0,3,0" FontSize="11"/>
+                    <ComboBox x:Name="CmbTheme" Width="110" Height="22" VerticalAlignment="Center" Margin="0,0,8,0"
+                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}"
+                              FontSize="10" SelectionChanged="CmbTheme_SelectionChanged">
+                        <ComboBoxItem Content="Fluent Dark"/>
+                        <ComboBoxItem Content="Modern Light"/>
+                        <ComboBoxItem Content="Glass Theme"/>
+                        <ComboBoxItem Content="Word Classic Blue"/>
+                        <ComboBoxItem Content="OLED Black"/>
+                        <ComboBoxItem Content="Sepia Reading"/>
+                        <ComboBoxItem Content="Cyberpunk Neon"/>
+                        <ComboBoxItem Content="Emerald Forest"/>
+                        <ComboBoxItem Content="Custom Theme"/>
+                    </ComboBox>
 
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Find in Document..." InputGestureText="Ctrl+F" Click="BtnToggleSearch_Click"/>
-                <Separator/>
-                <MenuItem Header="_Clear Ink Sketches" Click="BtnClearInk_Click"/>
-                <MenuItem Header="_Clear Sticky Notes" Click="BtnClearNotes_Click"/>
-            </MenuItem>
+                    <Separator Width="1" Height="16" Background="{DynamicResource BorderBrushLight}" Margin="0,0,6,0"/>
 
-            <MenuItem Header="_View">
-                <MenuItem Header="⛶  _Full Screen Mode" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
-                <MenuItem Header="◀  Toggle _Navigation Rail" InputGestureText="F4" Click="BtnToggleNavRail_Click"/>
-                <MenuItem Header="📑  Toggle _Thumbnails Panel" InputGestureText="Ctrl+T" Click="BtnToggleThumbnails_Click"/>
-                <Separator/>
-                <MenuItem Header="Zoom _In (+15%)" InputGestureText="Ctrl++" Click="BtnZoomIn_Click"/>
-                <MenuItem Header="Zoom _Out (-15%)" InputGestureText="Ctrl+-" Click="BtnZoomOut_Click"/>
-                <MenuItem Header="_Actual Size (100%)" Click="BtnZoomActual_Click"/>
-                <MenuItem Header="Fit to _Width" Click="BtnFitWidth_Click"/>
-                <MenuItem Header="Fit to _Page" Click="BtnFitPage_Click"/>
-                <Separator/>
-                <MenuItem Header="Rotate _Clockwise (90°)" InputGestureText="Ctrl+R" Click="BtnRotatePage_Click"/>
-                <MenuItem Header="Rotate Counter-Clockwise (270°)" Click="BtnRotateCounterPage_Click"/>
-                <Separator/>
-                <MenuItem Header="🎨  _Themes &amp; Skins">
-                    <MenuItem Header="Fluent Dark (Default)" Tag="Fluent Dark" Click="MenuTheme_Click"/>
-                    <MenuItem Header="Modern Light (Paper White)" Tag="Modern Light" Click="MenuTheme_Click"/>
-                    <MenuItem Header="OLED Black (Pitch Black)" Tag="OLED Black" Click="MenuTheme_Click"/>
-                    <MenuItem Header="Sepia Reading (Eye Care)" Tag="Sepia Reading" Click="MenuTheme_Click"/>
-                    <MenuItem Header="Windows 11 Mica" Tag="Windows Mica" Click="MenuTheme_Click"/>
-                </MenuItem>
-            </MenuItem>
+                    <!-- Permanent Caption Buttons -->
+                    <Button Content="🗕" Width="28" Height="22" ToolTip="Minimize Window" 
+                            Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Padding="0"
+                            Click="BtnWinMinimize_Click"/>
+                    <Button Content="🗖" Width="28" Height="22" ToolTip="Maximize / Restore" 
+                            Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Padding="0"
+                            Click="BtnWinMaximize_Click"/>
+                    <Button Content="✕" Width="28" Height="22" ToolTip="Close Application" 
+                            Background="#991B1B" Foreground="White" BorderBrush="#DC2626" 
+                            Style="{StaticResource ModernBtn}" Padding="0"
+                            Click="BtnWinClose_Click"/>
+                </StackPanel>
 
-            <MenuItem Header="_Tools">
-                <MenuItem Header="📑  _Page Matrix Organizer..." Click="BtnPageOrganizer_Click"/>
-                <MenuItem Header="📷  _Camera Document Scanner..." Click="BtnScanner_Click"/>
-                <MenuItem Header="🔄  _Dual-Direction Text Converter &amp; OCR..." Click="BtnTextConverter_Click"/>
-                <Separator/>
-                <MenuItem Header="👆  _Pointer Tool" Click="MenuToolPointer_Click"/>
-                <MenuItem Header="✏️  Vector _Pen / Ink Sketch" Click="MenuToolInk_Click"/>
-                <MenuItem Header="🖍️  Text _Highlighter" Click="MenuToolHighlight_Click"/>
-                <MenuItem Header="📌  _Sticky Note Pin Tool" Click="MenuToolSticky_Click"/>
-                <MenuItem Header="🧹  _Eraser Tool" Click="MenuToolEraser_Click"/>
-                <Separator/>
-                <MenuItem Header="🔏  _PKCS#7 Digital Signature Stamp" Click="MenuToolSignature_Click"/>
-            </MenuItem>
+                <!-- Left: Application Branding Logo & Title -->
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="2,0,10,0">
+                    <Border Width="22" Height="22" CornerRadius="4" Background="{DynamicResource AccentBrushDefault}" Margin="0,0,6,0">
+                        <TextBlock Text="Ω" FontWeight="Bold" FontSize="13" Foreground="White" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Omni PDF &amp; Word Suite" FontWeight="Bold" FontSize="11.5" 
+                               Foreground="{DynamicResource HeaderFgBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
 
-            <MenuItem Header="_Help">
-                <MenuItem Header="_Keyboard Shortcuts" Click="BtnShortcuts_Click"/>
-                <Separator/>
-                <MenuItem Header="_About Omni PDF Studio Enterprise" Click="BtnAbout_Click"/>
-            </MenuItem>
-        </Menu>
+                <!-- Center: Native Windows Menu (File, Edit, View, Tools, Help) -->
+                <Menu x:Name="AppMenuBar" VerticalAlignment="Center" Margin="0">
+                    <MenuItem Header="_File">
+                        <MenuItem Header="_Open Document (PDF / DOCX / RTF / TXT)..." InputGestureText="Ctrl+O" Click="BtnOpenFile_Click"/>
+                        <MenuItem Header="New _PDF Document" InputGestureText="Ctrl+Shift+N" Click="BtnNewPdfTab_Click"/>
+                        <MenuItem Header="New _Word Document (.docx)" InputGestureText="Ctrl+N" Click="BtnNewWordTab_Click"/>
+                        <Separator/>
+                        <MenuItem Header="_Save Incremental" InputGestureText="Ctrl+S" Click="BtnSaveFile_Click"/>
+                        <MenuItem Header="Save _As..." InputGestureText="Ctrl+Shift+S" Click="BtnSaveAsFile_Click"/>
+                        <MenuItem Header="_Print Document..." InputGestureText="Ctrl+P" Click="BtnPrint_Click"/>
+                        <Separator/>
+                        <MenuItem Header="_Rescan Local Library" Click="BtnRescanLibrary_Click"/>
+                        <Separator/>
+                        <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="BtnWinClose_Click"/>
+                    </MenuItem>
+
+                    <MenuItem Header="_Edit">
+                        <MenuItem Header="_Find in Document..." InputGestureText="Ctrl+F" Click="BtnToggleSearch_Click"/>
+                        <Separator/>
+                        <MenuItem Header="_Clear Ink Sketches" Click="BtnClearInk_Click"/>
+                        <MenuItem Header="_Clear Sticky Notes" Click="BtnClearNotes_Click"/>
+                    </MenuItem>
+
+                    <MenuItem Header="_View">
+                        <MenuItem Header="⛶  _Full Screen Presentation Mode" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
+                        <MenuItem Header="◀  Toggle _Navigation Rail" InputGestureText="F4" Click="BtnToggleNavRail_Click"/>
+                        <MenuItem Header="📑  Toggle _Thumbnails Panel" InputGestureText="Ctrl+T" Click="BtnToggleThumbnails_Click"/>
+                        <Separator/>
+                        <MenuItem Header="Zoom _In (+15%)" InputGestureText="Ctrl++" Click="BtnZoomIn_Click"/>
+                        <MenuItem Header="Zoom _Out (-15%)" InputGestureText="Ctrl+-" Click="BtnZoomOut_Click"/>
+                        <MenuItem Header="_Actual Size (100%)" InputGestureText="Ctrl+0" Click="BtnZoomActual_Click"/>
+                        <MenuItem Header="Fit to _Width" Click="BtnFitWidth_Click"/>
+                        <MenuItem Header="Fit to _Page" Click="BtnFitPage_Click"/>
+                        <Separator/>
+                        <MenuItem Header="Rotate _Clockwise (90°)" InputGestureText="Ctrl+R" Click="BtnRotatePage_Click"/>
+                        <MenuItem Header="Rotate Counter-Clockwise (270°)" Click="BtnRotateCounterPage_Click"/>
+                        <Separator/>
+                        <MenuItem Header="🎨  _Themes &amp; Skins">
+                            <MenuItem Header="Fluent Dark (Default)" Tag="Fluent Dark" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Modern Light (Paper White)" Tag="Modern Light" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Glass Theme (Frosted Acrylic)" Tag="Glass Theme" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Word Classic Blue (Office 365)" Tag="Word Classic Blue" Click="MenuTheme_Click"/>
+                            <MenuItem Header="OLED Black (Pitch Black)" Tag="OLED Black" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Sepia Reading (Eye Care)" Tag="Sepia Reading" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Cyberpunk Neon" Tag="Cyberpunk Neon" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Emerald Forest" Tag="Emerald Forest" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Custom Theme..." Tag="Custom Theme" Click="MenuTheme_Click"/>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <MenuItem Header="_Tools">
+                        <MenuItem Header="📝  _Microsoft Word Document Suite..." Click="NavBtnWord_Click"/>
+                        <MenuItem Header="📑  _Page Matrix Organizer..." Click="BtnPageOrganizer_Click"/>
+                        <MenuItem Header="📷  _Camera Document Scanner..." Click="BtnScanner_Click"/>
+                        <MenuItem Header="🔄  _Dual-Direction Text Converter &amp; OCR..." Click="BtnTextConverter_Click"/>
+                        <Separator/>
+                        <MenuItem Header="👆  _Pointer Tool" Click="MenuToolPointer_Click"/>
+                        <MenuItem Header="✏️  Vector _Pen / Ink Sketch" Click="MenuToolInk_Click"/>
+                        <MenuItem Header="🖍️  Text _Highlighter" Click="MenuToolHighlight_Click"/>
+                        <MenuItem Header="📌  _Sticky Note Pin Tool" Click="MenuToolSticky_Click"/>
+                        <MenuItem Header="🧹  _Eraser Tool" Click="MenuToolEraser_Click"/>
+                        <Separator/>
+                        <MenuItem Header="🔏  _PKCS#7 Digital Signature Stamp" Click="MenuToolSignature_Click"/>
+                    </MenuItem>
+
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="_Keyboard Shortcuts" Click="BtnShortcuts_Click"/>
+                        <Separator/>
+                        <MenuItem Header="_About Omni Studio Enterprise" Click="BtnAbout_Click"/>
+                    </MenuItem>
+                </Menu>
+            </DockPanel>
+        </Border>
 
         <!-- ============================================================== -->
-        <!-- MASTER MAIN GRID: Left Rail + Dynamic Views                     -->
+        <!-- 1. MASTER WORKSPACE GRID: Left Nav Rail + Dynamic View Stages   -->
         <!-- ============================================================== -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="ColNavRail" Width="200"/> <!-- Collapsible Left Rail -->
-                <ColumnDefinition Width="*"/>                       <!-- Main Dynamic Content Stage -->
+                <ColumnDefinition x:Name="ColNavRail" Width="190"/> <!-- Collapsible Left Rail -->
+                <ColumnDefinition Width="*"/>                       <!-- Main Dynamic View Canvas -->
             </Grid.ColumnDefinitions>
 
             <!-- ============================================================== -->
-            <!-- 1. LEFT NAVIGATION RAIL (Modern Windows 11 Fluent 2 Design)     -->
+            <!-- 1.1 LEFT NAVIGATION RAIL (Fluent 2 Design)                     -->
             <!-- ============================================================== -->
-            <Border x:Name="BorderNavRail" Grid.Column="0" Background="#18181B" BorderBrush="#27272A" BorderThickness="0,0,1,0" Padding="10,12">
+            <Border x:Name="BorderNavRail" Grid.Column="0" Background="{DynamicResource NavRailBgBrush}" 
+                    BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,1,0" Padding="8,10">
                 <DockPanel>
-                    <!-- Brand / Logo Header -->
-                    <StackPanel DockPanel.Dock="Top" Margin="2,0,2,14">
+                    <!-- Brand / Workspace Switcher Header -->
+                    <StackPanel DockPanel.Dock="Top" Margin="2,0,2,10">
                         <DockPanel>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Width="30" Height="30" CornerRadius="6" Background="#0284C7" Margin="0,0,8,0">
-                                    <TextBlock Text="P" FontWeight="Bold" FontSize="18" Foreground="White" 
-                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="OMNI PDF" FontWeight="Bold" FontSize="14" Foreground="#F4F4F5"/>
-                                    <TextBlock Text="STUDIO PRO" FontSize="9" FontWeight="SemiBold" Foreground="#38BDF8"/>
-                                </StackPanel>
-                            </StackPanel>
-                            <Button Content="◀" Width="24" Height="24" DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                    ToolTip="Collapse Rail (F4)" Style="{StaticResource ModernBtn}" Padding="0" Click="BtnToggleNavRail_Click"/>
+                            <TextBlock Text="WORKSPACES" FontSize="9" FontWeight="Bold" Foreground="#71717A" VerticalAlignment="Center"/>
+                            <Button Content="◀" Width="20" Height="20" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                    ToolTip="Collapse Rail (F4)" Style="{StaticResource ModernBtn}" Padding="0" 
+                                    Click="BtnToggleNavRail_Click"/>
                         </DockPanel>
-                        <Border Height="1" Background="#27272A" Margin="0,12,0,0"/>
+                        <Border Height="1" Background="{DynamicResource BorderBrushDefault}" Margin="0,8,0,0"/>
                     </StackPanel>
 
                     <!-- System Telemetry Footer -->
-                    <StackPanel DockPanel.Dock="Bottom" Margin="2,6,2,0">
-                        <Border Height="1" Background="#27272A" Margin="0,0,0,8"/>
-                        <TextBlock Text="CACHE &amp; ENGINE" FontSize="9" FontWeight="Bold" Foreground="#71717A" Margin="0,0,0,3"/>
-                        <TextBlock x:Name="StatusLru" Text="LRU: 0.0 MB / 64 MB Cap" FontSize="10" Foreground="#38BDF8" Margin="0,0,0,2"/>
-                        <TextBlock Text="DirectX WinRT Vector: Active" FontSize="10" Foreground="#4ADE80"/>
+                    <StackPanel DockPanel.Dock="Bottom" Margin="2,4,2,0">
+                        <Border Height="1" Background="{DynamicResource BorderBrushDefault}" Margin="0,0,0,6"/>
+                        <TextBlock Text="SYSTEM CACHE &amp; ENGINE" FontSize="8.5" FontWeight="Bold" Foreground="#71717A" Margin="0,0,0,2"/>
+                        <TextBlock x:Name="StatusLru" Text="LRU: 0.0 MB / 64 MB Cap" FontSize="9.5" Foreground="#38BDF8" Margin="0,0,0,1"/>
+                        <TextBlock Text="DirectX WinRT: Active" FontSize="9.5" Foreground="#4ADE80"/>
                     </StackPanel>
 
-                    <!-- Primary Nav Action Items -->
+                    <!-- Workspace Navigation Action Items -->
                     <StackPanel DockPanel.Dock="Top">
-                        <TextBlock Text="WORKSPACES" FontSize="9" FontWeight="Bold" Foreground="#71717A" Margin="6,0,0,6"/>
-                        
                         <Button x:Name="NavBtnLibrary" Style="{StaticResource NavRailBtn}" Click="NavBtnLibrary_Click">
                             <DockPanel Width="160">
                                 <TextBlock Text="📚  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="#0284C7" CornerRadius="10" Padding="6,1">
-                                    <TextBlock x:Name="TxtLibraryBadge" Text="0" FontSize="9" FontWeight="Bold" Foreground="White"/>
+                                <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="{DynamicResource AccentBrushDefault}" CornerRadius="9" Padding="5,1">
+                                    <TextBlock x:Name="TxtLibraryBadge" Text="0" FontSize="8.5" FontWeight="Bold" Foreground="White"/>
                                 </Border>
                             </DockPanel>
                         </Button>
 
-                        <Button x:Name="NavBtnReader" Content="📄  Document Reader" Style="{StaticResource NavRailBtn}" Click="NavBtnReader_Click"/>
+                        <Button x:Name="NavBtnReader" Content="📄  PDF Studio" Style="{StaticResource NavRailBtn}" Click="NavBtnReader_Click"/>
+                        <Button x:Name="NavBtnWord" Content="📝  Word Suite (.docx)" Style="{StaticResource NavRailBtn}" Foreground="#38BDF8" Click="NavBtnWord_Click"/>
                         <Button x:Name="NavBtnOrganizer" Content="📑  Page Organizer" Style="{StaticResource NavRailBtn}" Click="NavBtnOrganizer_Click"/>
                         <Button x:Name="NavBtnScanner" Content="📷  Camera &amp; Scan" Style="{StaticResource NavRailBtn}" Click="NavBtnScanner_Click"/>
                         <Button x:Name="NavBtnConverter" Content="🔄  Text &amp; Markdown" Style="{StaticResource NavRailBtn}" Click="NavBtnConverter_Click"/>
 
-                        <Border Height="1" Background="#27272A" Margin="0,12,0,12"/>
+                        <Border Height="1" Background="{DynamicResource BorderBrushDefault}" Margin="0,10,0,10"/>
 
-                        <TextBlock Text="QUICK ACTIONS" FontSize="9" FontWeight="Bold" Foreground="#71717A" Margin="6,0,0,6"/>
-                        <Button x:Name="BtnNavOpenPdf" Content="📂  Open PDF File..." Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnOpenFile_Click"/>
-                        <Button x:Name="BtnNavNewPdf" Content="➕  Blank Document" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnNewTab_Click"/>
-                        <Button x:Name="BtnNavRescan" Content="🔄  Rescan Device" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnRescanLibrary_Click"/>
+                        <TextBlock Text="CREATE / IMPORT" FontSize="8.5" FontWeight="Bold" Foreground="#71717A" Margin="6,0,0,4"/>
+                        <Button Content="📝  New Word Doc" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnNewWordTab_Click"/>
+                        <Button Content="➕  New Blank PDF" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnNewPdfTab_Click"/>
+                        <Button Content="📂  Open File..." Style="{StaticResource AccentBtn}" Margin="0,2" Click="BtnOpenFile_Click"/>
                     </StackPanel>
                 </DockPanel>
             </Border>
 
             <!-- ============================================================== -->
-            <!-- 2. MAIN DYNAMIC CONTENT CONTAINER                             -->
+            <!-- 1.2 MAIN DYNAMIC VIEW CONTAINER                               -->
             <!-- ============================================================== -->
             <Grid Grid.Column="1">
                 
-                <!-- VIEW A: LOCAL PDF LIBRARY / DASHBOARD (Auto-scanned Device Hub) -->
-                <Grid x:Name="ViewLibrary" Visibility="Visible" Background="#0F0F12">
+                <!-- ========================================================== -->
+                <!-- VIEW A: LOCAL PDF & DOCUMENT LIBRARY DASHBOARD             -->
+                <!-- ========================================================== -->
+                <Grid x:Name="ViewLibrary" Visibility="Visible" Background="{DynamicResource WindowBgBrush}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/> <!-- Library Header & Search Bar -->
+                        <RowDefinition Height="Auto"/> <!-- Search & Quick Actions -->
                         <RowDefinition Height="Auto"/> <!-- KPI Metric Cards -->
-                        <RowDefinition Height="*"/>    <!-- Scrollable Document Cards Grid -->
-                        <RowDefinition Height="26"/>   <!-- Bottom Library Status Bar -->
+                        <RowDefinition Height="*"/>    <!-- Scrollable Document Cards List -->
+                        <RowDefinition Height="24"/>   <!-- Bottom Library Status Bar -->
                     </Grid.RowDefinitions>
 
                     <!-- Library Header & Search Bar -->
-                    <Border Grid.Row="0" Background="#141417" BorderBrush="#27272A" BorderThickness="0,0,0,1" Padding="18,12">
+                    <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" 
+                            BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="14,10">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                                <TextBlock Text="Device PDF Library &amp; Document Hub" FontSize="18" FontWeight="Bold" Foreground="#F4F4F5"/>
-                                <TextBlock x:Name="TxtScanStatus" Text="Scanning local folders across Documents, Desktop, Downloads &amp; Workspaces..." 
-                                           FontSize="11" Foreground="#A1A1AA" Margin="0,2,0,0"/>
+                                <TextBlock Text="Device Library &amp; Document Dashboard" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}"/>
+                                <TextBlock x:Name="TxtScanStatus" Text="Scanning device for PDFs, Word documents, RTF and Markdown..." 
+                                           FontSize="10.5" Foreground="#A1A1AA" Margin="0,1,0,0"/>
                             </StackPanel>
 
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <!-- Live Search Input -->
-                                <Border Background="#1F1F23" CornerRadius="5" BorderBrush="#3F3F46" BorderThickness="1" Padding="6,3" Margin="0,0,8,0">
+                                <!-- Search Input -->
+                                <Border Background="#1F1F23" CornerRadius="4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" Padding="5,2" Margin="0,0,6,0">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="🔍" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                        <TextBox x:Name="TxtLibrarySearch" Width="150" Background="Transparent" Foreground="White" 
+                                        <TextBlock Text="🔍" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <TextBox x:Name="TxtLibrarySearch" Width="140" Background="Transparent" Foreground="White" 
                                                  BorderThickness="0" FontSize="11" VerticalAlignment="Center"
                                                  TextChanged="TxtLibrarySearch_TextChanged"/>
                                     </StackPanel>
                                 </Border>
 
-                                <Button Content="🔄 Rescan" Style="{StaticResource ModernBtn}" Margin="0,0,6,0" Click="BtnRescanLibrary_Click"/>
-                                <Button Content="📂 Open PDF" Style="{StaticResource AccentBtn}" Margin="0,0,10,0" Click="BtnOpenFile_Click"/>
-
-                                <Separator Width="1" Height="20" Background="#3F3F46" Margin="0,0,10,0"/>
-
-                                <!-- Window Caption Controls -->
-                                <Button Content="🗕" Width="28" Height="24" ToolTip="Minimize" Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Click="BtnWinMinimize_Click"/>
-                                <Button Content="🗖" Width="28" Height="24" ToolTip="Maximize / Restore" Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Click="BtnWinMaximize_Click"/>
-                                <Button Content="✕" Width="28" Height="24" ToolTip="Close Application" Background="#991B1B" Foreground="White" BorderBrush="#DC2626" Style="{StaticResource ModernBtn}" Click="BtnWinClose_Click"/>
+                                <Button Content="🔄 Rescan" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnRescanLibrary_Click"/>
+                                <Button Content="📝 New Word" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewWordTab_Click"/>
+                                <Button Content="📂 Open Doc" Style="{StaticResource AccentBtn}" Click="BtnOpenFile_Click"/>
                             </StackPanel>
                         </DockPanel>
                     </Border>
 
                     <!-- KPI Metric Cards Grid -->
-                    <Border Grid.Row="1" Padding="18,12,18,6">
+                    <Border Grid.Row="1" Padding="14,8,14,4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -323,46 +387,42 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Metric 1: Total PDFs -->
-                            <Border Grid.Column="0" Background="#18181B" BorderBrush="#27272A" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,6,0">
+                            <Border Grid.Column="0" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,4,0">
                                 <StackPanel>
-                                    <TextBlock Text="PDFS DETECTED" FontSize="10" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock x:Name="TxtKpiTotalPdfs" Text="0 Documents" FontSize="18" FontWeight="Bold" Foreground="#38BDF8" Margin="0,3,0,0"/>
-                                    <TextBlock Text="Auto-indexed from local drives" FontSize="10" Foreground="#52525B" Margin="0,1,0,0"/>
+                                    <TextBlock Text="DOCUMENTS INDEXED" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock x:Name="TxtKpiTotalPdfs" Text="0 Documents" FontSize="16" FontWeight="Bold" Foreground="#38BDF8" Margin="0,2,0,0"/>
+                                    <TextBlock Text="PDF, Word &amp; Text files discovered" FontSize="9" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
 
-                            <!-- Metric 2: Total Size -->
-                            <Border Grid.Column="1" Background="#18181B" BorderBrush="#27272A" BorderThickness="1" CornerRadius="6" Padding="12" Margin="3,0,3,0">
+                            <Border Grid.Column="1" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="2,0,2,0">
                                 <StackPanel>
-                                    <TextBlock Text="INDEXED FOOTPRINT" FontSize="10" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock x:Name="TxtKpiTotalSize" Text="0.0 MB" FontSize="18" FontWeight="Bold" Foreground="#F4F4F5" Margin="0,3,0,0"/>
-                                    <TextBlock Text="Zero disk duplication overhead" FontSize="10" Foreground="#52525B" Margin="0,1,0,0"/>
+                                    <TextBlock Text="INDEXED STORAGE" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock x:Name="TxtKpiTotalSize" Text="0.0 MB" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Local device footprint" FontSize="9" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
 
-                            <!-- Metric 3: Vector Engine -->
-                            <Border Grid.Column="2" Background="#18181B" BorderBrush="#27272A" BorderThickness="1" CornerRadius="6" Padding="12" Margin="3,0,3,0">
+                            <Border Grid.Column="2" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="2,0,2,0">
                                 <StackPanel>
-                                    <TextBlock Text="VECTOR ACCELERATION" FontSize="10" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock Text="DirectX WinRT" FontSize="18" FontWeight="Bold" Foreground="#4ADE80" Margin="0,3,0,0"/>
-                                    <TextBlock Text="Hardware rasterizer enabled" FontSize="10" Foreground="#52525B" Margin="0,1,0,0"/>
+                                    <TextBlock Text="WORD SUITE COMPAT" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock Text="Full DOCX / RTF / PDF" FontSize="16" FontWeight="Bold" Foreground="#4ADE80" Margin="0,2,0,0"/>
+                                    <TextBlock Text="OpenXML &amp; Vector native pipeline" FontSize="9" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
 
-                            <!-- Metric 4: LRU Cache -->
-                            <Border Grid.Column="3" Background="#18181B" BorderBrush="#27272A" BorderThickness="1" CornerRadius="6" Padding="12" Margin="6,0,0,0">
+                            <Border Grid.Column="3" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="4,0,0,0">
                                 <StackPanel>
-                                    <TextBlock Text="RAM CACHE CAP" FontSize="10" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock Text="64 MB Strict" FontSize="18" FontWeight="Bold" Foreground="#A78BFA" Margin="0,3,0,0"/>
-                                    <TextBlock Text="Sub-128MB RAM ceiling" FontSize="10" Foreground="#52525B" Margin="0,1,0,0"/>
+                                    <TextBlock Text="RAM CEILING" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock Text="64 MB Strict LRU" FontSize="16" FontWeight="Bold" Foreground="#A78BFA" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Sub-128MB memory ceiling" FontSize="9" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
                     </Border>
 
                     <!-- Scrollable Document Cards List -->
-                    <ScrollViewer Grid.Row="2" Padding="18,6,18,12" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer Grid.Row="2" Padding="14,4,14,8" VerticalScrollBarVisibility="Auto">
                         <ListBox x:Name="LibraryList" Background="Transparent" BorderThickness="0" 
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemContainerStyle>
@@ -370,40 +430,42 @@
                                     <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Padding" Value="0"/>
-                                    <Setter Property="Margin" Value="0,0,0,6"/>
+                                    <Setter Property="Margin" Value="0,0,0,5"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#18181B" BorderBrush="#27272A" BorderThickness="1" CornerRadius="6" Padding="14,10">
+                                    <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="12,8">
                                         <DockPanel LastChildFill="True">
                                             <!-- Actions Row -->
-                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
-                                                <Button Content="Open in Reader" Style="{StaticResource AccentBtn}" Padding="12,5" Margin="0,0,5,0"
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                                                <Button Content="Open in Reader" Style="{StaticResource AccentBtn}" Padding="10,4" Margin="0,0,4,0"
                                                         Tag="{Binding FilePath}" Click="BtnOpenLibraryItem_Click"/>
-                                                <Button Content="Organize" Style="{StaticResource ModernBtn}" Padding="8,5" Margin="0,0,5,0"
+                                                <Button Content="Edit in Word" Style="{StaticResource ModernBtn}" Padding="8,4" Margin="0,0,4,0"
+                                                        Tag="{Binding FilePath}" Click="BtnOpenLibraryInWord_Click"/>
+                                                <Button Content="Organize" Style="{StaticResource ModernBtn}" Padding="6,4" Margin="0,0,4,0"
                                                         Tag="{Binding FilePath}" Click="BtnOrganizeLibraryItem_Click"/>
-                                                <Button Content="Convert / OCR" Style="{StaticResource ModernBtn}" Padding="8,5"
+                                                <Button Content="Convert" Style="{StaticResource ModernBtn}" Padding="6,4"
                                                         Tag="{Binding FilePath}" Click="BtnConvertLibraryItem_Click"/>
                                             </StackPanel>
 
                                             <!-- Document Thumbnail Badge & Info -->
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <Border Width="38" Height="44" Background="#991B1B" CornerRadius="5" Margin="0,0,12,0">
-                                                    <TextBlock Text="PDF" FontWeight="Bold" FontSize="12" Foreground="White" 
+                                                <Border Width="34" Height="38" Background="#991B1B" CornerRadius="4" Margin="0,0,10,0">
+                                                    <TextBlock Text="DOC" FontWeight="Bold" FontSize="11" Foreground="White" 
                                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Border>
                                                 <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="Bold" Foreground="#F4F4F5"/>
-                                                    <TextBlock Text="{Binding FilePath}" FontSize="10" Foreground="#71717A" Margin="0,1,0,3" 
+                                                    <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}"/>
+                                                    <TextBlock Text="{Binding FilePath}" FontSize="9.5" Foreground="#71717A" Margin="0,1,0,2" 
                                                                MaxWidth="440" TextTrimming="CharacterEllipsis"/>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Border Background="#27272A" CornerRadius="3" Padding="5,1" Margin="0,0,5,0">
-                                                            <TextBlock Text="{Binding FormattedSize}" FontSize="9" FontWeight="SemiBold" Foreground="#A1A1AA"/>
+                                                        <Border Background="#27272A" CornerRadius="3" Padding="4,1" Margin="0,0,4,0">
+                                                            <TextBlock Text="{Binding FormattedSize}" FontSize="8.5" FontWeight="SemiBold" Foreground="#A1A1AA"/>
                                                         </Border>
-                                                        <Border Background="#27272A" CornerRadius="3" Padding="5,1">
-                                                            <TextBlock Text="{Binding FormattedDate, StringFormat='Modified: {0}'}" FontSize="9" Foreground="#A1A1AA"/>
+                                                        <Border Background="#27272A" CornerRadius="3" Padding="4,1">
+                                                            <TextBlock Text="{Binding FormattedDate, StringFormat='Modified: {0}'}" FontSize="8.5" Foreground="#A1A1AA"/>
                                                         </Border>
                                                     </StackPanel>
                                                 </StackPanel>
@@ -416,35 +478,33 @@
                     </ScrollViewer>
 
                     <!-- Library Footer Status Bar -->
-                    <Border Grid.Row="3" Background="#141417" BorderBrush="#27272A" BorderThickness="0,1,0,0" Padding="18,0">
+                    <Border Grid.Row="3" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,1,0,0" Padding="14,0">
                         <DockPanel VerticalAlignment="Center">
-                            <TextBlock x:Name="TxtLibraryFooterCount" Text="0 documents in library" FontSize="10" Foreground="#A1A1AA"/>
-                            <TextBlock Text="Click 'Open in Reader' to launch instant hardware-accelerated preview" 
-                                       HorizontalAlignment="Right" FontSize="10" Foreground="#71717A"/>
+                            <TextBlock x:Name="TxtLibraryFooterCount" Text="0 documents in library" FontSize="9.5" Foreground="#A1A1AA"/>
+                            <TextBlock Text="Omni Hybrid Document Hub: Double click or click Open to launch reader/editor" 
+                                       HorizontalAlignment="Right" FontSize="9.5" Foreground="#71717A"/>
                         </DockPanel>
                     </Border>
                 </Grid>
 
-                <!-- VIEW B: HIGH-PERFORMANCE PDF READER & EDITOR VIEWPORT -->
-                <Grid x:Name="ViewReader" Visibility="Collapsed" Background="#121214">
+                <!-- ========================================================== -->
+                <!-- VIEW B: HIGH-PERFORMANCE PDF STUDIO & READER VIEWPORT     -->
+                <!-- ========================================================== -->
+                <Grid x:Name="ViewReader" Visibility="Collapsed" Background="{DynamicResource CanvasBgBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/> <!-- Document Tabs Bar -->
                         <RowDefinition Height="Auto"/> <!-- Main Ribbon Toolbar -->
                         <RowDefinition Height="Auto"/> <!-- In-Document Search Bar -->
                         <RowDefinition Height="*"/>    <!-- Main Viewport + Thumbnails Sidebar -->
-                        <RowDefinition Height="26"/>   <!-- Viewport Status Bar -->
+                        <RowDefinition Height="24"/>   <!-- Viewport Status Bar -->
                     </Grid.RowDefinitions>
 
                     <!-- Document Tabs Bar -->
-                    <Border Grid.Row="0" Background="#18181B" BorderBrush="#27272A" BorderThickness="0,0,0,1" Padding="8,4,8,0">
+                    <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,3,6,0">
                         <DockPanel>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,3">
-                                <Button x:Name="BtnNewTab" Content="➕ New Tab" Width="84" Height="24" 
-                                        Style="{StaticResource ModernBtn}" Margin="0,0,6,0" Click="BtnNewTab_Click"/>
-                                <Separator Width="1" Height="18" Background="#3F3F46" Margin="0,0,6,0"/>
-                                <Button Content="🗕" Width="26" Height="24" ToolTip="Minimize" Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Click="BtnWinMinimize_Click"/>
-                                <Button Content="🗖" Width="26" Height="24" ToolTip="Maximize / Restore" Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Click="BtnWinMaximize_Click"/>
-                                <Button Content="✕" Width="26" Height="24" ToolTip="Close Application" Background="#991B1B" Foreground="White" BorderBrush="#DC2626" Style="{StaticResource ModernBtn}" Click="BtnWinClose_Click"/>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,0,2">
+                                <Button x:Name="BtnNewTab" Content="➕ New Tab" Width="80" Height="22" 
+                                        Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewTab_Click"/>
                             </StackPanel>
 
                             <ListBox x:Name="TabList" Background="Transparent" BorderThickness="0" 
@@ -457,11 +517,11 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="#27272A" CornerRadius="5,5,0,0" BorderBrush="#3F3F46" BorderThickness="1,1,1,0" 
-                                                Padding="12,5,8,5" Margin="0,0,4,0">
+                                        <Border Background="#27272A" CornerRadius="4,4,0,0" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1,1,1,0" 
+                                                Padding="10,4,6,4" Margin="0,0,3,0">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Title}" Foreground="#F4F4F5" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                                <Button Content="✕" Width="14" Height="14" Margin="8,0,0,0" Background="Transparent" 
+                                                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource HeaderFgBrush}" FontSize="10.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                <Button Content="✕" Width="13" Height="13" Margin="6,0,0,0" Background="Transparent" 
                                                         Foreground="#A1A1AA" BorderThickness="0" Tag="{Binding}" Click="BtnCloseTab_Click"/>
                                             </StackPanel>
                                         </Border>
@@ -472,94 +532,81 @@
                     </Border>
 
                     <!-- Main Ribbon Toolbar -->
-                    <Border Grid.Row="1" Background="#1E1E24" BorderBrush="#27272A" BorderThickness="0,0,0,1" Padding="8,6">
+                    <Border Grid.Row="1" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
                         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <!-- View Toggles: Nav Rail, Thumbnails, Full Screen -->
                             <Button x:Name="BtnToggleNavRail" Content="◀ Rail" ToolTip="Toggle Navigation Rail (F4)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleNavRail_Click"/>
                             <Button x:Name="BtnToggleThumbnails" Content="📑 Thumbs" ToolTip="Toggle Thumbnails Sidebar (Ctrl+T)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleThumbnails_Click"/>
-                            <Button x:Name="BtnFullScreen" Content="⛶ Full Screen" ToolTip="Toggle Full Screen (F11)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleFullScreen_Click"/>
+                            <Button x:Name="BtnFullScreen" Content="⛶ Presentation (F11)" ToolTip="Dedicated Full Screen View (F11)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnToggleFullScreen_Click"/>
 
-                            <Separator Width="1" Height="20" Background="#3F3F46" Margin="6,0"/>
+                            <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Navigation Steppers -->
                             <Button x:Name="BtnPrevPage" Content="◀ Prev" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnPrevPage_Click"/>
-                            <Border Background="#27272A" CornerRadius="4" Padding="6,3" Margin="1" VerticalAlignment="Center">
-                                <TextBlock x:Name="TxtNavPageIndicator" Text="Page 1 / 1" FontSize="11" FontWeight="SemiBold" Foreground="#38BDF8"/>
+                            <Border Background="#27272A" CornerRadius="3" Padding="5,2" Margin="1" VerticalAlignment="Center">
+                                <TextBlock x:Name="TxtNavPageIndicator" Text="Page 1 / 1" FontSize="10.5" FontWeight="SemiBold" Foreground="#38BDF8"/>
                             </Border>
                             <Button x:Name="BtnNextPage" Content="Next ▶" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnNextPage_Click"/>
 
-                            <Separator Width="1" Height="20" Background="#3F3F46" Margin="6,0"/>
+                            <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Zoom Controls -->
-                            <Button x:Name="BtnZoomOut" Content="➖" Width="26" Height="24" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomOut_Click"/>
-                            <TextBlock x:Name="TxtZoomLevel" Text="100%" Width="40" TextAlignment="Center" VerticalAlignment="Center" Foreground="#F4F4F5" FontSize="11" FontWeight="SemiBold"/>
-                            <Button x:Name="BtnZoomIn" Content="➕" Width="26" Height="24" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomIn_Click"/>
+                            <Button x:Name="BtnZoomOut" Content="➖" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomOut_Click"/>
+                            <TextBlock x:Name="TxtZoomLevel" Text="100%" Width="36" TextAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource WindowFgBrush}" FontSize="10.5" FontWeight="SemiBold"/>
+                            <Button x:Name="BtnZoomIn" Content="➕" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomIn_Click"/>
                             <Button x:Name="BtnFitWidth" Content="Fit Width" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFitWidth_Click"/>
                             <Button x:Name="BtnRotatePage" Content="Rotate 90°" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnRotatePage_Click"/>
 
-                            <Separator Width="1" Height="20" Background="#3F3F46" Margin="6,0"/>
+                            <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Annotation Tools Suite -->
                             <Button x:Name="BtnToolPointer" Content="👆 Pointer" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTool_Click"/>
-                            <Button x:Name="BtnToolInk" Content="✏️ Sketch Pen" Style="{StaticResource ModernBtn}" Foreground="#F87171" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolInk" Content="✏️ Sketch" Style="{StaticResource ModernBtn}" Foreground="#F87171" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolHighlight" Content="🖍️ Highlight" Style="{StaticResource ModernBtn}" Foreground="#FACC15" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolSticky" Content="📌 Sticky Note" Style="{StaticResource ModernBtn}" Foreground="#FB923C" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolEraser" Content="🧹 Eraser" Style="{StaticResource ModernBtn}" Foreground="#A1A1AA" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolSignature" Content="🔏 Sign" Style="{StaticResource ModernBtn}" Foreground="#60A5FA" Margin="1" Click="BtnTool_Click"/>
 
-                            <Separator Width="1" Height="20" Background="#3F3F46" Margin="6,0"/>
+                            <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Actions & Search -->
                             <Button x:Name="BtnSaveFile" Content="💾 Save" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnSaveFile_Click"/>
-                            <Button x:Name="BtnToggleSearch" Content="🔍 Find" Style="{StaticResource ModernBtn}" Margin="4,1,1,1" Click="BtnToggleSearch_Click"/>
-
-                            <Separator Width="1" Height="20" Background="#3F3F46" Margin="6,0"/>
-
-                            <!-- Theme Selector Dropdown (Prominent on Toolbar) -->
-                            <TextBlock Text="🎨 Theme:" VerticalAlignment="Center" Margin="4,0,4,0" Foreground="#A1A1AA" FontSize="11" FontWeight="SemiBold"/>
-                            <ComboBox x:Name="CmbTheme" Width="120" Height="24" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="#3F3F46"
-                                      SelectionChanged="CmbTheme_SelectionChanged">
-                                <ComboBoxItem Content="Fluent Dark"/>
-                                <ComboBoxItem Content="Modern Light"/>
-                                <ComboBoxItem Content="OLED Black"/>
-                                <ComboBoxItem Content="Sepia Reading"/>
-                                <ComboBoxItem Content="Windows Mica"/>
-                            </ComboBox>
+                            <Button x:Name="BtnToggleSearch" Content="🔍 Find" Style="{StaticResource ModernBtn}" Margin="2,1,1,1" Click="BtnToggleSearch_Click"/>
+                            <Button Content="📝 Edit in Word Suite" Style="{StaticResource ModernBtn}" Margin="2,1,1,1" Click="NavBtnWord_Click"/>
                         </WrapPanel>
                     </Border>
 
                     <!-- Search Panel -->
-                    <Border x:Name="SearchPanel" Grid.Row="2" Background="#1F1F24" BorderBrush="#3F3F46" BorderThickness="0,0,0,1" Padding="14,6" Visibility="Collapsed">
+                    <Border x:Name="SearchPanel" Grid.Row="2" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="0,0,0,1" Padding="12,5" Visibility="Collapsed">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Search Document:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#A1A1AA" FontSize="11"/>
-                            <TextBox x:Name="TxtSearchQuery" Width="220" Background="#121214" Foreground="White" BorderBrush="#3F3F46" Padding="6,3" KeyUp="TxtSearchQuery_KeyUp"/>
-                            <Button x:Name="BtnFindNext" Content="Next Match" Style="{StaticResource ModernBtn}" Margin="6,0,4,0" Click="BtnFindNext_Click"/>
-                            <TextBlock x:Name="TxtMatchCount" Text="0 matches" VerticalAlignment="Center" Margin="6,0" Foreground="#A1A1AA" FontSize="11"/>
-                            <Button x:Name="BtnCloseSearch" Content="Close" Style="{StaticResource ModernBtn}" Margin="6,0" Click="BtnCloseSearch_Click"/>
+                            <TextBlock Text="Search Document:" VerticalAlignment="Center" Margin="0,0,6,0" Foreground="#A1A1AA" FontSize="10.5"/>
+                            <TextBox x:Name="TxtSearchQuery" Width="200" Background="#121214" Foreground="White" BorderBrush="{DynamicResource BorderBrushLight}" Padding="5,2" KeyUp="TxtSearchQuery_KeyUp"/>
+                            <Button x:Name="BtnFindNext" Content="Next Match" Style="{StaticResource ModernBtn}" Margin="4,0" Click="BtnFindNext_Click"/>
+                            <TextBlock x:Name="TxtMatchCount" Text="0 matches" VerticalAlignment="Center" Margin="6,0" Foreground="#A1A1AA" FontSize="10.5"/>
+                            <Button x:Name="BtnCloseSearch" Content="Close" Style="{StaticResource ModernBtn}" Margin="4,0" Click="BtnCloseSearch_Click"/>
                         </StackPanel>
                     </Border>
 
                     <!-- Core Viewport & Thumbnails Filmstrip -->
-                    <Grid Grid.Row="3" Background="#0F0F12">
+                    <Grid Grid.Row="3" Background="{DynamicResource CanvasBgBrush}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="ColThumbnails" Width="170"/> <!-- Thumbnails Sidebar -->
+                            <ColumnDefinition x:Name="ColThumbnails" Width="160"/> <!-- Thumbnails Sidebar -->
                             <ColumnDefinition Width="*"/>                         <!-- Main Canvas Viewport -->
                         </Grid.ColumnDefinitions>
 
                         <!-- Thumbnails Sidebar -->
-                        <Border x:Name="BorderThumbnails" Grid.Column="0" Background="#141417" BorderBrush="#27272A" BorderThickness="0,0,1,0">
+                        <Border x:Name="BorderThumbnails" Grid.Column="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,1,0">
                             <DockPanel>
-                                <TextBlock Text="PAGE THUMBNAILS" DockPanel.Dock="Top" FontSize="10" FontWeight="Bold" Foreground="#71717A" Margin="12,10,0,6"/>
-                                <ListBox x:Name="ThumbnailList" Background="Transparent" BorderThickness="0" Margin="3" SelectionChanged="ThumbnailList_SelectionChanged">
+                                <TextBlock Text="PAGE THUMBNAILS" DockPanel.Dock="Top" FontSize="9" FontWeight="Bold" Foreground="#71717A" Margin="10,8,0,4"/>
+                                <ListBox x:Name="ThumbnailList" Background="Transparent" BorderThickness="0" Margin="2" SelectionChanged="ThumbnailList_SelectionChanged">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#FFFFFF" Width="140" Height="190" Margin="4" CornerRadius="4" BorderBrush="#3F3F46" BorderThickness="1">
+                                            <Border Background="#FFFFFF" Width="130" Height="175" Margin="3" CornerRadius="4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1">
                                                 <Grid>
                                                     <Image Source="{Binding RenderedImage}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding PageNumber}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Foreground="#E4E4E7" FontWeight="Bold"/>
-                                                    <Border Background="#18181B" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,4" CornerRadius="3" Padding="5,1">
-                                                        <TextBlock Text="{Binding PageNumber, StringFormat='Page {0}'}" FontSize="9" FontWeight="SemiBold" Foreground="White"/>
+                                                    <TextBlock Text="{Binding PageNumber}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="28" Foreground="#E4E4E7" FontWeight="Bold"/>
+                                                    <Border Background="#18181B" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,3" CornerRadius="3" Padding="4,1">
+                                                        <TextBlock Text="{Binding PageNumber, StringFormat='Page {0}'}" FontSize="8.5" FontWeight="SemiBold" Foreground="White"/>
                                                     </Border>
                                                 </Grid>
                                             </Border>
@@ -571,12 +618,12 @@
 
                         <!-- Main Canvas Viewport -->
                         <ScrollViewer x:Name="MainScrollViewer" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
-                                      Background="#09090B" Padding="20">
+                                      Background="{DynamicResource CanvasBgBrush}" Padding="16">
                             <Grid x:Name="CanvasContainer" HorizontalAlignment="Center">
                                 <!-- Page Card Frame -->
                                 <Border x:Name="PageBorder" Background="#FFFFFF" CornerRadius="4">
                                     <Border.Effect>
-                                        <DropShadowEffect BlurRadius="24" ShadowDepth="6" Opacity="0.5" Color="#000000"/>
+                                        <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.45" Color="#000000"/>
                                     </Border.Effect>
 
                                     <Grid x:Name="PageContentGrid" MouseLeftButtonDown="PageContentGrid_MouseLeftButtonDown">
@@ -584,8 +631,8 @@
                                         <Image x:Name="ImgPageRender" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                                         <!-- Content Stream Text (Fallback/Search overlay) -->
-                                        <TextBox x:Name="TxtPageContent" Margin="48" Background="Transparent" Foreground="#18181B" 
-                                                 BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True" FontSize="14" FontFamily="Georgia"/>
+                                        <TextBox x:Name="TxtPageContent" Margin="40" Background="Transparent" Foreground="#18181B" 
+                                                 BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True" FontSize="13" FontFamily="Georgia"/>
 
                                         <!-- Interactive Ink & Vector Overlay Canvas -->
                                         <InkCanvas x:Name="PageInkCanvas" Background="Transparent" IsHitTestVisible="False"/>
@@ -595,10 +642,8 @@
 
                                         <!-- PKCS#7 Digital Signature Badge -->
                                         <Border x:Name="SignatureBadge" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                                Margin="20" Background="#EFF6FF" BorderBrush="#0284C7" BorderThickness="1.5" CornerRadius="5" Padding="10,6" Visibility="Collapsed">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="✓ PKCS#7 Verified Digital Signature" FontWeight="Bold" Foreground="#0284C7" FontSize="11"/>
-                                            </StackPanel>
+                                                Margin="16" Background="#EFF6FF" BorderBrush="#0284C7" BorderThickness="1.5" CornerRadius="4" Padding="8,4" Visibility="Collapsed">
+                                            <TextBlock Text="✓ PKCS#7 Verified Digital Signature" FontWeight="Bold" Foreground="#0284C7" FontSize="10"/>
                                         </Border>
                                     </Grid>
                                 </Border>
@@ -607,16 +652,188 @@
                     </Grid>
 
                     <!-- Reader Status Bar -->
-                    <Border x:Name="ReaderStatusBar" Grid.Row="4" Background="#0284C7" Padding="14,0">
+                    <Border x:Name="ReaderStatusBar" Grid.Row="4" Background="{DynamicResource StatusBarBgBrush}" Padding="12,0">
                         <DockPanel VerticalAlignment="Center">
-                            <TextBlock x:Name="StatusPage" Text="Page 1 of 1" Foreground="White" FontSize="10" Margin="0,0,14,0" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="StatusDimensions" Text="Dimensions: 612 x 792 pt" Foreground="#E0F2FE" FontSize="10" Margin="0,0,14,0"/>
-                            <TextBlock x:Name="StatusToolIndicator" Text="Tool: Pointer" Foreground="#E0F2FE" FontSize="10" Margin="0,0,14,0"/>
-                            <TextBlock Text="DirectX Hardware Acceleration: ACTIVE" Foreground="#E0F2FE" FontSize="10" Margin="0,0,14,0"/>
-                            <TextBlock Text="Omni PDF Studio Desktop Engine" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="#E0F2FE" FontSize="10"/>
+                            <TextBlock x:Name="StatusPage" Text="Page 1 of 1" Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" Margin="0,0,12,0" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="StatusDimensions" Text="Dimensions: 612 x 792 pt" Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" Margin="0,0,12,0"/>
+                            <TextBlock x:Name="StatusToolIndicator" Text="Tool: Pointer" Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" Margin="0,0,12,0"/>
+                            <TextBlock Text="DirectX Hardware Acceleration: ACTIVE" Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" Margin="0,0,12,0"/>
+                            <TextBlock Text="Omni PDF Studio Enterprise" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5"/>
                         </DockPanel>
                     </Border>
                 </Grid>
+
+                <!-- ========================================================== -->
+                <!-- VIEW C: MICROSOFT WORD-STYLE DOCUMENT EDITOR SUITE         -->
+                <!-- Read/Write DOCX, RTF, TXT, MD, HTML, & Export to PDF      -->
+                <!-- ========================================================== -->
+                <Grid x:Name="ViewWordEditor" Visibility="Collapsed" Background="{DynamicResource WindowBgBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Word Ribbon: Typography & Formatting Toolbar -->
+                        <RowDefinition Height="*"/>    <!-- Centered A4 Page Editing Canvas -->
+                        <RowDefinition Height="24"/>   <!-- Word Status Bar: Word Count & Stats -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Word Ribbon Toolbar -->
+                    <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
+                        <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- File & Document Operations -->
+                            <Button Content="➕ New" ToolTip="New Document" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNew_Click"/>
+                            <Button Content="📂 Open" ToolTip="Open Word/RTF/Markdown/HTML/PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordOpen_Click"/>
+                            <Button Content="💾 Save" ToolTip="Save Document" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordSave_Click"/>
+                            <Button Content="💾 Save As..." ToolTip="Save as DOCX, RTF, Markdown, HTML" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSaveAs_Click"/>
+                            <Button Content="📄 Export PDF" ToolTip="Compile to Vector PDF" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordExportPdf_Click"/>
+                            <Button Content="🖨️ Print" ToolTip="Print Document (Ctrl+P)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordPrint_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Font Family & Font Size -->
+                            <ComboBox x:Name="CmbWordFontFamily" Width="110" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10.5"
+                                      SelectionChanged="CmbWordFontFamily_SelectionChanged">
+                                <ComboBoxItem Content="Segoe UI" IsSelected="True"/>
+                                <ComboBoxItem Content="Calibri"/>
+                                <ComboBoxItem Content="Arial"/>
+                                <ComboBoxItem Content="Times New Roman"/>
+                                <ComboBoxItem Content="Georgia"/>
+                                <ComboBoxItem Content="Consolas"/>
+                                <ComboBoxItem Content="Trebuchet MS"/>
+                                <ComboBoxItem Content="Verdana"/>
+                            </ComboBox>
+
+                            <ComboBox x:Name="CmbWordFontSize" Width="50" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10.5"
+                                      SelectionChanged="CmbWordFontSize_SelectionChanged">
+                                <ComboBoxItem Content="9"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="11"/>
+                                <ComboBoxItem Content="12"/>
+                                <ComboBoxItem Content="13" IsSelected="True"/>
+                                <ComboBoxItem Content="14"/>
+                                <ComboBoxItem Content="16"/>
+                                <ComboBoxItem Content="18"/>
+                                <ComboBoxItem Content="20"/>
+                                <ComboBoxItem Content="24"/>
+                                <ComboBoxItem Content="28"/>
+                                <ComboBoxItem Content="36"/>
+                                <ComboBoxItem Content="48"/>
+                            </ComboBox>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Character Styles: Bold, Italic, Underline, Strikethrough -->
+                            <Button Content="B" FontWeight="Bold" Width="24" Height="22" ToolTip="Bold (Ctrl+B)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBold_Click"/>
+                            <Button Content="I" FontStyle="Italic" Width="24" Height="22" ToolTip="Italic (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordItalic_Click"/>
+                            <Button Width="24" Height="22" ToolTip="Underline (Ctrl+U)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUnderline_Click">
+                                <TextBlock Text="U" TextDecorations="Underline"/>
+                            </Button>
+                            <Button Width="24" Height="22" ToolTip="Strikethrough" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordStrikethrough_Click">
+                                <TextBlock Text="S" TextDecorations="Strikethrough"/>
+                            </Button>
+
+                            <!-- Color Pickers -->
+                            <Button Content="Color" Width="44" Height="22" ToolTip="Text Foreground Color" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordTextColor_Click"/>
+                            <Button Content="Highlight" Width="56" Height="22" ToolTip="Text Highlight Color" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordHighlightColor_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Paragraph Alignments & Lists -->
+                            <Button Content="⬅" Width="24" Height="22" ToolTip="Align Left (Ctrl+L)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignLeft_Click"/>
+                            <Button Content="⏺" Width="24" Height="22" ToolTip="Align Center (Ctrl+E)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignCenter_Click"/>
+                            <Button Content="➡" Width="24" Height="22" ToolTip="Align Right (Ctrl+R)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignRight_Click"/>
+                            <Button Content="↔" Width="24" Height="22" ToolTip="Justify (Ctrl+J)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignJustify_Click"/>
+                            <Button Content="• List" Width="42" Height="22" ToolTip="Bulleted List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBullets_Click"/>
+                            <Button Content="1. List" Width="44" Height="22" ToolTip="Numbered List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNumbering_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Insert Elements (Table, Image, Date, Line) -->
+                            <Button Content="⊞ Table" ToolTip="Insert 3x3 Table" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertTable_Click"/>
+                            <Button Content="🖼 Picture" ToolTip="Insert Image" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertImage_Click"/>
+                            <Button Content="― Rule" ToolTip="Insert Horizontal Divider" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertHr_Click"/>
+                            <Button Content="📅 Date" ToolTip="Insert Current Timestamp" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertDate_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Page Setup (Margins) -->
+                            <TextBlock Text="Margins:" VerticalAlignment="Center" Foreground="#71717A" FontSize="9.5" Margin="2,0"/>
+                            <Button Content="Normal" ToolTip="1 inch Margins" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordMarginsNormal_Click"/>
+                            <Button Content="Narrow" ToolTip="0.5 inch Margins" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordMarginsNarrow_Click"/>
+                            <Button Content="Wide" ToolTip="1.5 inch Margins" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordMarginsWide_Click"/>
+                        </WrapPanel>
+                    </Border>
+
+                    <!-- Centered A4 Page Editing Canvas -->
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+                                  Background="{DynamicResource CanvasBgBrush}" Padding="20">
+                        <Grid HorizontalAlignment="Center">
+                            <Border Width="816" MinHeight="1056" Background="#FFFFFF" CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="24" ShadowDepth="5" Opacity="0.5" Color="#000000"/>
+                                </Border.Effect>
+
+                                <RichTextBox x:Name="RtbWordEditor" Background="Transparent" Foreground="#1E293B" 
+                                             BorderThickness="0" Margin="48" AcceptsReturn="True" AcceptsTab="True"
+                                             SpellCheck.IsEnabled="True" FontSize="13" FontFamily="Segoe UI"
+                                             SelectionChanged="RtbWordEditor_SelectionChanged"
+                                             TextChanged="RtbWordEditor_TextChanged"/>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- Word Suite Telemetry & Statistics Status Bar -->
+                    <Border Grid.Row="2" Background="{DynamicResource StatusBarBgBrush}" Padding="12,0">
+                        <DockPanel VerticalAlignment="Center">
+                            <TextBlock x:Name="TxtWordStats" Text="Words: 0 | Characters: 0 | Paragraphs: 1 | Reading Time: 1 min" 
+                                       Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" FontWeight="SemiBold"/>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock Text="Zoom: 100%" Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <Slider x:Name="SliderWordZoom" Width="90" Minimum="50" Maximum="200" Value="100" 
+                                        VerticalAlignment="Center" ValueChanged="SliderWordZoom_ValueChanged"/>
+                                <TextBlock Text="Microsoft Word Compatible Suite" Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+
+                <!-- ========================================================== -->
+                <!-- VIEW D: DEDICATED FULL-SCREEN PDF PRESENTATION MODE        -->
+                <!-- Borderless, Clean Canvas with Floating Bottom Nav Pill     -->
+                <!-- ========================================================== -->
+                <Grid x:Name="ViewPdfFullScreen" Visibility="Collapsed" Background="#000000">
+                    <!-- Centered Presentation Image -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#000000">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+                            <Image x:Name="ImgFullScreenPage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- Floating Semi-Transparent Bottom Navigation Pill -->
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,24"
+                            Background="#DD18181B" BorderBrush="#3F3F46" BorderThickness="1.5" CornerRadius="20" Padding="14,6">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.8" Color="#000000"/>
+                        </Border.Effect>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Content="⏮ Prev" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsPrev_Click"/>
+                            <Border Background="#27272A" CornerRadius="4" Padding="8,3" Margin="4,0" VerticalAlignment="Center">
+                                <TextBlock x:Name="TxtFsPageIndicator" Text="Page 1 of 1" Foreground="#38BDF8" FontWeight="Bold" FontSize="11"/>
+                            </Border>
+                            <Button Content="Next ⏭" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsNext_Click"/>
+                            
+                            <Separator Width="1" Height="16" Background="#3F3F46" Margin="6,0"/>
+
+                            <Button Content="➖ Zoom" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsZoomOut_Click"/>
+                            <Button Content="Zoom ➕" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsZoomIn_Click"/>
+                            <Button Content="Fit Width" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsFitWidth_Click"/>
+
+                            <Separator Width="1" Height="16" Background="#3F3F46" Margin="6,0"/>
+
+                            <Button Content="✕ Exit Full Screen (Esc)" Style="{StaticResource AccentBtn}" Margin="2,0" Click="BtnExitFullScreen_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
             </Grid>
         </Grid>
     </Grid>
