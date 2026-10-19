@@ -1,0 +1,183 @@
+%PDF-1.7
+%????
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 3 /Kids [ 5 0 R 7 0 R 9 0 R ] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 4749 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - HARDWARE REQUIREMENTS SPECIFICATION) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: SPEC-HW-300) Tj ET
+BT
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 710.0 Tm (SECTION 1: SYSTEM ARCHITECTURE & EXECUTIVE OVERVIEW) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 695.5 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 681.0 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 666.5 Tm (Product Name: PSD PDF Studio and Viewer Enterprise Edition) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm (\(v3.0.0-ENTERPRISE-FLAGSHIP\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm (Vendor: PSD Software Studio / Prabhu Kannan) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 623.0 Tm (Licensing: MIT Open Source License \(Permissive Enterprise & Commercial Usage\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (Operating Guarantee: 100% Offline Air-Gapped Operation | Zero External Cloud Leakage) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm () Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm (PSD PDF Studio and Viewer is a zero-dependency desktop productivity workstation) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 565.0 Tm (engineered) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 550.5 Tm (to deliver ultra-fast vector PDF viewing, native OpenXML Word \(.docx\) editing,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (cryptographic) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (e-signatures, and local CPU-based neural document intelligence.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 507.0 Tm () Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (The architecture is strictly divided into two verified targets:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 478.0 Tm (1. Native Windows 10/11 x64 Workstations, Ultrabooks, Surface Tablets, and) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm (Enterprise Servers.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 449.0 Tm (2. Ultra-Lightweight Android Mobile Devices \(specifically optimized for Qualcomm) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 434.5 Tm (Snapdragon 625) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 420.0 Tm (   architectures running Android 6.0 Marshmallow through Android 14+\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 405.5 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 391.0 Tm (SECTION 2: WINDOWS DESKTOP & ENTERPRISE SERVER HARDWARE REQUIREMENTS) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 376.5 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 362.0 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 347.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 333.0 Tm (2.1 MINIMUM SYSTEM HARDWARE \(CLIENT WORKSTATION\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 318.5 Tm (- Processor \(CPU\): 1.0 GHz 64-bit \(x64\) Intel Core 2 Duo / AMD Athlon 64 or newer.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 304.0 Tm (- System RAM: 512 MB Physical RAM \(Application strictly clamps working set under) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 289.5 Tm (150MB\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 275.0 Tm (- Disk Storage: 160 MB available local disk space for full standalone binary and) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 260.5 Tm (assets.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 246.0 Tm (- Display Resolution: 1024 x 768 pixels with 16-bit color depth \(High-DPI) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 231.5 Tm (responsive\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 217.0 Tm (- Operating Systems: Windows 10 Version 1903 \(Build 18362\) or newer \(Windows 10, 11,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 202.5 Tm (x64\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 188.0 Tm (- Runtime Dependencies: ZERO. Self-contained .NET 8 runtime, DirectX drivers, and) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 173.5 Tm (WinRT APIs.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 159.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 144.5 Tm (2.2 RECOMMENDED ENTERPRISE HARDWARE \(HEAVY MULTI-PAGE BLUEPRINTS & CAD\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 130.0 Tm (- Processor \(CPU\): Quad-Core Intel Core i5/i7/i9 \(8th Gen+\) or AMD Ryzen 5/7/9 \(3.0) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 115.5 Tm (GHz+\).) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 1 of 3) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 4733 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - HARDWARE REQUIREMENTS SPECIFICATION) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: SPEC-HW-300) Tj ET
+BT
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 710.0 Tm (- System RAM: 2.0 GB Physical RAM or higher.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 695.5 Tm (- Storage Device: 500 MB Solid State Drive \(NVMe SSD recommended for instant library) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 681.0 Tm (indexing\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 666.5 Tm (- Graphics Hardware: DirectX 11 / Direct3D 12 compliant GPU for 120 FPS hardware) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm (rasterization.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm (- Display Resolution: 1920 x 1080 \(Full HD\) up to 3840 x 2160 \(4K UHD\) with) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 623.0 Tm (100%-250% DPI scaling.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (- Enterprise Operating Systems: Windows 11 Enterprise/Pro, Windows 10 Enterprise) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm (LTSC,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm (  Windows Server 2019, Windows Server 2022, Windows Server 2025.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 565.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 550.5 Tm (2.3 MEMORY CEILINGS & DIRECTX ACCELERATION BENCHMARKS) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (- 64MB LRU Tile Rasterizer Cache: Viewport tiles are cached in high-speed RAM with) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (strict) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 507.0 Tm (  byte-eviction. Continuous scrolling across 1,000+ page documents will never cause) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (memory growth.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 478.0 Tm (- Native WinRT DirectWrite Acceleration: Native vector glyph rasterization runs) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm (directly on) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 449.0 Tm (  hardware, delivering fluid 60 to 120 FPS navigation with zero frame drops or) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 434.5 Tm (visual tearing.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 420.0 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 405.5 Tm (SECTION 3: ANDROID MOBILE HARDWARE REQUIREMENTS \(QUALCOMM SNAPDRAGON 625\)) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 391.0 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 376.5 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 362.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 347.5 Tm (3.1 TARGET HARDWARE PROFILE) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 333.0 Tm (- System-on-Chip \(SoC\): Qualcomm MSM8953 Snapdragon 625 \(14nm FinFET technology\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 318.5 Tm (- CPU Core Architecture: Octa-core 2.0 GHz Cortex-A53.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 304.0 Tm (- GPU: Qualcomm Adreno 506.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 289.5 Tm (- Benchmark Reference Device: Xiaomi Redmi Note 4 \(3GB RAM / 32GB Storage\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 275.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 260.5 Tm (3.2 MOBILE OPERATING SYSTEM COMPATIBILITY) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 246.0 Tm (- Minimum API Level: Android 6.0 Marshmallow \(API 23\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 231.5 Tm (- Target API Level: Android 14.0 Upside Down Cake \(API 34\) and Android 15 \(API 35\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 217.0 Tm (- Binary ABI Architectures: Dual compiled native libraries:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 202.5 Tm (  * armeabi-v7a \(32-bit ARM with NEON SIMD vector extensions\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 188.0 Tm (  * arm64-v8a \(64-bit ARMv8-A architecture\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 173.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 159.0 Tm (3.3 MOBILE HEAP CEILING & CAMERA SCANNING) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 144.5 Tm (- Dalvik / ART Heap Cap: strictly constrained to < 45 MB operational heap.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 130.0 Tm (- Camera Scanner: Compatible with standard CMOS sensor modules for document) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 115.5 Tm (scanning,) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 2 of 3) Tj ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 10 0 R >>
+endobj
+10 0 obj
+<< /Length 2580 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - HARDWARE REQUIREMENTS SPECIFICATION) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: SPEC-HW-300) Tj ET
+BT
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 710.0 Tm (  quad-corner perspective trapezoid correction, and high-contrast Otsu binarization.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 695.5 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 681.0 Tm (SECTION 4: ENTERPRISE NETWORK, SECURITY & PACKAGING TELEMETRY) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 666.5 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 652.0 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm (- Network Connectivity: ZERO REQUIREMENT. All cryptographic operations, OCR layers,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 623.0 Tm (text converters,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (  and AI Copilot heuristics execute locally on the host CPU. No telemetry packets) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm (are transmitted.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm (- Cryptographic Standards: AES-256 \(CBC mode\) document permissions, SHA-256) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 565.0 Tm (integrity digests,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 550.5 Tm (  PKCS#7 detached digital signatures, and RFC 3161 compliant timestamp validation.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (- Packaging Delivery Modes:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (  1. Standalone Executable: psd_pdf.exe \(78.3 MB, portable double-click\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 507.0 Tm (  2. Enterprise Portable: PSD-PDF-Studio-Portable.zip \(144.9 MB\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (  3. Inno Setup Client Installer: PSD-PDF-Studio-Setup.exe \(143.6 MB\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 478.0 Tm (  4. WiX Enterprise MSI: PSD-PDF-Studio-Enterprise.msi \(71.6 MB, msiexec /i /qn) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm (silent deployment\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 449.0 Tm (  5. Android Universal Release APK: PSD-PDF-Studio-Release-universal.apk \(21.1 KB\).) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 3 of 3) Tj ET
+endstream
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000107 00000 n 
+0000000199 00000 n 
+0000000291 00000 n 
+0000000383 00000 n 
+0000000475 00000 n 
+0000000567 00000 n 
+0000000659 00000 n 
+0000000751 00000 n 
+0000000843 00000 n 
+0000000935 00000 n 
+trailer
+<< /Size 11 /Root 1 0 R >>
+startxref
+12288
+%%EOF
