@@ -610,9 +610,46 @@
                             <!-- Annotation Tools Suite -->
                             <Button x:Name="BtnToolPointer" Content="👆 Pointer" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolSnapshot" Content="📷 Snapshot" ToolTip="Capture Area Snapshot to Clipboard (Ctrl+Shift+C)" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnToolSnapshot_Click"/>
+
+                            <!-- Pen Sketch & Palette -->
                             <Button x:Name="BtnToolInk" Content="✏️ Sketch" Style="{StaticResource ModernBtn}" Foreground="#F87171" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnPdfPenColor" ToolTip="Sketch Pen Color Palette" Style="{StaticResource ModernBtn}" Margin="0,1,1,1" Padding="4,2" Click="BtnPdfPenColor_Click">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Border x:Name="IndicatorPenColor" Width="10" Height="10" CornerRadius="2" Background="#DC2626"/>
+                                    <TextBlock Text=" ▾" FontSize="8" Margin="2,0,0,0" Foreground="#A1A1AA"/>
+                                </StackPanel>
+                            </Button>
+                            <Popup x:Name="PopupPdfPenColor" PlacementTarget="{Binding ElementName=BtnPdfPenColor}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                <Border Background="#18181B" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="6" Padding="6" Width="135">
+                                    <StackPanel>
+                                        <TextBlock Text="PEN COLOR" FontSize="8.5" FontWeight="Bold" Foreground="#71717A" Margin="2,0,0,4"/>
+                                        <UniformGrid Columns="5" Rows="2">
+                                            <Button Width="20" Height="20" Margin="1" Background="#DC2626" BorderThickness="0" Focusable="False" ToolTip="Red" Click="PdfPenColorChip_Click" Tag="#DC2626"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#0284C7" BorderThickness="0" Focusable="False" ToolTip="Blue" Click="PdfPenColorChip_Click" Tag="#0284C7"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#16A34A" BorderThickness="0" Focusable="False" ToolTip="Green" Click="PdfPenColorChip_Click" Tag="#16A34A"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#9333EA" BorderThickness="0" Focusable="False" ToolTip="Purple" Click="PdfPenColorChip_Click" Tag="#9333EA"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#EA580C" BorderThickness="0" Focusable="False" ToolTip="Orange" Click="PdfPenColorChip_Click" Tag="#EA580C"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#CA8A04" BorderThickness="0" Focusable="False" ToolTip="Gold" Click="PdfPenColorChip_Click" Tag="#CA8A04"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#DB2777" BorderThickness="0" Focusable="False" ToolTip="Pink" Click="PdfPenColorChip_Click" Tag="#DB2777"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#0D9488" BorderThickness="0" Focusable="False" ToolTip="Teal" Click="PdfPenColorChip_Click" Tag="#0D9488"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#18181B" BorderBrush="#52525B" BorderThickness="1" Focusable="False" ToolTip="Black" Click="PdfPenColorChip_Click" Tag="#18181B"/>
+                                            <Button Width="20" Height="20" Margin="1" Background="#FFFFFF" BorderBrush="#52525B" BorderThickness="1" Focusable="False" ToolTip="White" Click="PdfPenColorChip_Click" Tag="#FFFFFF"/>
+                                        </UniformGrid>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
+
+                            <ComboBox x:Name="CmbPdfPenWidth" Width="58" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                                      ToolTip="Pen Stroke Thickness" SelectionChanged="CmbPdfPenWidth_SelectionChanged">
+                                <ComboBoxItem Content="1.5 pt" IsSelected="True"/>
+                                <ComboBoxItem Content="3.0 pt"/>
+                                <ComboBoxItem Content="5.0 pt"/>
+                                <ComboBoxItem Content="10.0 pt"/>
+                            </ComboBox>
+
                             <Button x:Name="BtnToolHighlight" Content="🖍️ Highlight" Style="{StaticResource ModernBtn}" Foreground="#FACC15" Margin="1" Click="BtnTool_Click"/>
-                            <Button x:Name="BtnToolSticky" Content="📌 Sticky Note" Style="{StaticResource ModernBtn}" Foreground="#FB923C" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolSticky" Content="📌 Note" Style="{StaticResource ModernBtn}" Foreground="#FB923C" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolMeasure" Content="📐 Measure" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolEraser" Content="🧹 Eraser" Style="{StaticResource ModernBtn}" Foreground="#A1A1AA" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnToolSignature" Content="🔏 Sign" Style="{StaticResource ModernBtn}" Foreground="#60A5FA" Margin="1" Click="BtnTool_Click"/>
@@ -778,6 +815,7 @@
                 <Grid x:Name="ViewWordEditor" Visibility="Collapsed" Background="{DynamicResource WindowBgBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/> <!-- Word Ribbon: Typography & Formatting Toolbar -->
+                        <RowDefinition Height="Auto"/> <!-- Word Find & Replace Docked Panel -->
                         <RowDefinition Height="*"/>    <!-- Centered A4 Page Editing Canvas -->
                         <RowDefinition Height="24"/>   <!-- Word Status Bar: Word Count & Stats -->
                     </Grid.RowDefinitions>
@@ -785,19 +823,39 @@
                     <!-- Word Ribbon Toolbar -->
                     <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
                         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- History: Undo / Redo -->
+                            <Button x:Name="BtnWordUndo" Content="↶" ToolTip="Undo (Ctrl+Z)" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUndo_Click"/>
+                            <Button x:Name="BtnWordRedo" Content="↷" ToolTip="Redo (Ctrl+Y)" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordRedo_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
                             <!-- File & Document Operations -->
                             <Button Content="➕ New" ToolTip="New Document" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNew_Click"/>
                             <Button Content="📂 Open" ToolTip="Open Word/RTF/Markdown/HTML/PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordOpen_Click"/>
-                            <Button Content="💾 Save" ToolTip="Save Document" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordSave_Click"/>
+                            <Button Content="💾 Save" ToolTip="Save Document (Ctrl+S)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordSave_Click"/>
                             <Button Content="💾 Save As..." ToolTip="Save as DOCX, RTF, Markdown, HTML" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSaveAs_Click"/>
                             <Button Content="📄 Export PDF" ToolTip="Compile to Vector PDF" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordExportPdf_Click"/>
                             <Button Content="🖨️ Print" ToolTip="Print Document (Ctrl+P)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordPrint_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
+                            <!-- Heading & Style Hierarchy -->
+                            <ComboBox x:Name="CmbWordStyle" Width="85" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                                      ToolTip="Typography &amp; Heading Style" SelectionChanged="CmbWordStyle_SelectionChanged">
+                                <ComboBoxItem Content="Normal" IsSelected="True"/>
+                                <ComboBoxItem Content="Title"/>
+                                <ComboBoxItem Content="Subtitle"/>
+                                <ComboBoxItem Content="Heading 1"/>
+                                <ComboBoxItem Content="Heading 2"/>
+                                <ComboBoxItem Content="Heading 3"/>
+                                <ComboBoxItem Content="Quote"/>
+                                <ComboBoxItem Content="Code"/>
+                            </ComboBox>
+
                             <!-- Font Family & Font Size -->
-                            <ComboBox x:Name="CmbWordFontFamily" Width="110" Height="22" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10.5"
+                            <ComboBox x:Name="CmbWordFontFamily" Width="105" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
                                       SelectionChanged="CmbWordFontFamily_SelectionChanged">
                                 <ComboBoxItem Content="Segoe UI" IsSelected="True"/>
                                 <ComboBoxItem Content="Calibri"/>
@@ -809,8 +867,8 @@
                                 <ComboBoxItem Content="Verdana"/>
                             </ComboBox>
 
-                            <ComboBox x:Name="CmbWordFontSize" Width="50" Height="22" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10.5"
+                            <ComboBox x:Name="CmbWordFontSize" Width="48" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
                                       SelectionChanged="CmbWordFontSize_SelectionChanged">
                                 <ComboBoxItem Content="9"/>
                                 <ComboBoxItem Content="10"/>
@@ -829,7 +887,7 @@
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
-                            <!-- Character Styles: Bold, Italic, Underline, Strikethrough -->
+                            <!-- Character Styles: Bold, Italic, Underline, Strikethrough, Subscript, Superscript -->
                             <Button Content="B" FontWeight="Bold" Width="24" Height="22" ToolTip="Bold (Ctrl+B)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBold_Click"/>
                             <Button Content="I" FontStyle="Italic" Width="24" Height="22" ToolTip="Italic (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordItalic_Click"/>
                             <Button Width="24" Height="22" ToolTip="Underline (Ctrl+U)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUnderline_Click">
@@ -838,28 +896,204 @@
                             <Button Width="24" Height="22" ToolTip="Strikethrough" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordStrikethrough_Click">
                                 <TextBlock Text="S" TextDecorations="Strikethrough"/>
                             </Button>
-
-                            <!-- Color Pickers -->
-                            <Button Content="Color" Width="44" Height="22" ToolTip="Text Foreground Color" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordTextColor_Click"/>
-                            <Button Content="Highlight" Width="56" Height="22" ToolTip="Text Highlight Color" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordHighlightColor_Click"/>
+                            <Button x:Name="BtnWordSubscript" Content="X₂" ToolTip="Subscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSubscript_Click"/>
+                            <Button x:Name="BtnWordSuperscript" Content="X²" ToolTip="Superscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSuperscript_Click"/>
+                            <Button x:Name="BtnWordClearFormat" Content="🧹" ToolTip="Clear Formatting" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordClearFormat_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
-                            <!-- Paragraph Alignments & Lists -->
+                            <!-- Rich Office Color Palette Pickers with Dropdown Popups -->
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- Font Color Button + Dropdown Palette -->
+                                <Button x:Name="BtnWordTextColor" ToolTip="Font Color Palette" Style="{StaticResource ModernBtn}" Margin="1" Padding="5,2" Click="BtnWordTextColor_Click">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="A" FontWeight="Bold" FontSize="11"/>
+                                        <Border x:Name="IndicatorTextColor" Width="10" Height="3" Background="#1E293B" Margin="3,8,0,0" VerticalAlignment="Bottom"/>
+                                        <TextBlock Text=" ▾" FontSize="8" Margin="1,0,0,0" Foreground="#A1A1AA"/>
+                                    </StackPanel>
+                                </Button>
+                                <Popup x:Name="PopupWordTextColor" PlacementTarget="{Binding ElementName=BtnWordTextColor}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                    <Border Background="#18181B" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="6" Padding="8" Width="225">
+                                        <StackPanel>
+                                            <Button Content="Automatic (Default Text)" Focusable="False" Background="#27272A" Foreground="#FFFFFF" 
+                                                    BorderBrush="#3F3F46" Margin="0,0,0,6" Padding="6,3" FontSize="10.5" HorizontalContentAlignment="Left"
+                                                    Click="ColorChip_Click" Tag="#1E293B"/>
+
+                                            <TextBlock Text="THEME COLORS" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="0,0,0,3"/>
+                                            <UniformGrid Columns="10" Rows="4" Margin="0,0,0,6">
+                                                <!-- Row 1 -->
+                                                <Button Width="18" Height="18" Margin="1" Background="#FFFFFF" BorderBrush="#52525B" BorderThickness="1" Focusable="False" ToolTip="White" Click="ColorChip_Click" Tag="#FFFFFF"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#F1F5F9" BorderThickness="0" Focusable="False" ToolTip="Slate Light" Click="ColorChip_Click" Tag="#F1F5F9"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#E0F2FE" BorderThickness="0" Focusable="False" ToolTip="Sky Light" Click="ColorChip_Click" Tag="#E0F2FE"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#DCFCE7" BorderThickness="0" Focusable="False" ToolTip="Green Light" Click="ColorChip_Click" Tag="#DCFCE7"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FEF9C3" BorderThickness="0" Focusable="False" ToolTip="Yellow Light" Click="ColorChip_Click" Tag="#FEF9C3"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FFEDD5" BorderThickness="0" Focusable="False" ToolTip="Orange Light" Click="ColorChip_Click" Tag="#FFEDD5"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FEE2E2" BorderThickness="0" Focusable="False" ToolTip="Red Light" Click="ColorChip_Click" Tag="#FEE2E2"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#F3E8FF" BorderThickness="0" Focusable="False" ToolTip="Purple Light" Click="ColorChip_Click" Tag="#F3E8FF"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FCE7F3" BorderThickness="0" Focusable="False" ToolTip="Pink Light" Click="ColorChip_Click" Tag="#FCE7F3"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#CCFBF1" BorderThickness="0" Focusable="False" ToolTip="Teal Light" Click="ColorChip_Click" Tag="#CCFBF1"/>
+                                                <!-- Row 2 -->
+                                                <Button Width="18" Height="18" Margin="1" Background="#E2E8F0" BorderThickness="0" Focusable="False" ToolTip="Slate 200" Click="ColorChip_Click" Tag="#E2E8F0"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#94A3B8" BorderThickness="0" Focusable="False" ToolTip="Slate 400" Click="ColorChip_Click" Tag="#94A3B8"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#38BDF8" BorderThickness="0" Focusable="False" ToolTip="Sky 400" Click="ColorChip_Click" Tag="#38BDF8"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#4ADE80" BorderThickness="0" Focusable="False" ToolTip="Green 400" Click="ColorChip_Click" Tag="#4ADE80"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FACC15" BorderThickness="0" Focusable="False" ToolTip="Yellow 400" Click="ColorChip_Click" Tag="#FACC15"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FB923C" BorderThickness="0" Focusable="False" ToolTip="Orange 400" Click="ColorChip_Click" Tag="#FB923C"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#F87171" BorderThickness="0" Focusable="False" ToolTip="Red 400" Click="ColorChip_Click" Tag="#F87171"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#C084FC" BorderThickness="0" Focusable="False" ToolTip="Purple 400" Click="ColorChip_Click" Tag="#C084FC"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#F472B6" BorderThickness="0" Focusable="False" ToolTip="Pink 400" Click="ColorChip_Click" Tag="#F472B6"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#2DD4BF" BorderThickness="0" Focusable="False" ToolTip="Teal 400" Click="ColorChip_Click" Tag="#2DD4BF"/>
+                                                <!-- Row 3 -->
+                                                <Button Width="18" Height="18" Margin="1" Background="#64748B" BorderThickness="0" Focusable="False" ToolTip="Slate 500" Click="ColorChip_Click" Tag="#64748B"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#475569" BorderThickness="0" Focusable="False" ToolTip="Slate 600" Click="ColorChip_Click" Tag="#475569"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#0284C7" BorderThickness="0" Focusable="False" ToolTip="Sky 600" Click="ColorChip_Click" Tag="#0284C7"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#16A34A" BorderThickness="0" Focusable="False" ToolTip="Green 600" Click="ColorChip_Click" Tag="#16A34A"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#CA8A04" BorderThickness="0" Focusable="False" ToolTip="Yellow 600" Click="ColorChip_Click" Tag="#CA8A04"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#EA580C" BorderThickness="0" Focusable="False" ToolTip="Orange 600" Click="ColorChip_Click" Tag="#EA580C"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#DC2626" BorderThickness="0" Focusable="False" ToolTip="Red 600" Click="ColorChip_Click" Tag="#DC2626"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#9333EA" BorderThickness="0" Focusable="False" ToolTip="Purple 600" Click="ColorChip_Click" Tag="#9333EA"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#DB2777" BorderThickness="0" Focusable="False" ToolTip="Pink 600" Click="ColorChip_Click" Tag="#DB2777"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#0D9488" BorderThickness="0" Focusable="False" ToolTip="Teal 600" Click="ColorChip_Click" Tag="#0D9488"/>
+                                                <!-- Row 4 -->
+                                                <Button Width="18" Height="18" Margin="1" Background="#334155" BorderThickness="0" Focusable="False" ToolTip="Slate 700" Click="ColorChip_Click" Tag="#334155"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#0F172A" BorderThickness="0" Focusable="False" ToolTip="Slate 900" Click="ColorChip_Click" Tag="#0F172A"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#0369A1" BorderThickness="0" Focusable="False" ToolTip="Sky 700" Click="ColorChip_Click" Tag="#0369A1"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#15803D" BorderThickness="0" Focusable="False" ToolTip="Green 700" Click="ColorChip_Click" Tag="#15803D"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#A16207" BorderThickness="0" Focusable="False" ToolTip="Yellow 700" Click="ColorChip_Click" Tag="#A16207"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#C2410C" BorderThickness="0" Focusable="False" ToolTip="Orange 700" Click="ColorChip_Click" Tag="#C2410C"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#B91C1C" BorderThickness="0" Focusable="False" ToolTip="Red 700" Click="ColorChip_Click" Tag="#B91C1C"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#7E22CE" BorderThickness="0" Focusable="False" ToolTip="Purple 700" Click="ColorChip_Click" Tag="#7E22CE"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#BE185D" BorderThickness="0" Focusable="False" ToolTip="Pink 700" Click="ColorChip_Click" Tag="#BE185D"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#0F766E" BorderThickness="0" Focusable="False" ToolTip="Teal 700" Click="ColorChip_Click" Tag="#0F766E"/>
+                                            </UniformGrid>
+
+                                            <TextBlock Text="STANDARD COLORS" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="0,0,0,3"/>
+                                            <UniformGrid Columns="10" Rows="1" Margin="0,0,0,6">
+                                                <Button Width="18" Height="18" Margin="1" Background="#C00000" BorderThickness="0" Focusable="False" ToolTip="Dark Red" Click="ColorChip_Click" Tag="#C00000"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FF0000" BorderThickness="0" Focusable="False" ToolTip="Red" Click="ColorChip_Click" Tag="#FF0000"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FFC000" BorderThickness="0" Focusable="False" ToolTip="Orange" Click="ColorChip_Click" Tag="#FFC000"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#FFFF00" BorderThickness="0" Focusable="False" ToolTip="Yellow" Click="ColorChip_Click" Tag="#FFFF00"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#92D050" BorderThickness="0" Focusable="False" ToolTip="Light Green" Click="ColorChip_Click" Tag="#92D050"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#00B050" BorderThickness="0" Focusable="False" ToolTip="Green" Click="ColorChip_Click" Tag="#00B050"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#00B0F0" BorderThickness="0" Focusable="False" ToolTip="Light Blue" Click="ColorChip_Click" Tag="#00B0F0"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#0070C0" BorderThickness="0" Focusable="False" ToolTip="Blue" Click="ColorChip_Click" Tag="#0070C0"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#002060" BorderThickness="0" Focusable="False" ToolTip="Dark Blue" Click="ColorChip_Click" Tag="#002060"/>
+                                                <Button Width="18" Height="18" Margin="1" Background="#7030A0" BorderThickness="0" Focusable="False" ToolTip="Purple" Click="ColorChip_Click" Tag="#7030A0"/>
+                                            </UniformGrid>
+
+                                            <Button Content="🎨 Custom Hex Color..." Focusable="False" Background="#27272A" Foreground="#38BDF8" 
+                                                    BorderBrush="#3F3F46" Padding="6,3" FontSize="10" HorizontalContentAlignment="Center"
+                                                    Click="BtnCustomTextColor_Click"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+
+                                <!-- Text Highlight Button + Dropdown Palette -->
+                                <Button x:Name="BtnWordHighlightColor" ToolTip="Highlight Color Palette" Style="{StaticResource ModernBtn}" Margin="1" Padding="5,2" Click="BtnWordHighlightColor_Click">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="🖍️" FontSize="11"/>
+                                        <Border x:Name="IndicatorHighlightColor" Width="10" Height="3" Background="#FACC15" Margin="3,8,0,0" VerticalAlignment="Bottom"/>
+                                        <TextBlock Text=" ▾" FontSize="8" Margin="1,0,0,0" Foreground="#A1A1AA"/>
+                                    </StackPanel>
+                                </Button>
+                                <Popup x:Name="PopupWordHighlightColor" PlacementTarget="{Binding ElementName=BtnWordHighlightColor}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                    <Border Background="#18181B" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="6" Padding="8" Width="170">
+                                        <StackPanel>
+                                            <Button Content="🚫 No Color / Clear" Focusable="False" Background="#27272A" Foreground="#FFFFFF" 
+                                                    BorderBrush="#3F3F46" Margin="0,0,0,6" Padding="6,3" FontSize="10.5" HorizontalContentAlignment="Left"
+                                                    Click="HighlightChip_Click" Tag="Transparent"/>
+
+                                            <TextBlock Text="HIGHLIGHT COLORS" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="0,0,0,3"/>
+                                            <UniformGrid Columns="5" Rows="3" Margin="0,0,0,2">
+                                                <Button Width="24" Height="20" Margin="1" Background="#FFFF00" BorderThickness="0" Focusable="False" ToolTip="Yellow" Click="HighlightChip_Click" Tag="#FFFF00"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#00FF00" BorderThickness="0" Focusable="False" ToolTip="Bright Green" Click="HighlightChip_Click" Tag="#00FF00"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#00FFFF" BorderThickness="0" Focusable="False" ToolTip="Turquoise" Click="HighlightChip_Click" Tag="#00FFFF"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#FF00FF" BorderThickness="0" Focusable="False" ToolTip="Pink" Click="HighlightChip_Click" Tag="#FF00FF"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#0000FF" BorderThickness="0" Focusable="False" ToolTip="Blue" Click="HighlightChip_Click" Tag="#0000FF"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#FF0000" BorderThickness="0" Focusable="False" ToolTip="Red" Click="HighlightChip_Click" Tag="#FF0000"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#000080" BorderThickness="0" Focusable="False" ToolTip="Dark Blue" Click="HighlightChip_Click" Tag="#000080"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#008080" BorderThickness="0" Focusable="False" ToolTip="Teal" Click="HighlightChip_Click" Tag="#008080"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#800080" BorderThickness="0" Focusable="False" ToolTip="Violet" Click="HighlightChip_Click" Tag="#800080"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#800000" BorderThickness="0" Focusable="False" ToolTip="Dark Red" Click="HighlightChip_Click" Tag="#800000"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#808000" BorderThickness="0" Focusable="False" ToolTip="Dark Yellow" Click="HighlightChip_Click" Tag="#808000"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#808080" BorderThickness="0" Focusable="False" ToolTip="50% Gray" Click="HighlightChip_Click" Tag="#808080"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#C0C0C0" BorderThickness="0" Focusable="False" ToolTip="25% Gray" Click="HighlightChip_Click" Tag="#C0C0C0"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#000000" BorderThickness="0" Focusable="False" ToolTip="Black" Click="HighlightChip_Click" Tag="#000000"/>
+                                                <Button Width="24" Height="20" Margin="1" Background="#EA580C" BorderThickness="0" Focusable="False" ToolTip="Orange" Click="HighlightChip_Click" Tag="#EA580C"/>
+                                            </UniformGrid>
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+                            </StackPanel>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Paragraph Spacing, Alignments & Indents -->
+                            <ComboBox x:Name="CmbWordLineSpacing" Width="55" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                                      ToolTip="Line Spacing Multiplier" SelectionChanged="CmbWordLineSpacing_SelectionChanged">
+                                <ComboBoxItem Content="1.0" IsSelected="True"/>
+                                <ComboBoxItem Content="1.15"/>
+                                <ComboBoxItem Content="1.5"/>
+                                <ComboBoxItem Content="2.0"/>
+                                <ComboBoxItem Content="2.5"/>
+                                <ComboBoxItem Content="3.0"/>
+                            </ComboBox>
+
                             <Button Content="⬅" Width="24" Height="22" ToolTip="Align Left (Ctrl+L)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignLeft_Click"/>
                             <Button Content="⏺" Width="24" Height="22" ToolTip="Align Center (Ctrl+E)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignCenter_Click"/>
                             <Button Content="➡" Width="24" Height="22" ToolTip="Align Right (Ctrl+R)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignRight_Click"/>
                             <Button Content="↔" Width="24" Height="22" ToolTip="Justify (Ctrl+J)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignJustify_Click"/>
+                            
+                            <Button x:Name="BtnWordIndentDecrease" Content="⇤" ToolTip="Decrease Indent" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentDecrease_Click"/>
+                            <Button x:Name="BtnWordIndentIncrease" Content="⇥" ToolTip="Increase Indent" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentIncrease_Click"/>
                             <Button Content="• List" Width="42" Height="22" ToolTip="Bulleted List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBullets_Click"/>
                             <Button Content="1. List" Width="44" Height="22" ToolTip="Numbered List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNumbering_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
-                            <!-- Insert Elements (Table, Image, Date, Line) -->
+                            <!-- Insert Elements (Table, Image, Date, Line, Link, Symbol) -->
                             <Button Content="⊞ Table" ToolTip="Insert 3x3 Table" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertTable_Click"/>
                             <Button Content="🖼 Picture" ToolTip="Insert Image" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertImage_Click"/>
-                            <Button Content="― Rule" ToolTip="Insert Horizontal Divider" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertHr_Click"/>
-                            <Button Content="📅 Date" ToolTip="Insert Current Timestamp" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertDate_Click"/>
+                            <Button Content="― Rule" ToolTip="Insert Divider Line" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertHr_Click"/>
+                            <Button Content="📅 Date" ToolTip="Insert Timestamp" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertDate_Click"/>
+                            <Button x:Name="BtnWordInsertLink" Content="🔗 Link" ToolTip="Insert Hyperlink (Ctrl+K)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertLink_Click"/>
+
+                            <!-- Quick Symbols Dropdown -->
+                            <Button x:Name="BtnWordInsertSymbol" Content="Ω Symbol ▾" ToolTip="Insert Special Symbol / Emoji" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertSymbol_Click"/>
+                            <Popup x:Name="PopupWordSymbol" PlacementTarget="{Binding ElementName=BtnWordInsertSymbol}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                <Border Background="#18181B" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="6" Padding="8" Width="180">
+                                    <StackPanel>
+                                        <TextBlock Text="SPECIAL SYMBOLS &amp; ICONS" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="0,0,0,4"/>
+                                        <UniformGrid Columns="6" Rows="4">
+                                            <Button Content="©" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="©"/>
+                                            <Button Content="®" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="®"/>
+                                            <Button Content="™" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="™"/>
+                                            <Button Content="€" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="€"/>
+                                            <Button Content="£" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="£"/>
+                                            <Button Content="¥" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="¥"/>
+                                            <Button Content="•" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="•"/>
+                                            <Button Content="—" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="—"/>
+                                            <Button Content="–" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="–"/>
+                                            <Button Content="→" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="→"/>
+                                            <Button Content="←" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="←"/>
+                                            <Button Content="↔" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="↔"/>
+                                            <Button Content="✓" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#4ADE80" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="✓"/>
+                                            <Button Content="✕" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#F87171" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="✕"/>
+                                            <Button Content="★" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#FACC15" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="★"/>
+                                            <Button Content="♥" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#F472B6" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="♥"/>
+                                            <Button Content="°" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="°"/>
+                                            <Button Content="±" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="±"/>
+                                            <Button Content="×" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="×"/>
+                                            <Button Content="÷" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="÷"/>
+                                            <Button Content="∞" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="∞"/>
+                                            <Button Content="≈" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="≈"/>
+                                            <Button Content="√" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="√"/>
+                                            <Button Content="⚠️" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="⚠️"/>
+                                        </UniformGrid>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
@@ -868,11 +1102,38 @@
                             <Button Content="Normal" ToolTip="1 inch Margins" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordMarginsNormal_Click"/>
                             <Button Content="Narrow" ToolTip="0.5 inch Margins" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordMarginsNarrow_Click"/>
                             <Button Content="Wide" ToolTip="1.5 inch Margins" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordMarginsWide_Click"/>
+
+                            <Separator Width="1" Height="18" Margin="4,0"/>
+
+                            <!-- Find & Replace -->
+                            <Button x:Name="BtnWordToggleFindReplace" Content="🔍 Replace" ToolTip="Find &amp; Replace (Ctrl+H)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordToggleFindReplace_Click"/>
                         </WrapPanel>
                     </Border>
 
+                    <!-- Word Find & Replace Docked Panel -->
+                    <Border x:Name="WordFindReplacePanel" Grid.Row="1" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="0,0,0,1" Padding="12,6" Visibility="Collapsed">
+                        <DockPanel LastChildFill="False">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Find:" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="11"/>
+                                <TextBox x:Name="TxtWordFind" Width="140" Background="#18181B" Foreground="White" BorderBrush="{DynamicResource BorderBrushLight}" Padding="5,2" Margin="0,0,10,0"/>
+
+                                <TextBlock Text="Replace:" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="11"/>
+                                <TextBox x:Name="TxtWordReplace" Width="140" Background="#18181B" Foreground="White" BorderBrush="{DynamicResource BorderBrushLight}" Padding="5,2" Margin="0,0,10,0"/>
+
+                                <CheckBox x:Name="ChkWordMatchCase" Content="Match Case" Foreground="{DynamicResource WindowFgBrush}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="10.5"/>
+
+                                <Button Content="Find Next" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnWordFindNext_Click"/>
+                                <Button Content="Replace" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnWordReplace_Click"/>
+                                <Button Content="Replace All" Style="{StaticResource AccentBtn}" Margin="2,0" Click="BtnWordReplaceAll_Click"/>
+                                <TextBlock x:Name="TxtWordFindCount" Text="" Foreground="#38BDF8" VerticalAlignment="Center" Margin="8,0,0,0" FontSize="10.5" FontWeight="SemiBold"/>
+                            </StackPanel>
+
+                            <Button Content="✕" DockPanel.Dock="Right" Width="20" Height="20" Style="{StaticResource ModernBtn}" Padding="0" Click="BtnWordCloseFind_Click"/>
+                        </DockPanel>
+                    </Border>
+
                     <!-- Centered A4 Page Editing Canvas -->
-                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+                    <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
                                   Background="{DynamicResource CanvasBgBrush}" Padding="20">
                         <Grid HorizontalAlignment="Center">
                             <Border Width="816" MinHeight="1056" Background="#FFFFFF" CornerRadius="4">
@@ -912,7 +1173,7 @@
                     </ScrollViewer>
 
                     <!-- Word Suite Telemetry & Statistics Status Bar -->
-                    <Border Grid.Row="2" Background="{DynamicResource StatusBarBgBrush}" Padding="12,0">
+                    <Border Grid.Row="3" Background="{DynamicResource StatusBarBgBrush}" Padding="12,0">
                         <DockPanel VerticalAlignment="Center">
                             <TextBlock x:Name="TxtWordStats" Text="Words: 0 | Characters: 0 | Paragraphs: 1 | Reading Time: 1 min" 
                                        Foreground="{DynamicResource StatusBarFgBrush}" FontSize="9.5" FontWeight="SemiBold"/>

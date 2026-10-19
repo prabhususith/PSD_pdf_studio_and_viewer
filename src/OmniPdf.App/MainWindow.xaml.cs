@@ -55,6 +55,8 @@ namespace OmniPdf.App
         private readonly List<Border> _pageCards = new();
         private readonly List<Image> _pageImages = new();
         private readonly List<TextBox> _pageTextBoxes = new();
+        private Color _activePdfPenColor = Color.FromRgb(220, 38, 38);
+        private double _activePdfPenWidth = 2.5;
 
         public MainWindow()
         {
@@ -1239,6 +1241,76 @@ namespace OmniPdf.App
             WordDocumentService.PrintDocument(RtbWordEditor, "Omni Word Document");
         }
 
+        private void BtnWordUndo_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor != null && RtbWordEditor.CanUndo)
+            {
+                RtbWordEditor.Undo();
+            }
+        }
+
+        private void BtnWordRedo_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor != null && RtbWordEditor.CanRedo)
+            {
+                RtbWordEditor.Redo();
+            }
+        }
+
+        private void CmbWordStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CmbWordStyle?.SelectedItem is ComboBoxItem item && RtbWordEditor != null)
+            {
+                string style = item.Content?.ToString() ?? "Normal";
+                switch (style)
+                {
+                    case "Title":
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 26.0);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(30, 41, 59)));
+                        break;
+                    case "Subtitle":
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 16.0);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Italic);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(100, 116, 139)));
+                        break;
+                    case "Heading 1":
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 20.0);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(15, 23, 42)));
+                        break;
+                    case "Heading 2":
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 16.0);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.SemiBold);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(30, 41, 59)));
+                        break;
+                    case "Heading 3":
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 13.5);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Medium);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(51, 65, 85)));
+                        break;
+                    case "Quote":
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 11.5);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Italic);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(71, 85, 105)));
+                        break;
+                    case "Code":
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, new FontFamily("Consolas"));
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 10.5);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Color.FromRgb(241, 245, 249)));
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(15, 23, 42)));
+                        break;
+                    default: // Normal
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 11.0);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Normal);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(15, 23, 42)));
+                        break;
+                }
+            }
+        }
+
         private void CmbWordFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CmbWordFontFamily?.SelectedItem is ComboBoxItem item && RtbWordEditor != null)
@@ -1287,23 +1359,376 @@ namespace OmniPdf.App
             }
         }
 
+        private void BtnWordSubscript_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor == null) return;
+            var current = RtbWordEditor.Selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
+            if (current is BaselineAlignment align && align == BaselineAlignment.Subscript)
+            {
+                RtbWordEditor.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+                RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 11.0);
+            }
+            else
+            {
+                RtbWordEditor.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
+                RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 8.5);
+            }
+        }
+
+        private void BtnWordSuperscript_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor == null) return;
+            var current = RtbWordEditor.Selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
+            if (current is BaselineAlignment align && align == BaselineAlignment.Superscript)
+            {
+                RtbWordEditor.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+                RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 11.0);
+            }
+            else
+            {
+                RtbWordEditor.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
+                RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 8.5);
+            }
+        }
+
+        private void BtnWordClearFormat_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor == null) return;
+            RtbWordEditor.Selection.ClearAllProperties();
+            RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, new FontFamily("Calibri"));
+            RtbWordEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, 11.0);
+            RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Color.FromRgb(15, 23, 42)));
+            RtbWordEditor.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent);
+            RtbWordEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, null);
+            RtbWordEditor.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+        }
+
         private void BtnWordTextColor_Click(object sender, RoutedEventArgs e)
         {
-            var colors = new[] { Brushes.Black, Brushes.Navy, Brushes.Crimson, Brushes.DarkGreen, Brushes.DarkViolet };
-            RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, colors[new Random().Next(colors.Length)]);
+            if (PopupWordTextColor != null)
+            {
+                PopupWordTextColor.IsOpen = !PopupWordTextColor.IsOpen;
+            }
+        }
+
+        private void ColorChip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string hex && RtbWordEditor != null)
+            {
+                try
+                {
+                    var color = (Color)ColorConverter.ConvertFromString(hex);
+                    var brush = new SolidColorBrush(color);
+                    RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+                    if (IndicatorTextColor != null)
+                    {
+                        IndicatorTextColor.Background = brush;
+                    }
+                }
+                catch { }
+            }
+            if (PopupWordTextColor != null) PopupWordTextColor.IsOpen = false;
+        }
+
+        private void BtnCustomTextColor_Click(object sender, RoutedEventArgs e)
+        {
+            if (PopupWordTextColor != null) PopupWordTextColor.IsOpen = false;
+
+            string? prompt = PromptInput(this, "Enter custom color hex code (e.g. #FF5722 or #2E7D32):", "Custom Text Color", "#2563EB");
+            if (!string.IsNullOrWhiteSpace(prompt))
+            {
+                try
+                {
+                    if (!prompt.StartsWith("#")) prompt = "#" + prompt;
+                    var color = (Color)ColorConverter.ConvertFromString(prompt);
+                    var brush = new SolidColorBrush(color);
+                    RtbWordEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+                    if (IndicatorTextColor != null)
+                    {
+                        IndicatorTextColor.Background = brush;
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Invalid hex color code. Please use format #RRGGBB.", "Invalid Color", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
 
         private void BtnWordHighlightColor_Click(object sender, RoutedEventArgs e)
         {
-            var cur = RtbWordEditor.Selection.GetPropertyValue(TextElement.BackgroundProperty);
-            if (cur is SolidColorBrush sb && sb.Color == Colors.Yellow)
+            if (PopupWordHighlightColor != null)
             {
-                RtbWordEditor.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent);
+                PopupWordHighlightColor.IsOpen = !PopupWordHighlightColor.IsOpen;
+            }
+        }
+
+        private void HighlightChip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string val && RtbWordEditor != null)
+            {
+                if (val.Equals("Transparent", StringComparison.OrdinalIgnoreCase))
+                {
+                    RtbWordEditor.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent);
+                    if (IndicatorHighlightColor != null)
+                    {
+                        IndicatorHighlightColor.Background = Brushes.Transparent;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        var color = (Color)ColorConverter.ConvertFromString(val);
+                        var brush = new SolidColorBrush(color);
+                        RtbWordEditor.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, brush);
+                        if (IndicatorHighlightColor != null)
+                        {
+                            IndicatorHighlightColor.Background = brush;
+                        }
+                    }
+                    catch { }
+                }
+            }
+            if (PopupWordHighlightColor != null) PopupWordHighlightColor.IsOpen = false;
+        }
+
+        private void CmbWordLineSpacing_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CmbWordLineSpacing?.SelectedItem is ComboBoxItem item && RtbWordEditor != null)
+            {
+                string tag = item.Tag?.ToString() ?? "1.15";
+                if (double.TryParse(tag, out double multiplier))
+                {
+                    double curSize = 11.0;
+                    var fs = RtbWordEditor.Selection.GetPropertyValue(TextElement.FontSizeProperty);
+                    if (fs is double d) curSize = d;
+                    double lineHeight = curSize * multiplier * 1.25;
+                    RtbWordEditor.Selection.ApplyPropertyValue(Block.LineHeightProperty, lineHeight);
+                }
+            }
+        }
+
+        private void BtnWordIndentDecrease_Click(object sender, RoutedEventArgs e)
+        {
+            EditingCommands.DecreaseIndentation.Execute(null, RtbWordEditor);
+        }
+
+        private void BtnWordIndentIncrease_Click(object sender, RoutedEventArgs e)
+        {
+            EditingCommands.IncreaseIndentation.Execute(null, RtbWordEditor);
+        }
+
+        private void BtnWordInsertLink_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor == null) return;
+            string selText = RtbWordEditor.Selection.Text;
+            if (string.IsNullOrWhiteSpace(selText)) selText = "Link";
+
+            string? url = PromptInput(this, "Enter Destination URL (e.g. https://www.google.com):", "Insert Hyperlink", "https://");
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                try
+                {
+                    var link = new Hyperlink(new Run(selText))
+                    {
+                        NavigateUri = new Uri(url),
+                        Foreground = new SolidColorBrush(Color.FromRgb(37, 99, 235))
+                    };
+                    link.RequestNavigate += (s, req) =>
+                    {
+                        try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(req.Uri.AbsoluteUri) { UseShellExecute = true }); } catch { }
+                    };
+
+                    new TextRange(RtbWordEditor.Selection.Start, RtbWordEditor.Selection.End) { Text = "" };
+                    var para = RtbWordEditor.CaretPosition.Paragraph ?? new Paragraph();
+                    para.Inlines.Add(link);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Could not insert hyperlink: {ex.Message}", "Hyperlink Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void BtnWordInsertSymbol_Click(object sender, RoutedEventArgs e)
+        {
+            if (PopupWordSymbol != null)
+            {
+                PopupWordSymbol.IsOpen = !PopupWordSymbol.IsOpen;
+            }
+        }
+
+        private void SymbolChip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Content is string symbol && RtbWordEditor != null)
+            {
+                RtbWordEditor.Selection.Text = symbol;
+                RtbWordEditor.CaretPosition = RtbWordEditor.Selection.End;
+            }
+            if (PopupWordSymbol != null) PopupWordSymbol.IsOpen = false;
+        }
+
+        private void BtnWordToggleFindReplace_Click(object sender, RoutedEventArgs e)
+        {
+            if (WordFindReplacePanel == null) return;
+            if (WordFindReplacePanel.Visibility == Visibility.Visible)
+            {
+                WordFindReplacePanel.Visibility = Visibility.Collapsed;
             }
             else
             {
-                RtbWordEditor.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Color.FromArgb(180, 255, 255, 0)));
+                WordFindReplacePanel.Visibility = Visibility.Visible;
+                TxtWordFind?.Focus();
+                TxtWordFind?.SelectAll();
             }
+        }
+
+        private void BtnWordCloseFind_Click(object sender, RoutedEventArgs e)
+        {
+            if (WordFindReplacePanel != null)
+            {
+                WordFindReplacePanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private TextRange? FindNextText(string query, bool matchCase)
+        {
+            if (RtbWordEditor == null || string.IsNullOrEmpty(query)) return null;
+
+            TextPointer start = RtbWordEditor.Selection.End ?? RtbWordEditor.Document.ContentStart;
+            TextRange? match = SearchTextInDocument(start, RtbWordEditor.Document.ContentEnd, query, matchCase);
+            if (match == null)
+            {
+                match = SearchTextInDocument(RtbWordEditor.Document.ContentStart, start, query, matchCase);
+            }
+            return match;
+        }
+
+        private TextRange? SearchTextInDocument(TextPointer start, TextPointer end, string query, bool matchCase)
+        {
+            TextPointer current = start;
+            StringComparison comparison = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+            while (current != null && current.CompareTo(end) < 0)
+            {
+                if (current.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
+                {
+                    string text = current.GetTextInRun(LogicalDirection.Forward);
+                    int index = text.IndexOf(query, comparison);
+                    if (index >= 0)
+                    {
+                        TextPointer matchStart = current.GetPositionAtOffset(index);
+                        TextPointer matchEnd = current.GetPositionAtOffset(index + query.Length);
+                        return new TextRange(matchStart, matchEnd);
+                    }
+                }
+                current = current.GetNextContextPosition(LogicalDirection.Forward);
+            }
+            return null;
+        }
+
+        private void BtnWordFindNext_Click(object sender, RoutedEventArgs e)
+        {
+            string query = TxtWordFind?.Text ?? "";
+            if (string.IsNullOrEmpty(query))
+            {
+                if (TxtWordFindCount != null) TxtWordFindCount.Text = "Please enter search term";
+                return;
+            }
+
+            bool matchCase = ChkWordMatchCase?.IsChecked == true;
+            var range = FindNextText(query, matchCase);
+            if (range != null)
+            {
+                RtbWordEditor.Selection.Select(range.Start, range.End);
+                RtbWordEditor.Focus();
+                if (TxtWordFindCount != null) TxtWordFindCount.Text = "Match found";
+            }
+            else
+            {
+                if (TxtWordFindCount != null) TxtWordFindCount.Text = "No matches found";
+            }
+        }
+
+        private void BtnWordReplace_Click(object sender, RoutedEventArgs e)
+        {
+            string query = TxtWordFind?.Text ?? "";
+            string replaceWith = TxtWordReplace?.Text ?? "";
+            if (string.IsNullOrEmpty(query)) return;
+
+            bool matchCase = ChkWordMatchCase?.IsChecked == true;
+            StringComparison comparison = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+            if (RtbWordEditor.Selection.Text.Equals(query, comparison))
+            {
+                RtbWordEditor.Selection.Text = replaceWith;
+                _isWordModified = true;
+                UpdateWordStats();
+            }
+
+            BtnWordFindNext_Click(sender, e);
+        }
+
+        private void BtnWordReplaceAll_Click(object sender, RoutedEventArgs e)
+        {
+            string query = TxtWordFind?.Text ?? "";
+            string replaceWith = TxtWordReplace?.Text ?? "";
+            if (string.IsNullOrEmpty(query) || RtbWordEditor == null) return;
+
+            bool matchCase = ChkWordMatchCase?.IsChecked == true;
+            int count = 0;
+
+            var start = RtbWordEditor.Document.ContentStart;
+            TextRange? range;
+            while ((range = SearchTextInDocument(start, RtbWordEditor.Document.ContentEnd, query, matchCase)) != null)
+            {
+                range.Text = replaceWith;
+                start = range.End;
+                count++;
+            }
+
+            _isWordModified = true;
+            UpdateWordStats();
+            if (TxtWordFindCount != null) TxtWordFindCount.Text = $"Replaced {count} occurrence{(count == 1 ? "" : "s")}";
+        }
+
+        private static string? PromptInput(Window owner, string prompt, string title, string defaultText = "")
+        {
+            var win = new Window
+            {
+                Title = title,
+                Width = 420,
+                Height = 170,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = owner,
+                ResizeMode = ResizeMode.NoResize,
+                Background = new SolidColorBrush(Color.FromRgb(248, 250, 252)),
+                WindowStyle = WindowStyle.ToolWindow
+            };
+
+            var stack = new StackPanel { Margin = new Thickness(16) };
+            stack.Children.Add(new TextBlock { Text = prompt, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 8), Foreground = new SolidColorBrush(Color.FromRgb(15, 23, 42)) });
+            var txt = new TextBox { Text = defaultText, Height = 28, Padding = new Thickness(6, 4, 6, 4), Background = Brushes.White, BorderBrush = new SolidColorBrush(Color.FromRgb(203, 213, 225)), Margin = new Thickness(0, 0, 0, 12) };
+            stack.Children.Add(txt);
+
+            var btnPanel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+            var okBtn = new Button { Content = "OK", Width = 75, Height = 26, Margin = new Thickness(0, 0, 8, 0), IsDefault = true, Background = new SolidColorBrush(Color.FromRgb(37, 99, 235)), Foreground = Brushes.White, BorderThickness = new Thickness(0) };
+            var cancelBtn = new Button { Content = "Cancel", Width = 75, Height = 26, IsCancel = true, Background = new SolidColorBrush(Color.FromRgb(226, 232, 240)), BorderThickness = new Thickness(0) };
+
+            string? result = null;
+            okBtn.Click += (s, e) => { result = txt.Text; win.DialogResult = true; win.Close(); };
+            cancelBtn.Click += (s, e) => { win.DialogResult = false; win.Close(); };
+
+            btnPanel.Children.Add(okBtn);
+            btnPanel.Children.Add(cancelBtn);
+            stack.Children.Add(btnPanel);
+            win.Content = stack;
+
+            txt.Focus();
+            txt.SelectAll();
+
+            return win.ShowDialog() == true ? result : null;
         }
 
         private void BtnWordAlignLeft_Click(object sender, RoutedEventArgs e)
@@ -1448,6 +1873,54 @@ namespace OmniPdf.App
             }
         }
 
+        private void BtnPdfPenColor_Click(object sender, RoutedEventArgs e)
+        {
+            if (PopupPdfPenColor != null)
+            {
+                PopupPdfPenColor.IsOpen = !PopupPdfPenColor.IsOpen;
+            }
+        }
+
+        private void PdfPenColorChip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string hex)
+            {
+                try
+                {
+                    var col = (Color)ColorConverter.ConvertFromString(hex);
+                    _activePdfPenColor = col;
+                    if (PageInkCanvas != null)
+                    {
+                        PageInkCanvas.DefaultDrawingAttributes.Color = col;
+                    }
+                    if (IndicatorPenColor != null)
+                    {
+                        IndicatorPenColor.Background = new SolidColorBrush(col);
+                    }
+                }
+                catch { }
+            }
+            if (PopupPdfPenColor != null) PopupPdfPenColor.IsOpen = false;
+        }
+
+        private void CmbPdfPenWidth_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CmbPdfPenWidth?.SelectedItem is ComboBoxItem item)
+            {
+                string text = item.Content?.ToString() ?? "2.5";
+                string[] parts = text.Split(' ');
+                if (double.TryParse(parts[0], out double w))
+                {
+                    _activePdfPenWidth = w;
+                    if (PageInkCanvas != null)
+                    {
+                        PageInkCanvas.DefaultDrawingAttributes.Width = w;
+                        PageInkCanvas.DefaultDrawingAttributes.Height = w;
+                    }
+                }
+            }
+        }
+
         private void SetTool(string toolName)
         {
             _activeTool = toolName;
@@ -1461,9 +1934,9 @@ namespace OmniPdf.App
                 case "Ink":
                     PageInkCanvas.IsHitTestVisible = true;
                     PageInkCanvas.EditingMode = InkCanvasEditingMode.Ink;
-                    PageInkCanvas.DefaultDrawingAttributes.Color = Color.FromRgb(220, 38, 38);
-                    PageInkCanvas.DefaultDrawingAttributes.Width = 2.5;
-                    PageInkCanvas.DefaultDrawingAttributes.Height = 2.5;
+                    PageInkCanvas.DefaultDrawingAttributes.Color = _activePdfPenColor;
+                    PageInkCanvas.DefaultDrawingAttributes.Width = _activePdfPenWidth;
+                    PageInkCanvas.DefaultDrawingAttributes.Height = _activePdfPenWidth;
                     PageInkCanvas.DefaultDrawingAttributes.IsHighlighter = false;
                     break;
 
