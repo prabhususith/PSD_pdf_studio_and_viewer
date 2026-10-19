@@ -25,7 +25,8 @@ namespace OmniPdf.App
         public MainWindow()
         {
             InitializeComponent();
-            TabList.ItemsSource = _documents;
+            if (CmbTheme != null) CmbTheme.SelectedIndex = 0;
+            if (TabList != null) TabList.ItemsSource = _documents;
 
             // Load initial document
             var initialDoc = PdfDocumentModel.CreateDefault("Sample Document.pdf", 3);
@@ -36,12 +37,15 @@ namespace OmniPdf.App
         private void SelectDocument(PdfDocumentModel doc)
         {
             _activeDoc = doc;
-            TabList.SelectedItem = doc;
-            ThumbnailList.ItemsSource = null;
-            ThumbnailList.ItemsSource = doc.Pages;
-            if (doc.Pages.Count > 0)
+            if (TabList != null) TabList.SelectedItem = doc;
+            if (ThumbnailList != null)
             {
-                ThumbnailList.SelectedIndex = Math.Clamp(doc.CurrentPageIndex, 0, doc.Pages.Count - 1);
+                ThumbnailList.ItemsSource = null;
+                ThumbnailList.ItemsSource = doc.Pages;
+                if (doc.Pages.Count > 0)
+                {
+                    ThumbnailList.SelectedIndex = Math.Clamp(doc.CurrentPageIndex, 0, doc.Pages.Count - 1);
+                }
             }
             DisplayActivePage();
             UpdateStatus();
@@ -49,6 +53,7 @@ namespace OmniPdf.App
 
         private void DisplayActivePage()
         {
+            if (ImgPageRender == null || TxtPageContent == null || PageBorder == null) return;
             if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
             var page = _activeDoc.Pages[Math.Clamp(_activeDoc.CurrentPageIndex, 0, _activeDoc.Pages.Count - 1)];
 
@@ -70,6 +75,7 @@ namespace OmniPdf.App
 
         private void UpdateStatus()
         {
+            if (StatusPage == null || StatusLru == null) return;
             if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
             StatusPage.Text = $"Page {_activeDoc.CurrentPageIndex + 1} of {_activeDoc.Pages.Count}";
             double lruMb = Math.Round(_lruCache.CurrentBytes / (1024.0 * 1024.0), 2);
@@ -78,7 +84,7 @@ namespace OmniPdf.App
 
         private void TabList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (TabList.SelectedItem is PdfDocumentModel doc)
+            if (TabList?.SelectedItem is PdfDocumentModel doc)
             {
                 SelectDocument(doc);
             }
@@ -110,6 +116,7 @@ namespace OmniPdf.App
 
         private void ThumbnailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ThumbnailList == null) return;
             if (_activeDoc != null && ThumbnailList.SelectedIndex >= 0)
             {
                 _activeDoc.CurrentPageIndex = ThumbnailList.SelectedIndex;
@@ -120,6 +127,7 @@ namespace OmniPdf.App
 
         private void UpdatePageRotation(int degrees)
         {
+            if (PageBorder == null) return;
             PageBorder.LayoutTransform = new RotateTransform(degrees);
         }
 
@@ -246,9 +254,10 @@ namespace OmniPdf.App
 
         private void CmbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (PageBorder == null || CmbTheme == null) return;
             if (CmbTheme.SelectedItem is ComboBoxItem item)
             {
-                string theme = item.Content.ToString() ?? "";
+                string theme = item.Content?.ToString() ?? "";
                 if (theme == "OLED Black")
                 {
                     Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));

@@ -83,7 +83,7 @@
                 <!-- Themes -->
                 <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="4,0" Foreground="#AAAAAA" FontSize="11"/>
                 <ComboBox x:Name="CmbTheme" Width="120" Margin="2" SelectionChanged="CmbTheme_SelectionChanged">
-                    <ComboBoxItem Content="Fluent Dark" IsSelected="True"/>
+                    <ComboBoxItem Content="Fluent Dark"/>
                     <ComboBoxItem Content="OLED Black"/>
                     <ComboBoxItem Content="Sepia Reading"/>
                     <ComboBoxItem Content="Windows Mica"/>

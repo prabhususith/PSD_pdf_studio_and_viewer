@@ -48,7 +48,7 @@ if (Test-Path -LiteralPath "$PortableDir") {
 
 Write-Host "`n[1/4] Compiling Standalone Native Windows Application (.NET 8)..." -ForegroundColor Yellow
 $ProjPath = Join-Path -Path $RootDir -ChildPath "src\OmniPdf.App\OmniPdf.App.csproj"
-& "$DotnetPath" publish "$ProjPath" -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o "$PortableDir" | Out-Null
+& "$DotnetPath" publish "$ProjPath" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o "$PortableDir" | Out-Null
 
 $ExeSource = Join-Path -Path $PortableDir -ChildPath "omni_pdf.exe"
 $DllSource = Join-Path -Path $PortableDir -ChildPath "pdfengine.dll"
