@@ -32,6 +32,21 @@ namespace OmniPdf.App
         {
             InitializeComponent();
 
+            // Responsive window sizing adapted dynamically to user's screen resolution and Windows DPI scale
+            try
+            {
+                double workWidth = SystemParameters.WorkArea.Width;
+                double workHeight = SystemParameters.WorkArea.Height;
+                if (workWidth > 0 && workHeight > 0)
+                {
+                    Width = Math.Min(1140, workWidth * 0.94);
+                    Height = Math.Min(630, workHeight * 0.90);
+                    Left = Math.Max(0, (workWidth - Width) / 2);
+                    Top = Math.Max(0, (workHeight - Height) / 2);
+                }
+            }
+            catch { }
+
             // Safe UI initializations
             if (CmbTheme != null) CmbTheme.SelectedIndex = 0;
             if (TabList != null) TabList.ItemsSource = _documents;
@@ -630,6 +645,25 @@ namespace OmniPdf.App
                 _documents.Add(win.GeneratedDocument);
                 SelectDocument(win.GeneratedDocument);
             }
+        }
+
+        #endregion
+
+        #region Window Caption Controls (Minimize, Maximize, Close)
+
+        private void BtnWinMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void BtnWinMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+        }
+
+        private void BtnWinClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         #endregion

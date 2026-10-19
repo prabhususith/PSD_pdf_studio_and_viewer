@@ -2,8 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Omni PDF Studio - High-Performance Vector PDF Engine &amp; Studio Suite"
-        Height="900" Width="1440" MinHeight="700" MinWidth="1100"
+        Height="630" Width="1140" MinHeight="450" MinWidth="750"
         WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResizeWithGrip"
         Background="#0F0F12" Foreground="#ECECEF"
         FontFamily="Segoe UI, Segoe UI Variable, Arial">
 
@@ -108,7 +110,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="240"/> <!-- Left Navigation Rail -->
+            <ColumnDefinition Width="200"/> <!-- Left Navigation Rail -->
             <ColumnDefinition Width="*"/>   <!-- Main Dynamic Content Stage -->
         </Grid.ColumnDefinitions>
 
@@ -154,9 +156,9 @@
                     <TextBlock Text="WORKSPACES" FontSize="10" FontWeight="Bold" Foreground="#71717A" Margin="8,0,0,8"/>
                     
                     <Button x:Name="NavBtnLibrary" Style="{StaticResource NavRailBtn}" Click="NavBtnLibrary_Click">
-                        <DockPanel Width="190">
+                        <DockPanel Width="160">
                             <TextBlock Text="📚  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="#0284C7" CornerRadius="10" Padding="8,2">
+                            <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="#0284C7" CornerRadius="10" Padding="6,2">
                                 <TextBlock x:Name="TxtLibraryBadge" Text="0" FontSize="10" FontWeight="Bold" Foreground="White"/>
                             </Border>
                         </DockPanel>
@@ -202,17 +204,24 @@
 
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <!-- Live Search Input -->
-                            <Border Background="#1F1F23" CornerRadius="6" BorderBrush="#3F3F46" BorderThickness="1" Padding="8,4" Margin="0,0,12,0">
+                            <Border Background="#1F1F23" CornerRadius="6" BorderBrush="#3F3F46" BorderThickness="1" Padding="8,4" Margin="0,0,8,0">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="🔍" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBox x:Name="TxtLibrarySearch" Width="240" Background="Transparent" Foreground="White" 
+                                    <TextBlock Text="🔍" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <TextBox x:Name="TxtLibrarySearch" Width="160" Background="Transparent" Foreground="White" 
                                              BorderThickness="0" FontSize="12" VerticalAlignment="Center"
                                              TextChanged="TxtLibrarySearch_TextChanged"/>
                                 </StackPanel>
                             </Border>
 
-                            <Button Content="🔄 Rescan Device" Style="{StaticResource ModernBtn}" Margin="0,0,8,0" Click="BtnRescanLibrary_Click"/>
-                            <Button Content="📂 Open External PDF" Style="{StaticResource AccentBtn}" Click="BtnOpenFile_Click"/>
+                            <Button Content="🔄 Rescan" Style="{StaticResource ModernBtn}" Margin="0,0,6,0" Click="BtnRescanLibrary_Click"/>
+                            <Button Content="📂 Open PDF" Style="{StaticResource AccentBtn}" Margin="0,0,10,0" Click="BtnOpenFile_Click"/>
+
+                            <Separator Width="1" Height="22" Background="#3F3F46" Margin="0,0,10,0"/>
+
+                            <!-- Window Caption Controls -->
+                            <Button Content="🗕" Width="30" Height="26" ToolTip="Minimize" Style="{StaticResource ModernBtn}" Margin="0,0,3,0" Click="BtnWinMinimize_Click"/>
+                            <Button Content="🗖" Width="30" Height="26" ToolTip="Maximize / Restore" Style="{StaticResource ModernBtn}" Margin="0,0,3,0" Click="BtnWinMaximize_Click"/>
+                            <Button Content="✕" Width="30" Height="26" ToolTip="Close Application" Background="#991B1B" Foreground="White" BorderBrush="#DC2626" Style="{StaticResource ModernBtn}" Click="BtnWinClose_Click"/>
                         </StackPanel>
                     </DockPanel>
                 </Border>
@@ -342,8 +351,14 @@
                 <!-- Document Tabs Bar -->
                 <Border Grid.Row="0" Background="#18181B" BorderBrush="#27272A" BorderThickness="0,0,0,1" Padding="10,6,10,0">
                     <DockPanel>
-                        <Button x:Name="BtnNewTab" Content="➕ New Tab" Width="90" Height="26" DockPanel.Dock="Right" 
-                                Style="{StaticResource ModernBtn}" Margin="6,0,0,4" Click="BtnNewTab_Click"/>
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,4">
+                            <Button x:Name="BtnNewTab" Content="➕ New Tab" Width="90" Height="26" 
+                                    Style="{StaticResource ModernBtn}" Margin="0,0,8,0" Click="BtnNewTab_Click"/>
+                            <Separator Width="1" Height="20" Background="#3F3F46" Margin="0,0,8,0"/>
+                            <Button Content="🗕" Width="30" Height="26" ToolTip="Minimize" Style="{StaticResource ModernBtn}" Margin="0,0,3,0" Click="BtnWinMinimize_Click"/>
+                            <Button Content="🗖" Width="30" Height="26" ToolTip="Maximize / Restore" Style="{StaticResource ModernBtn}" Margin="0,0,3,0" Click="BtnWinMaximize_Click"/>
+                            <Button Content="✕" Width="30" Height="26" ToolTip="Close Application" Background="#991B1B" Foreground="White" BorderBrush="#DC2626" Style="{StaticResource ModernBtn}" Click="BtnWinClose_Click"/>
+                        </StackPanel>
 
                         <ListBox x:Name="TabList" Background="Transparent" BorderThickness="0" 
                                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
