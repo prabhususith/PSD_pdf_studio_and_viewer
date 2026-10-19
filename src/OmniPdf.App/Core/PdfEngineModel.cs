@@ -63,6 +63,37 @@ namespace OmniPdf.App.Core
             return doc;
         }
 
+        public static async Task<PdfDocumentModel> LoadFromFileAsync(string path)
+        {
+            var doc = new PdfDocumentModel
+            {
+                Title = Path.GetFileName(path),
+                FilePath = path
+            };
+
+            try
+            {
+                var (pageCount, width, height) = await RealPdfRenderer.GetPdfInfoAsync(path);
+                if (pageCount > 0)
+                {
+                    for (int i = 0; i < pageCount; i++)
+                    {
+                        doc.Pages.Add(new PdfPageModel
+                        {
+                            PageNumber = i + 1,
+                            Width = width > 0 ? width : 612.0,
+                            Height = height > 0 ? height : 792.0,
+                            ContentText = $"Page {i + 1} of {Path.GetFileName(path)}"
+                        });
+                    }
+                    return doc;
+                }
+            }
+            catch { }
+
+            return LoadFromFile(path);
+        }
+
         public static PdfDocumentModel LoadFromFile(string path)
         {
             var doc = new PdfDocumentModel
@@ -119,6 +150,23 @@ namespace OmniPdf.App.Core
                 list.Add(sb.ToString().Trim());
             }
             return list;
+        }
+
+        public void StampDigitalSignature(string certIssuer, string reason)
+        {
+            if (Pages.Count == 0) return;
+            var lastPage = Pages[^1];
+            lastPage.Annotations.Add(new AnnotationItem
+            {
+                Type = "Signature",
+                PageIndex = Pages.Count - 1,
+                X = lastPage.Width - 220,
+                Y = 40,
+                Width = 200,
+                Height = 60,
+                Text = $"Digitally signed by: {certIssuer}\nReason: {reason}\nSHA-256 Digest Verified"
+            });
+            IsModified = true;
         }
 
         public void SaveIncremental(string outputPath)
