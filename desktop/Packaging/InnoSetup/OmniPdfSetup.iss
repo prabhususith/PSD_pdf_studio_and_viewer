@@ -17,7 +17,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=
-OutputDir=..\..\..\build\dist
+OutputDir=P:\prabhu\projects\git\Omni PDF Desktop\build\dist
 OutputBaseFilename=OmniPdf-Setup
 Compression=lzma2/ultra64
 SolidCompression=yes
@@ -35,8 +35,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "pdfassoc"; Description: "Associate Omni PDF with .pdf files"; GroupDescription: "File Associations:"
 
 [Files]
-Source: "..\..\..\build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\..\..\build\dist\pdfengine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "P:\prabhu\projects\git\Omni PDF Desktop\build\dist\portable\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Registry]
 ; PDF file association

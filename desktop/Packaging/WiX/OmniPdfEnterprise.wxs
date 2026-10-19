@@ -5,36 +5,24 @@
            UpgradeCode="9F8A8B7C-6D5E-4F3A-2B1C-0D9E8F7A6B5C"
            Scope="perMachine">
 
-    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
     <MediaTemplate EmbedCab="yes" />
 
-    <StandardDirectory Id="ProgramFiles64Folder">
-      <Directory Id="INSTALLFOLDER" Name="Omni PDF Studio">
-        <Component Id="MainExecutable" Guid="1A2B3C4D-5E6F-7A8B-9C0D-1E2F3A4B5C6D" Bitness="always64">
-          <File Id="omni_pdf.exe" Source="..\..\..\build\windows\x64\runner\Release\omni_pdf.exe" KeyPath="yes">
-            <Shortcut Id="StartMenuShortcut"
-                      Directory="ProgramMenuFolder"
-                      Name="Omni PDF Studio"
-                      WorkingDirectory="INSTALLFOLDER"
-                      Advertise="yes" />
-            <Shortcut Id="DesktopShortcut"
-                      Directory="DesktopFolder"
-                      Name="Omni PDF Studio"
-                      WorkingDirectory="INSTALLFOLDER"
-                      Advertise="yes" />
-          </File>
-          <File Id="pdfengine.dll" Source="..\..\..\build\dist\pdfengine.dll" />
-          <File Id="flutter_windows.dll" Source="..\..\..\build\windows\x64\runner\Release\flutter_windows.dll" />
-        </Component>
-      </Directory>
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLFOLDER" Name="Omni PDF Studio" />
     </StandardDirectory>
 
-    <StandardDirectory Id="ProgramMenuFolder" />
-    <StandardDirectory Id="DesktopFolder" />
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="MainExecutable" Guid="1A2B3C4D-5E6F-7A8B-9C0D-1E2F3A4B5C6D" Bitness="always64">
+        <File Id="omni_pdf.exe"
+              Source="P:\prabhu\projects\git\Omni PDF Desktop\build\dist\portable\omni_pdf.exe"
+              KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
 
-    <Feature Id="ProductFeature" Title="Omni PDF Studio Core" Level="1">
-      <ComponentRef Id="MainExecutable" />
+    <Feature Id="MainFeature" Title="Omni PDF Studio Enterprise Core">
+      <ComponentGroupRef Id="ProductComponents" />
     </Feature>
   </Package>
 </Wix>
