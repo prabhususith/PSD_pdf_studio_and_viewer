@@ -1,0 +1,56 @@
+﻿# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# Build artifacts
+build/
+build_temp/
+dist/
+bin/
+obj/
+*.apk
+*.aab
+*.msi
+*.exe.intermediate
+*.pdb
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/ios/.generated/
+
+# Android
+android/local.properties
+android/.gradle/
+android/captures/
+android/gradleBuild/
+android/app/build/
+android/app/intermediates/
+android/app/generated/
+**/GeneratedPluginRegistrant.java
+
+# Visual Studio / C++
+.vs/
+*.vcxproj.user
+*.VC.db
+*.opendb
+x64/
+Debug/
+Release/
+
+# InnoSetup & WiX
+*.cab
+*.wixobj
+*.wixpdb
