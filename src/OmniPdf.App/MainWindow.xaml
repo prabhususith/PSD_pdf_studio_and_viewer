@@ -70,13 +70,13 @@
 
                 <!-- Page Operations -->
                 <Button x:Name="BtnRotatePage" Content="Rotate 90°" Margin="2" Padding="8,4" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnRotatePage_Click"/>
-                <Button x:Name="BtnPageOrganizer" Content="Page Organizer" Margin="2" Padding="8,4" Background="#008080" Foreground="White" BorderThickness="0" Click="BtnPageOrganizer_Click"/>
+                <Button x:Name="BtnPageOrganizer" Content="Page Organizer" Margin="2" Padding="8,4" Background="#008080" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Click="BtnPageOrganizer_Click"/>
 
                 <Separator Width="1" Height="22" Background="#555555" Margin="8,0"/>
 
                 <!-- Enhanced Scanner & Converter Tools -->
-                <Button x:Name="BtnScanner" Content="Camera Scanner" Margin="2" Padding="8,4" Background="#68217A" Foreground="White" BorderThickness="0" Click="BtnScanner_Click"/>
-                <Button x:Name="BtnTextConverter" Content="Text Converter (PDF &lt;-&gt; Text)" Margin="2" Padding="8,4" Background="#107C41" Foreground="White" BorderThickness="0" Click="BtnTextConverter_Click"/>
+                <Button x:Name="BtnScanner" Content="Camera Scanner" Margin="2" Padding="8,4" Background="#68217A" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Click="BtnScanner_Click"/>
+                <Button x:Name="BtnTextConverter" Content="Text Converter (PDF &lt;-&gt; Text)" Margin="2" Padding="8,4" Background="#107C41" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Click="BtnTextConverter_Click"/>
 
                 <Separator Width="1" Height="22" Background="#555555" Margin="8,0"/>
 
@@ -127,6 +127,7 @@
                             <DataTemplate>
                                 <Border Background="#FAFAFA" Width="140" Height="190" Margin="6" CornerRadius="3" BorderBrush="#555555" BorderThickness="1">
                                     <Grid>
+                                        <Image Source="{Binding RenderedImage}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding PageNumber}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Foreground="#CCCCCC" FontWeight="Bold"/>
                                         <TextBlock Text="{Binding PageNumber, StringFormat='Page {0}'}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6" FontSize="10" Foreground="#555555"/>
                                     </Grid>
@@ -147,6 +148,9 @@
                         </Border.Effect>
 
                         <Grid>
+                            <!-- Real Rendered PDF Page Image -->
+                            <Image x:Name="ImgPageRender" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
                             <!-- Document Page Content Text -->
                             <TextBox x:Name="TxtPageContent" Margin="48" Background="Transparent" Foreground="#222222" 
                                      BorderThickness="0" TextWrapping="Wrap" AcceptsReturn="True" FontSize="14" FontFamily="Georgia"/>

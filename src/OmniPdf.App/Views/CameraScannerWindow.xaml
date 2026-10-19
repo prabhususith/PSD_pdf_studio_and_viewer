@@ -1,0 +1,72 @@
+<Window x:Class="OmniPdf.App.Views.CameraScannerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Camera Document Scanner &amp; Perspective Warp Sub-Engine"
+        Height="780" Width="1050"
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E1E" Foreground="#FFFFFF"
+        FontFamily="Segoe UI">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Title -->
+            <RowDefinition Height="Auto"/> <!-- Controls -->
+            <RowDefinition Height="*"/>    <!-- Image Viewport + Handles -->
+            <RowDefinition Height="Auto"/> <!-- Footer -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="Camera Scanner &amp; Perspective Warp Sub-Engine" FontSize="20" FontWeight="Bold" Foreground="#4CC2FF"/>
+            <TextBlock Text="Calibrate document boundaries with 4-corner handles and apply Magic Color or Otsu binarization filters." FontSize="12" Foreground="#888888" Margin="0,2,0,0"/>
+        </StackPanel>
+
+        <!-- Controls Ribbon -->
+        <Border Grid.Row="1" Background="#2D2D30" CornerRadius="6" Padding="10,6" Margin="0,0,0,12">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="BtnLoadImage" Content="Import Scan Image" Padding="12,6" Margin="2" Background="#0078D4" Foreground="White" BorderThickness="0" Click="BtnLoadImage_Click"/>
+                <Button x:Name="BtnAutoDetect" Content="Auto-Detect Corners" Padding="12,6" Margin="2" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnAutoDetect_Click"/>
+                <Button x:Name="BtnWarp" Content="Warp Perspective" Padding="12,6" Margin="2" Background="#68217A" Foreground="White" BorderThickness="0" Click="BtnWarp_Click"/>
+
+                <Separator Width="1" Height="20" Background="#555555" Margin="8,0"/>
+
+                <TextBlock Text="Scan Filter:" VerticalAlignment="Center" Margin="4,0" Foreground="#AAAAAA" FontSize="11"/>
+                <Button x:Name="BtnFilterOriginal" Content="Original" Padding="8,4" Margin="2" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnFilter_Click"/>
+                <Button x:Name="BtnFilterMagicColor" Content="Magic Color" Padding="8,4" Margin="2" Background="#E3A300" Foreground="Black" FontWeight="Bold" BorderThickness="0" Click="BtnFilter_Click"/>
+                <Button x:Name="BtnFilterOtsu" Content="B&amp;W Otsu" Padding="8,4" Margin="2" Background="#FAFAFA" Foreground="Black" FontWeight="Bold" BorderThickness="0" Click="BtnFilter_Click"/>
+                <Button x:Name="BtnFilterGrayscale" Content="Grayscale" Padding="8,4" Margin="2" Background="#888888" Foreground="Black" BorderThickness="0" Click="BtnFilter_Click"/>
+
+                <Separator Width="1" Height="20" Background="#555555" Margin="8,0"/>
+
+                <TextBlock x:Name="TxtResolution" Text="Resolution: 1080p preview ceiling" VerticalAlignment="Center" Foreground="#888888" FontSize="11"/>
+            </WrapPanel>
+        </Border>
+
+        <!-- Image & Handles Canvas Viewport -->
+        <Border Grid.Row="2" Background="#141414" CornerRadius="6" ClipToBounds="True">
+            <Grid x:Name="ViewerContainer" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image x:Name="ImgPreview" Stretch="Uniform" MaxHeight="540" MaxWidth="800"/>
+
+                <!-- 4-corner boundary overlay polygon and drag handles -->
+                <Canvas x:Name="OverlayCanvas">
+                    <Polygon x:Name="QuadPolygon" Fill="#330078D4" Stroke="#0078D4" StrokeThickness="2.5"/>
+
+                    <!-- 4 Handles -->
+                    <Thumb x:Name="HandleTL" Width="20" Height="20" Background="#0078D4" DragDelta="Handle_DragDelta"/>
+                    <Thumb x:Name="HandleTR" Width="20" Height="20" Background="#0078D4" DragDelta="Handle_DragDelta"/>
+                    <Thumb x:Name="HandleBR" Width="20" Height="20" Background="#0078D4" DragDelta="Handle_DragDelta"/>
+                    <Thumb x:Name="HandleBL" Width="20" Height="20" Background="#0078D4" DragDelta="Handle_DragDelta"/>
+                </Canvas>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <DockPanel Grid.Row="3" Margin="0,16,0,0">
+            <TextBlock Text="Otsu adaptive thresholding ensures clean monochrome text (&lt; 80KB/page)." VerticalAlignment="Center" Foreground="#888888" FontSize="11"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnCancel" Content="Close" Width="90" Height="32" Margin="0,0,8,0" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnCancel_Click"/>
+                <Button x:Name="BtnCompilePdf" Content="Compile into Document PDF" Width="200" Height="32" Background="#107C41" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnCompilePdf_Click"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,83 @@
+<Window x:Class="OmniPdf.App.Views.PageOrganizerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Page Matrix Organizer - Split, Merge, Rotate &amp; Reorder"
+        Height="700" Width="1000"
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E1E" Foreground="#FFFFFF"
+        FontFamily="Segoe UI">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Title -->
+            <RowDefinition Height="Auto"/> <!-- Action Ribbon -->
+            <RowDefinition Height="*"/>    <!-- Page Grid -->
+            <RowDefinition Height="Auto"/> <!-- Footer / Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="Page Matrix Organizer" FontSize="20" FontWeight="Bold" Foreground="#4CC2FF"/>
+            <TextBlock Text="Reorder, rotate, split, merge, and extract pages across the document AST." FontSize="12" Foreground="#888888" Margin="0,2,0,0"/>
+        </StackPanel>
+
+        <!-- Ribbon -->
+        <Border Grid.Row="1" Background="#2D2D30" CornerRadius="6" Padding="10,6" Margin="0,0,0,12">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="BtnRotateRight" Content="Rotate 90° Clockwise" Padding="12,6" Margin="2" Background="#0078D4" Foreground="White" BorderThickness="0" Click="BtnRotateRight_Click"/>
+                <Button x:Name="BtnRotateLeft" Content="Rotate 90° Counter-Clockwise" Padding="12,6" Margin="2" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnRotateLeft_Click"/>
+                <Separator Width="1" Height="20" Background="#555555" Margin="8,0"/>
+                <Button x:Name="BtnMoveLeft" Content="Move Earlier" Padding="10,6" Margin="2" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnMoveLeft_Click"/>
+                <Button x:Name="BtnMoveRight" Content="Move Later" Padding="10,6" Margin="2" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnMoveRight_Click"/>
+                <Separator Width="1" Height="20" Background="#555555" Margin="8,0"/>
+                <Button x:Name="BtnSplit" Content="Split Document" Padding="12,6" Margin="2" Background="#008080" Foreground="White" BorderThickness="0" Click="BtnSplit_Click"/>
+                <Button x:Name="BtnMerge" Content="Merge Another PDF" Padding="12,6" Margin="2" Background="#68217A" Foreground="White" BorderThickness="0" Click="BtnMerge_Click"/>
+                <Button x:Name="BtnExtract" Content="Extract Selected Page" Padding="12,6" Margin="2" Background="#2B579A" Foreground="White" BorderThickness="0" Click="BtnExtract_Click"/>
+                <Button x:Name="BtnDeletePage" Content="Delete Page" Padding="10,6" Margin="2" Background="#C42B1C" Foreground="White" BorderThickness="0" Click="BtnDeletePage_Click"/>
+            </WrapPanel>
+        </Border>
+
+        <!-- Page Cards Grid -->
+        <Border Grid.Row="2" Background="#141414" CornerRadius="6" Padding="16">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ListBox x:Name="PagesListBox" Background="Transparent" BorderThickness="0" SelectionMode="Single"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#252526" BorderBrush="#383838" BorderThickness="1" CornerRadius="6" Margin="8" Padding="10" Width="170">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <Border Width="120" Height="160" Background="#FAFAFA" CornerRadius="3" BorderBrush="#555555" BorderThickness="1">
+                                        <Border.LayoutTransform>
+                                            <RotateTransform Angle="{Binding Rotation}"/>
+                                        </Border.LayoutTransform>
+                                        <Grid>
+                                            <TextBlock Text="{Binding PageNumber}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                       FontSize="42" Foreground="#CCCCCC" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding ContentText}" Margin="8" TextWrapping="Wrap" FontSize="7" Foreground="#333333" MaxHeight="140" TextTrimming="CharacterEllipsis"/>
+                                        </Grid>
+                                    </Border>
+                                    <TextBlock Text="{Binding PageNumber, StringFormat='Page {0}'}" HorizontalAlignment="Center" Margin="0,8,0,2" FontWeight="Bold" FontSize="12" Foreground="White"/>
+                                    <TextBlock Text="{Binding Rotation, StringFormat='Rotation: {0}°'}" HorizontalAlignment="Center" FontSize="10" Foreground="#888888"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Footer -->
+        <DockPanel Grid.Row="3" Margin="0,16,0,0">
+            <TextBlock x:Name="TxtSummary" Text="Total Pages: 0" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="12"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnCancel" Content="Cancel" Width="90" Height="32" Margin="0,0,8,0" Background="#3E3E42" Foreground="White" BorderThickness="0" Click="BtnCancel_Click"/>
+                <Button x:Name="BtnApply" Content="Apply Changes" Width="120" Height="32" Background="#0078D4" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnApply_Click"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

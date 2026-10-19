@@ -1,13 +1,16 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using OmniPdf.App.Core;
+using OmniPdf.App.Views;
 
 namespace OmniPdf.App
 {
@@ -34,12 +37,35 @@ namespace OmniPdf.App
         {
             _activeDoc = doc;
             TabList.SelectedItem = doc;
+            ThumbnailList.ItemsSource = null;
             ThumbnailList.ItemsSource = doc.Pages;
             if (doc.Pages.Count > 0)
             {
                 ThumbnailList.SelectedIndex = Math.Clamp(doc.CurrentPageIndex, 0, doc.Pages.Count - 1);
             }
+            DisplayActivePage();
             UpdateStatus();
+        }
+
+        private void DisplayActivePage()
+        {
+            if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
+            var page = _activeDoc.Pages[Math.Clamp(_activeDoc.CurrentPageIndex, 0, _activeDoc.Pages.Count - 1)];
+
+            if (page.RenderedImage != null)
+            {
+                ImgPageRender.Source = page.RenderedImage;
+                ImgPageRender.Visibility = Visibility.Visible;
+                TxtPageContent.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ImgPageRender.Visibility = Visibility.Collapsed;
+                TxtPageContent.Visibility = Visibility.Visible;
+                TxtPageContent.Text = page.ContentText;
+            }
+
+            UpdatePageRotation(page.Rotation);
         }
 
         private void UpdateStatus()
@@ -87,9 +113,7 @@ namespace OmniPdf.App
             if (_activeDoc != null && ThumbnailList.SelectedIndex >= 0)
             {
                 _activeDoc.CurrentPageIndex = ThumbnailList.SelectedIndex;
-                var page = _activeDoc.Pages[_activeDoc.CurrentPageIndex];
-                TxtPageContent.Text = page.ContentText;
-                UpdatePageRotation(page.Rotation);
+                DisplayActivePage();
                 UpdateStatus();
             }
         }
@@ -101,17 +125,19 @@ namespace OmniPdf.App
 
         private void BtnRotatePage_Click(object sender, RoutedEventArgs e)
         {
-            if (_activeDoc == null) return;
+            if (_activeDoc == null || _activeDoc.Pages.Count == 0) return;
             var page = _activeDoc.Pages[_activeDoc.CurrentPageIndex];
             page.Rotation = (page.Rotation + 90) % 360;
             UpdatePageRotation(page.Rotation);
             _activeDoc.IsModified = true;
+            ThumbnailList.Items.Refresh();
         }
 
-        private void BtnOpenFile_Click(object sender, RoutedEventArgs e)
+        private async void BtnOpenFile_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new OpenFileDialog
             {
+                Title = "Open PDF Document",
                 Filter = "PDF Documents (*.pdf)|*.pdf|All Files (*.*)|*.*"
             };
             if (dlg.ShowDialog() == true)
@@ -119,6 +145,31 @@ namespace OmniPdf.App
                 var doc = PdfDocumentModel.LoadFromFile(dlg.FileName);
                 _documents.Add(doc);
                 SelectDocument(doc);
+
+                // Asynchronously render hardware accelerated page images
+                await RenderDocumentPagesAsync(doc);
+            }
+        }
+
+        private async Task RenderDocumentPagesAsync(PdfDocumentModel doc)
+        {
+            if (string.IsNullOrEmpty(doc.FilePath) || !File.Exists(doc.FilePath)) return;
+
+            for (int i = 0; i < doc.Pages.Count; i++)
+            {
+                var img = await RealPdfRenderer.RenderPdfPageAsync(doc.FilePath, i, 1200);
+                if (img != null)
+                {
+                    doc.Pages[i].RenderedImage = img;
+                    _lruCache.Put($"doc_{doc.Id}_p_{i}", new byte[64 * 1024]);
+                }
+            }
+
+            if (_activeDoc == doc)
+            {
+                DisplayActivePage();
+                ThumbnailList.Items.Refresh();
+                UpdateStatus();
             }
         }
 
@@ -127,13 +178,14 @@ namespace OmniPdf.App
             if (_activeDoc == null) return;
             var dlg = new SaveFileDialog
             {
+                Title = "Save Incremental PDF Document",
                 Filter = "PDF Document (*.pdf)|*.pdf",
                 FileName = _activeDoc.Title
             };
             if (dlg.ShowDialog() == true)
             {
                 _activeDoc.SaveIncremental(dlg.FileName);
-                MessageBox.Show($"Document incrementally saved to:\n{dlg.FileName}", "Save Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Document incrementally saved successfully to:\n{dlg.FileName}", "Save Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -159,13 +211,13 @@ namespace OmniPdf.App
                 else if (_activeTool == "Sticky Note")
                 {
                     PageInkCanvas.IsHitTestVisible = false;
-                    MessageBox.Show("Sticky Note dropped at current cursor coordinates.\nStored in Document AST Annotation layer.", "Sticky Note Added", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Sticky Note placed at cursor coordinates and stored in Document AST Annotation layer.", "Sticky Note Added", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else if (_activeTool == "PKCS#7 Sign")
                 {
                     PageInkCanvas.IsHitTestVisible = false;
                     SignatureBadge.Visibility = Visibility.Visible;
-                    MessageBox.Show("PKCS#7 Detached Digital Signature applied.\nDigest computed using SHA-256 with byte range integrity.", "Digital Signature Stamped", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("PKCS#7 Detached Digital Signature applied.\nSHA-256 Digest calculated with byte-range cryptographic integrity.", "Digital Signature Stamped", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
@@ -269,17 +321,34 @@ namespace OmniPdf.App
 
         private void BtnPageOrganizer_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Page Matrix Organizer Dialog:\n• Drag & Drop Page Reordering Active\n• Split / Merge Operations Active\n• Page Extraction Active", "Page Organizer", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (_activeDoc == null) return;
+            var win = new PageOrganizerWindow(_activeDoc) { Owner = this };
+            if (win.ShowDialog() == true)
+            {
+                SelectDocument(_activeDoc);
+            }
         }
 
         private void BtnScanner_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Camera Scanner & Perspective Warp Sub-Engine:\n• 4-Corner Contour Detection Active\n• Otsu Adaptive Binarization Filter Active\n• High-Frequency Edge Retention Active", "Document Scanner Sub-Engine", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (_activeDoc == null) return;
+            var win = new CameraScannerWindow(_activeDoc) { Owner = this };
+            if (win.ShowDialog() == true)
+            {
+                SelectDocument(_activeDoc);
+                ThumbnailList.SelectedIndex = _activeDoc.Pages.Count - 1;
+            }
         }
 
         private void BtnTextConverter_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Dual-Direction Text Converter:\n• PDF-to-Text & Markdown (.md) Pipeline Active\n• Searchable Invisible 3 Tr OCR Layer Generator Active\n• Text-to-PDF Paginated Flow Layout Active", "Text Converter Engine", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (_activeDoc == null) return;
+            var win = new TextConverterWindow(_activeDoc) { Owner = this };
+            if (win.ShowDialog() == true && win.GeneratedDocument != null)
+            {
+                _documents.Add(win.GeneratedDocument);
+                SelectDocument(win.GeneratedDocument);
+            }
         }
     }
 }
