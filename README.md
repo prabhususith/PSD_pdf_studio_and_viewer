@@ -124,13 +124,15 @@ For the full detailed user guide, download the [PSD PDF Studio User Manual & Hel
 | :--- | :--- | :--- | :--- |
 | `Ctrl + O` | Open File Dialog | `Ctrl + S` | Quick Save Document |
 | `Ctrl + Shift + S` | Save As (PDF, DOCX, TXT, HTML) | `Ctrl + P` | Print Document / Export to PDF |
-| `Ctrl + F` | Toggle Instant Text Search | `F11` | Toggle True Native Fullscreen View |
+| `Ctrl + F` | Toggle Instant Text Search | `F11` | Distraction-Free Focus / Zen Mode |
 | `Ctrl + +` / `Ctrl + -` | Zoom In / Zoom Out | `Ctrl + 0` | Fit Page to Viewport Width |
 | `Ctrl + B` | Toggle Bold Formatting | `Ctrl + I` | Toggle Italic Formatting |
 | `Ctrl + U` | Toggle Underline Formatting | `Ctrl + ,` | Settings & Preferences Dialog |
 | `Ctrl + Z` / `Ctrl + Y` | Undo / Redo | `Touchpad Pinch` | Precision Touchpad Sub-Pixel Zoom |
 | `Ctrl + N` | Create New Document from Template | `Shift + Wheel` | Touchpad Horizontal Panning |
-| `F4` | Toggle Left Navigation Rail | `Ctrl + Q` | Clean Exit Application |
+| `F4` | Toggle Left Navigation Rail | `Ctrl + F1` | Toggle Toolbar Ribbon |
+| `Ctrl + T` | Toggle Thumbnail Panel | `Ctrl + Shift + B` | Toggle Status Bar |
+| `Ctrl + Alt + H` | Toggle Top Header & Menus | `Esc` | Exit Focus Mode / Presentation |
 
 ---
 
@@ -154,6 +156,9 @@ For the full detailed user guide, download the [PSD PDF Studio User Manual & Hel
 - **Unified Multi-Format Engine**: Native rendering and export for 10 industry formats: `PDF`, `DOCX`, `XLSX`, `PPTX`, `EPUB`, `MOBI`, `RTF`, `ODT`, `HTML`, and `Markdown`.
 - **True Multi-Page Continuous Scroll & Precision Touchpad Gestures**: Dynamic viewport virtualization ensures immediate page rendering regardless of document page count. Laptop precision touchpad pinch-to-zoom (`Ctrl + MouseWheel`) and horizontal two-finger panning (`Shift + MouseWheel`) operate at sub-pixel resolution.
 - **Smart Dashboard & Hover Previews**: Instant interactive document preview popup cards when hovering over library items with customizable delay latency and one-click toggle.
+- **Distraction-Free Focus / Zen Reading Mode**: Automatically hides all menus, navigation rails, ribbons, thumbnails, and status bars when viewing documents. Features a sleek, floating HUD with document zoom in/out, fit width, page steppers, and quick `Esc` exit.
+- **105+ Themes & Custom Theme Studio**: Meticulously categorized into Dark & OLED (20), Light & Paper (20), Sepia & Nature (18), Developer & IDE (18), Cyberpunk & Neon (15), and Royal & Luxury (14). Includes a visual Custom Theme Studio with 35-color swatches, HEX pickers, and live interactive UI preview.
+- **Enhanced Hardware Camera Scanner**: Direct webcam snapshot via Windows MediaCapture, live Windows Camera companion app integration (`microsoft.windows.camera:`) with automatic Camera Roll filesystem watching, clipboard snapshot pasting, 4-corner perspective warp calibration, and Otsu binarization filters.
 - **Camera Document Scanner (Windows & Android)**: Real hardware camera capture and image import with perspective homography warp calibration, Otsu binarization filters, and instant vector PDF compilation.
 - **Dedicated Settings Suite**: Comprehensive settings dialog (`Ctrl + ,`) accessible from `Tools -> Settings & Preferences...` and top-right header `[⚙️ Settings]` button.
 - **Enterprise Word Processing**: Complete MS Word feature parity including Heading 1-6 styles, font palettes, starter templates (Project Charter, Business Proposal, NDA, Minutes), live word/character/reading-time statistics, and Flesch-Kincaid readability scoring.

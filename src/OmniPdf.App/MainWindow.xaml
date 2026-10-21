@@ -216,7 +216,7 @@
                     <TextBlock x:Name="headerGesture" Grid.Column="1" Text="{TemplateBinding InputGestureText}" 
                                VerticalAlignment="Center" Margin="12,0,4,0" FontSize="10" 
                                Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.7"/>
-                    <TextBlock Grid.Column="2" Text="▸" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                    <TextBlock Grid.Column="2" Text="â–¸" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" 
                                Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.85"/>
 
                     <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False"
@@ -527,7 +527,7 @@
                     <!-- Cover Tile Container -->
                     <Border Grid.Row="0" Background="#18181B" CornerRadius="4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1">
                         <Grid>
-                            <TextBlock Text="📄" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#71717A" Opacity="0.45"/>
+                            <TextBlock Text="ðŸ“„" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#71717A" Opacity="0.45"/>
                             <Border Background="{DynamicResource AccentBrushDefault}" CornerRadius="3" Padding="5,1" 
                                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6">
                                 <TextBlock Text="{Binding FormatBadge}" FontSize="8" FontWeight="Bold" Foreground="White"/>
@@ -628,13 +628,13 @@
                 <!-- Right: Permanent In-App Window Caption Controls (Minimize, Maximize/Restore, Close) -->
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,2,0">
                     <!-- AI Copilot Flagship Button -->
-                    <Button x:Name="BtnToggleAiCopilot" Content="🤖 AI Copilot" ToolTip="PSD AI Document Intelligence &amp; Copilot Suite"
+                    <Button x:Name="BtnToggleAiCopilot" Content="ðŸ¤– AI Copilot" ToolTip="PSD AI Document Intelligence &amp; Copilot Suite"
                             Background="#0284C7" Foreground="White" FontWeight="Bold" FontSize="10" Height="22" Margin="0,0,8,0" Padding="8,2"
                             Style="{StaticResource ModernBtn}" Click="BtnToggleAiCopilot_Click"/>
 
                     <!-- Quick Theme Selector in Header -->
-                    <TextBlock Text="🎨" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="11"/>
-                    <ComboBox x:Name="CmbTheme" Width="120" Height="22" VerticalAlignment="Center" Margin="0,0,8,0"
+                    <TextBlock Text="ðŸŽ¨" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="11"/>
+                    <ComboBox x:Name="CmbTheme" Width="140" Height="22" VerticalAlignment="Center" Margin="0,0,8,0"
                               Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" 
                               BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10" SelectionChanged="CmbTheme_SelectionChanged">
                         <ComboBoxItem Content="Fluent Dark"/>
@@ -645,24 +645,34 @@
                         <ComboBoxItem Content="Sepia Reading"/>
                         <ComboBoxItem Content="Cyberpunk Neon"/>
                         <ComboBoxItem Content="Emerald Forest"/>
-                        <ComboBoxItem Content="Custom Theme"/>
+                                                <ComboBoxItem Content="Dracula Pro"/>
+                        <ComboBoxItem Content="Nord Frost"/>
+                        <ComboBoxItem Content="One Dark Pro"/>
+                        <ComboBoxItem Content="Tokyo Night"/>
+                        <ComboBoxItem Content="Catppuccin Mocha"/>
+                        <ComboBoxItem Content="Material Oceanic"/>
+                        <ComboBoxItem Content="Royal Amethyst"/>
+                        <ComboBoxItem Content="Imperial Gold"/>
+                        <ComboBoxItem Content="Velvet Crimson"/>
+                        <ComboBoxItem Content="🎨 105+ Themes Gallery..."/>
+                        <ComboBoxItem Content="🖌️ Custom Theme Studio &amp; Palette..."/>
                     </ComboBox>
 
                     <!-- Dedicated Settings Button in Top-Right Header -->
-                    <Button x:Name="BtnHeaderSettings" Content="⚙️ Settings" ToolTip="Settings &amp; Workstation Preferences (Ctrl+,)"
+                    <Button x:Name="BtnHeaderSettings" Content="âš™ï¸ Settings" ToolTip="Settings &amp; Workstation Preferences (Ctrl+,)"
                             Style="{StaticResource ModernBtn}" Height="22" Padding="7,2" Margin="0,0,8,0" FontSize="10.5"
                             Click="BtnSettings_Click"/>
 
                     <Separator Width="1" Height="16" Background="{DynamicResource BorderBrushLight}" Margin="0,0,6,0"/>
 
                     <!-- Permanent Caption Buttons -->
-                    <Button Content="🗕" Width="28" Height="22" ToolTip="Minimize Window" 
+                    <Button Content="ðŸ—•" Width="28" Height="22" ToolTip="Minimize Window" 
                             Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Padding="0"
                             Click="BtnWinMinimize_Click"/>
-                    <Button Content="🗖" Width="28" Height="22" ToolTip="Maximize / Restore" 
+                    <Button Content="ðŸ—–" Width="28" Height="22" ToolTip="Maximize / Restore" 
                             Style="{StaticResource ModernBtn}" Margin="0,0,2,0" Padding="0"
                             Click="BtnWinMaximize_Click"/>
-                    <Button Content="✕" Width="28" Height="22" ToolTip="Close Application" 
+                    <Button Content="âœ•" Width="28" Height="22" ToolTip="Close Application" 
                             Background="#991B1B" Foreground="White" BorderBrush="#DC2626" 
                             Style="{StaticResource ModernBtn}" Padding="0"
                             Click="BtnWinClose_Click"/>
@@ -674,7 +684,7 @@
                             Style="{StaticResource ModernBtn}" Margin="0,0,8,0" Padding="7,2" Height="24"
                             Click="BtnToggleNavRail_Click">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="☰" FontSize="11" FontWeight="Bold" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="â˜°" FontSize="11" FontWeight="Bold" Margin="0,0,5,0" VerticalAlignment="Center"/>
                             <TextBlock Text="Sidebar" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -715,15 +725,15 @@
                     </MenuItem>
 
                     <MenuItem Header="_View">
-                        <MenuItem Header="📜  _Continuous Page Scroll" InputGestureText="Ctrl+1" Click="BtnViewContinuous_Click"/>
-                        <MenuItem Header="📄  _Single Page View" InputGestureText="Ctrl+2" Click="BtnViewSinglePage_Click"/>
-                        <MenuItem Header="📖  _Two-Page Book Spread" InputGestureText="Ctrl+3" Click="BtnViewTwoPage_Click"/>
+                        <MenuItem Header="ðŸ“œ  _Continuous Page Scroll" InputGestureText="Ctrl+1" Click="BtnViewContinuous_Click"/>
+                        <MenuItem Header="ðŸ“„  _Single Page View" InputGestureText="Ctrl+2" Click="BtnViewSinglePage_Click"/>
+                        <MenuItem Header="ðŸ“–  _Two-Page Book Spread" InputGestureText="Ctrl+3" Click="BtnViewTwoPage_Click"/>
                         <Separator/>
-                        <MenuItem Header="🌙  _Dark Reading Mode (Invert)" InputGestureText="Ctrl+I" Click="BtnDarkModeToggle_Click"/>
+                        <MenuItem Header="ðŸŒ™  _Dark Reading Mode (Invert)" InputGestureText="Ctrl+I" Click="BtnDarkModeToggle_Click"/>
                         <Separator/>
-                        <MenuItem Header="⛶  _Full Screen Presentation Mode" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
-                        <MenuItem Header="◀  Toggle _Navigation Rail" InputGestureText="F4" Click="BtnToggleNavRail_Click"/>
-                        <MenuItem Header="📑  Toggle _Thumbnails Panel" InputGestureText="Ctrl+T" Click="BtnToggleThumbnails_Click"/>
+                        <MenuItem Header="â›¶  _Full Screen Presentation Mode" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
+                        <MenuItem Header="â—€  Toggle _Navigation Rail" InputGestureText="F4" Click="BtnToggleNavRail_Click"/>
+                        <MenuItem Header="ðŸ“‘  Toggle _Thumbnails Panel" InputGestureText="Ctrl+T" Click="BtnToggleThumbnails_Click"/>
                         <Separator/>
                         <MenuItem Header="Zoom _In (+15%)" InputGestureText="Ctrl++" Click="BtnZoomIn_Click"/>
                         <MenuItem Header="Zoom _Out (-15%)" InputGestureText="Ctrl+-" Click="BtnZoomOut_Click"/>
@@ -731,10 +741,10 @@
                         <MenuItem Header="Fit to _Width" Click="BtnFitWidth_Click"/>
                         <MenuItem Header="Fit to _Page" Click="BtnFitPage_Click"/>
                         <Separator/>
-                        <MenuItem Header="Rotate _Clockwise (90°)" InputGestureText="Ctrl+R" Click="BtnRotatePage_Click"/>
-                        <MenuItem Header="Rotate Counter-Clockwise (270°)" Click="BtnRotateCounterPage_Click"/>
+                        <MenuItem Header="Rotate _Clockwise (90Â°)" InputGestureText="Ctrl+R" Click="BtnRotatePage_Click"/>
+                        <MenuItem Header="Rotate Counter-Clockwise (270Â°)" Click="BtnRotateCounterPage_Click"/>
                         <Separator/>
-                        <MenuItem Header="🎨  _Themes &amp; Skins">
+                        <MenuItem Header="ðŸŽ¨  _Themes &amp; Skins">
                             <MenuItem Header="Fluent Dark (Default)" Tag="Fluent Dark" Click="MenuTheme_Click"/>
                             <MenuItem Header="Modern Light (Paper White)" Tag="Modern Light" Click="MenuTheme_Click"/>
                             <MenuItem Header="Glass Theme (Frosted Acrylic)" Tag="Glass Theme" Click="MenuTheme_Click"/>
@@ -743,37 +753,48 @@
                             <MenuItem Header="Sepia Reading (Eye Care)" Tag="Sepia Reading" Click="MenuTheme_Click"/>
                             <MenuItem Header="Cyberpunk Neon" Tag="Cyberpunk Neon" Click="MenuTheme_Click"/>
                             <MenuItem Header="Emerald Forest" Tag="Emerald Forest" Click="MenuTheme_Click"/>
-                            <MenuItem Header="Custom Theme..." Tag="Custom Theme" Click="MenuTheme_Click"/>
+                                                        <MenuItem Header="Dracula Pro (Developer)" Tag="Dracula Pro" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Nord Frost (Developer)" Tag="Nord Frost" Click="MenuTheme_Click"/>
+                            <MenuItem Header="One Dark Pro (Developer)" Tag="One Dark Pro" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Tokyo Night (Developer)" Tag="Tokyo Night" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Catppuccin Mocha" Tag="Catppuccin Mocha" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Material Oceanic" Tag="Material Oceanic" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Royal Amethyst (Luxury)" Tag="Royal Amethyst" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Imperial Gold (Luxury)" Tag="Imperial Gold" Click="MenuTheme_Click"/>
+                            <MenuItem Header="Velvet Crimson (Luxury)" Tag="Velvet Crimson" Click="MenuTheme_Click"/>
+                            <Separator/>
+                            <MenuItem Header="🎨  More Themes (105+ Themes Gallery)..." Click="MenuOpenThemeGallery_Click"/>
+                            <MenuItem Header="🖌️  Custom Theme Studio &amp; Color Palette..." Click="MenuCustomThemeStudio_Click"/>
                         </MenuItem>
                     </MenuItem>
 
                     <MenuItem Header="_Tools">
-                        <MenuItem Header="🤖  _PSD AI Document Copilot &amp; Intelligence..." Click="BtnToggleAiCopilot_Click"/>
-                        <MenuItem Header="🔏  Enterprise _Electronic Signature &amp; Audit Trail..." Click="BtnToolSignature_Click"/>
-                        <MenuItem Header="📤  _Export for AI Vector RAG Pipeline (JSON)..." Click="BtnExportRagJson_Click"/>
+                        <MenuItem Header="ðŸ¤–  _PSD AI Document Copilot &amp; Intelligence..." Click="BtnToggleAiCopilot_Click"/>
+                        <MenuItem Header="ðŸ”  Enterprise _Electronic Signature &amp; Audit Trail..." Click="BtnToolSignature_Click"/>
+                        <MenuItem Header="ðŸ“¤  _Export for AI Vector RAG Pipeline (JSON)..." Click="BtnExportRagJson_Click"/>
                         <Separator/>
-                        <MenuItem Header="📝  _Microsoft Word Document Suite..." Click="NavBtnWord_Click"/>
-                        <MenuItem Header="🛡️  _Security, AES-256 Encryption &amp; Redaction..." Click="BtnSecurity_Click"/>
-                        <MenuItem Header="🔍  _Document Comparison (Diff Tool)..." Click="BtnDiff_Click"/>
-                        <MenuItem Header="⚡  _Batch Document Automation Hub..." Click="BtnBatch_Click"/>
-                        <MenuItem Header="🗜️  _PDF Compression &amp; Optimizer..." Click="BtnOptimizer_Click"/>
-                        <MenuItem Header="💧  _Watermark, Headers &amp; Footers..." Click="BtnWatermark_Click"/>
+                        <MenuItem Header="ðŸ“  _Microsoft Word Document Suite..." Click="NavBtnWord_Click"/>
+                        <MenuItem Header="ðŸ›¡ï¸  _Security, AES-256 Encryption &amp; Redaction..." Click="BtnSecurity_Click"/>
+                        <MenuItem Header="ðŸ”  _Document Comparison (Diff Tool)..." Click="BtnDiff_Click"/>
+                        <MenuItem Header="âš¡  _Batch Document Automation Hub..." Click="BtnBatch_Click"/>
+                        <MenuItem Header="ðŸ—œï¸  _PDF Compression &amp; Optimizer..." Click="BtnOptimizer_Click"/>
+                        <MenuItem Header="ðŸ’§  _Watermark, Headers &amp; Footers..." Click="BtnWatermark_Click"/>
                         <Separator/>
-                        <MenuItem Header="📑  _Page Matrix Organizer..." Click="BtnPageOrganizer_Click"/>
-                        <MenuItem Header="📷  _Camera Document Scanner..." Click="BtnScanner_Click"/>
-                        <MenuItem Header="🔄  _Dual-Direction Text Converter &amp; OCR..." Click="BtnTextConverter_Click"/>
+                        <MenuItem Header="ðŸ“‘  _Page Matrix Organizer..." Click="BtnPageOrganizer_Click"/>
+                        <MenuItem Header="ðŸ“·  _Camera Document Scanner..." Click="BtnScanner_Click"/>
+                        <MenuItem Header="ðŸ”„  _Dual-Direction Text Converter &amp; OCR..." Click="BtnTextConverter_Click"/>
                         <Separator/>
-                        <MenuItem Header="👆  _Pointer Tool" Click="MenuToolPointer_Click"/>
-                        <MenuItem Header="✏️  Vector _Pen / Ink Sketch" Click="MenuToolInk_Click"/>
-                        <MenuItem Header="🖍️  Text _Highlighter" Click="MenuToolHighlight_Click"/>
-                        <MenuItem Header="📌  _Sticky Note Pin Tool" Click="MenuToolSticky_Click"/>
-                        <MenuItem Header="📐  _Engineering Measurement (Distance / Area / Angle)" Click="MenuToolMeasure_Click"/>
-                        <MenuItem Header="🧹  _Eraser Tool" Click="MenuToolEraser_Click"/>
+                        <MenuItem Header="ðŸ‘†  _Pointer Tool" Click="MenuToolPointer_Click"/>
+                        <MenuItem Header="âœï¸  Vector _Pen / Ink Sketch" Click="MenuToolInk_Click"/>
+                        <MenuItem Header="ðŸ–ï¸  Text _Highlighter" Click="MenuToolHighlight_Click"/>
+                        <MenuItem Header="ðŸ“Œ  _Sticky Note Pin Tool" Click="MenuToolSticky_Click"/>
+                        <MenuItem Header="ðŸ“  _Engineering Measurement (Distance / Area / Angle)" Click="MenuToolMeasure_Click"/>
+                        <MenuItem Header="ðŸ§¹  _Eraser Tool" Click="MenuToolEraser_Click"/>
                         <Separator/>
-                        <MenuItem Header="🔏  _PKCS#7 Digital Signature Stamp" Click="MenuToolSignature_Click"/>
-                        <MenuItem Header="🔊  _Read Aloud (Text-to-Speech)" Click="BtnTtsPlay_Click"/>
+                        <MenuItem Header="ðŸ”  _PKCS#7 Digital Signature Stamp" Click="MenuToolSignature_Click"/>
+                        <MenuItem Header="ðŸ”Š  _Read Aloud (Text-to-Speech)" Click="BtnTtsPlay_Click"/>
                         <Separator/>
-                        <MenuItem Header="⚙️  _Settings &amp; Preferences..." InputGestureText="Ctrl+," Click="BtnSettings_Click"/>
+                        <MenuItem Header="âš™ï¸  _Settings &amp; Preferences..." InputGestureText="Ctrl+," Click="BtnSettings_Click"/>
                     </MenuItem>
 
                     <MenuItem Header="_Help">
@@ -804,7 +825,7 @@
                     <StackPanel DockPanel.Dock="Top" Margin="2,0,2,10">
                         <DockPanel>
                             <TextBlock Text="WORKSPACES" FontSize="9.5" FontWeight="Bold" Foreground="#71717A" VerticalAlignment="Center"/>
-                            <Button Content="◀ Collapse" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                            <Button Content="â—€ Collapse" DockPanel.Dock="Right" HorizontalAlignment="Right"
                                     ToolTip="Collapse Navigation Sidebar (F4)" Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9.5"
                                     Click="BtnToggleNavRail_Click"/>
                         </DockPanel>
@@ -826,28 +847,28 @@
                                 <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="{DynamicResource AccentBrushDefault}" CornerRadius="9" Padding="6,1" Margin="4,0,0,0">
                                     <TextBlock x:Name="TxtLibraryBadge" Text="0" FontSize="8.5" FontWeight="Bold" Foreground="White"/>
                                 </Border>
-                                <TextBlock Text="📚  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="ðŸ“š  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                             </DockPanel>
                         </Button>
 
-                        <Button x:Name="NavBtnReader" Content="📄  PDF Studio" Style="{StaticResource NavRailBtn}" Click="NavBtnReader_Click"/>
-                        <Button x:Name="NavBtnWord" Content="📝  Word Suite (.docx)" Style="{StaticResource NavRailBtn}" Foreground="#38BDF8" Click="NavBtnWord_Click"/>
-                        <Button x:Name="NavBtnAiCopilot" Content="🤖  AI Copilot Suite" Style="{StaticResource NavRailBtn}" Foreground="#38BDF8" FontWeight="Bold" Click="BtnToggleAiCopilot_Click"/>
-                        <Button x:Name="NavBtnESign" Content="🔏  e-Sign &amp; Audit" Style="{StaticResource NavRailBtn}" Foreground="#4ADE80" Click="BtnToolSignature_Click"/>
-                        <Button x:Name="NavBtnSecurity" Content="🛡️  Security &amp; Redact" Style="{StaticResource NavRailBtn}" Click="BtnSecurity_Click"/>
-                        <Button x:Name="NavBtnDiff" Content="🔍  Compare Docs" Style="{StaticResource NavRailBtn}" Click="BtnDiff_Click"/>
-                        <Button x:Name="NavBtnBatch" Content="⚡  Batch Automation" Style="{StaticResource NavRailBtn}" Click="BtnBatch_Click"/>
-                        <Button x:Name="NavBtnOptimizer" Content="🗜️  PDF Optimizer" Style="{StaticResource NavRailBtn}" Click="BtnOptimizer_Click"/>
-                        <Button x:Name="NavBtnOrganizer" Content="📑  Page Organizer" Style="{StaticResource NavRailBtn}" Click="NavBtnOrganizer_Click"/>
-                        <Button x:Name="NavBtnScanner" Content="📷  Camera &amp; Scan" Style="{StaticResource NavRailBtn}" Click="NavBtnScanner_Click"/>
-                        <Button x:Name="NavBtnConverter" Content="🔄  Text &amp; Markdown" Style="{StaticResource NavRailBtn}" Click="NavBtnConverter_Click"/>
+                        <Button x:Name="NavBtnReader" Content="ðŸ“„  PDF Studio" Style="{StaticResource NavRailBtn}" Click="NavBtnReader_Click"/>
+                        <Button x:Name="NavBtnWord" Content="ðŸ“  Word Suite (.docx)" Style="{StaticResource NavRailBtn}" Foreground="#38BDF8" Click="NavBtnWord_Click"/>
+                        <Button x:Name="NavBtnAiCopilot" Content="ðŸ¤–  AI Copilot Suite" Style="{StaticResource NavRailBtn}" Foreground="#38BDF8" FontWeight="Bold" Click="BtnToggleAiCopilot_Click"/>
+                        <Button x:Name="NavBtnESign" Content="ðŸ”  e-Sign &amp; Audit" Style="{StaticResource NavRailBtn}" Foreground="#4ADE80" Click="BtnToolSignature_Click"/>
+                        <Button x:Name="NavBtnSecurity" Content="ðŸ›¡ï¸  Security &amp; Redact" Style="{StaticResource NavRailBtn}" Click="BtnSecurity_Click"/>
+                        <Button x:Name="NavBtnDiff" Content="ðŸ”  Compare Docs" Style="{StaticResource NavRailBtn}" Click="BtnDiff_Click"/>
+                        <Button x:Name="NavBtnBatch" Content="âš¡  Batch Automation" Style="{StaticResource NavRailBtn}" Click="BtnBatch_Click"/>
+                        <Button x:Name="NavBtnOptimizer" Content="ðŸ—œï¸  PDF Optimizer" Style="{StaticResource NavRailBtn}" Click="BtnOptimizer_Click"/>
+                        <Button x:Name="NavBtnOrganizer" Content="ðŸ“‘  Page Organizer" Style="{StaticResource NavRailBtn}" Click="NavBtnOrganizer_Click"/>
+                        <Button x:Name="NavBtnScanner" Content="ðŸ“·  Camera &amp; Scan" Style="{StaticResource NavRailBtn}" Click="NavBtnScanner_Click"/>
+                        <Button x:Name="NavBtnConverter" Content="ðŸ”„  Text &amp; Markdown" Style="{StaticResource NavRailBtn}" Click="NavBtnConverter_Click"/>
 
                         <Border Height="1" Background="{DynamicResource BorderBrushDefault}" Margin="0,10,0,10"/>
 
                         <TextBlock Text="CREATE / IMPORT" FontSize="8.5" FontWeight="Bold" Foreground="#71717A" Margin="6,0,0,4"/>
-                        <Button Content="📝  New Word Doc" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnNewWordTab_Click"/>
-                        <Button Content="➕  New Blank PDF" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnNewPdfTab_Click"/>
-                        <Button Content="📂  Open File..." Style="{StaticResource AccentBtn}" Margin="0,2" Click="BtnOpenFile_Click"/>
+                        <Button Content="ðŸ“  New Word Doc" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnNewWordTab_Click"/>
+                        <Button Content="âž•  New Blank PDF" Style="{StaticResource ModernBtn}" Margin="0,2" Click="BtnNewPdfTab_Click"/>
+                        <Button Content="ðŸ“‚  Open File..." Style="{StaticResource AccentBtn}" Margin="0,2" Click="BtnOpenFile_Click"/>
                     </StackPanel>
                 </DockPanel>
             </Border>
@@ -868,7 +889,7 @@
                         Style="{StaticResource AccentBtn}" Visibility="Collapsed"
                         Click="BtnToggleNavRail_Click" FontWeight="Bold" FontSize="11">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="▶" FontSize="10" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="â–¶" FontSize="10" Margin="0,0,5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Sidebar (F4)" FontSize="10.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
@@ -898,10 +919,10 @@
                             </StackPanel>
 
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <Button Content="🔄 Rescan All" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnRescanLibrary_Click"/>
-                                <Button Content="📝 New Word" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewWordTab_Click"/>
-                                <Button Content="➕ New PDF" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewPdfTab_Click"/>
-                                <Button Content="📂 Open Doc..." Style="{StaticResource AccentBtn}" Click="BtnOpenFile_Click"/>
+                                <Button Content="ðŸ”„ Rescan All" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnRescanLibrary_Click"/>
+                                <Button Content="ðŸ“ New Word" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewWordTab_Click"/>
+                                <Button Content="âž• New PDF" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewPdfTab_Click"/>
+                                <Button Content="ðŸ“‚ Open Doc..." Style="{StaticResource AccentBtn}" Click="BtnOpenFile_Click"/>
                             </StackPanel>
                         </DockPanel>
                     </Border>
@@ -956,14 +977,14 @@
                             <!-- Right: Multiple View Mode Switcher -->
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="View Mode:" FontSize="10" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <Button x:Name="BtnDashboardGrid" Content="⊞ Grid" ToolTip="Multi-column Responsive Card Grid" 
+                                <Button x:Name="BtnDashboardGrid" Content="âŠž Grid" ToolTip="Multi-column Responsive Card Grid" 
                                         Style="{StaticResource AccentBtn}" Padding="8,3" Margin="0,0,2,0" FontSize="10.5" Click="BtnDashboardGrid_Click"/>
-                                <Button x:Name="BtnDashboardThumbnails" Content="🖼️ Cover Tile" ToolTip="Visual Cover Gallery View" 
+                                <Button x:Name="BtnDashboardThumbnails" Content="ðŸ–¼ï¸ Cover Tile" ToolTip="Visual Cover Gallery View" 
                                         Style="{StaticResource ModernBtn}" Padding="8,3" Margin="0,0,2,0" FontSize="10.5" Click="BtnDashboardThumbnails_Click"/>
-                                <Button x:Name="BtnDashboardCompact" Content="☰ Details List" ToolTip="High-Density Table View" 
+                                <Button x:Name="BtnDashboardCompact" Content="â˜° Details List" ToolTip="High-Density Table View" 
                                         Style="{StaticResource ModernBtn}" Padding="8,3" Margin="0,0,6,0" FontSize="10.5" Click="BtnDashboardCompact_Click"/>
                                 <Separator Width="1" Height="16" Background="{DynamicResource BorderBrushLight}" Margin="0,0,6,0"/>
-                                <Button x:Name="BtnToggleHoverPreview" Content="🔍 Hover Preview: ON" ToolTip="Toggle Automatic Document Hover Preview Popup" 
+                                <Button x:Name="BtnToggleHoverPreview" Content="ðŸ” Hover Preview: ON" ToolTip="Toggle Automatic Document Hover Preview Popup" 
                                         Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Padding="8,3" FontSize="10.5" Click="BtnToggleHoverPreview_Click"/>
                             </StackPanel>
 
@@ -972,7 +993,7 @@
                                 <!-- Search Input Box -->
                                 <Border Background="#1F1F23" CornerRadius="4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" Padding="6,2" Margin="0,0,8,0">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="🔍" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10"/>
+                                        <TextBlock Text="ðŸ”" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10"/>
                                         <TextBox x:Name="TxtLibrarySearch" Width="130" Background="Transparent" Foreground="White" 
                                                  BorderThickness="0" FontSize="10.5" VerticalAlignment="Center"
                                                  TextChanged="TxtLibrarySearch_TextChanged"/>
@@ -1024,15 +1045,15 @@
                                               Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
                                         <ComboBoxItem Content="Date Modified (Newest)" IsSelected="True"/>
                                         <ComboBoxItem Content="Date Modified (Oldest)"/>
-                                        <ComboBoxItem Content="Name (A → Z)"/>
-                                        <ComboBoxItem Content="Name (Z → A)"/>
+                                        <ComboBoxItem Content="Name (A â†’ Z)"/>
+                                        <ComboBoxItem Content="Name (Z â†’ A)"/>
                                         <ComboBoxItem Content="Size (Largest First)"/>
                                         <ComboBoxItem Content="Size (Smallest First)"/>
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Reset Filters Button -->
-                                <Button x:Name="BtnResetFilters" Content="✕ Clear" ToolTip="Reset All Filters and Search" 
+                                <Button x:Name="BtnResetFilters" Content="âœ• Clear" ToolTip="Reset All Filters and Search" 
                                         Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9.5" Click="BtnResetFilters_Click"/>
                             </WrapPanel>
                         </DockPanel>
@@ -1056,15 +1077,15 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ContextMenu>
                                 <ContextMenu x:Name="LibraryContextMenu" Background="{DynamicResource SubmenuBgBrush}" Foreground="{DynamicResource SubmenuFgBrush}">
-                                    <MenuItem Header="📄  Open in PSD PDF Studio" Click="LibMenuOpenReader_Click"/>
-                                    <MenuItem Header="📝  Open in Word Suite (.docx)" Click="LibMenuOpenWord_Click"/>
-                                    <MenuItem Header="📑  Page Organizer &amp; Extraction" Click="LibMenuOrganize_Click"/>
-                                    <MenuItem Header="🔄  Convert Document to Text / Markdown" Click="LibMenuConvert_Click"/>
+                                    <MenuItem Header="ðŸ“„  Open in PSD PDF Studio" Click="LibMenuOpenReader_Click"/>
+                                    <MenuItem Header="ðŸ“  Open in Word Suite (.docx)" Click="LibMenuOpenWord_Click"/>
+                                    <MenuItem Header="ðŸ“‘  Page Organizer &amp; Extraction" Click="LibMenuOrganize_Click"/>
+                                    <MenuItem Header="ðŸ”„  Convert Document to Text / Markdown" Click="LibMenuConvert_Click"/>
                                     <Separator/>
-                                    <MenuItem Header="📂  Show in Windows File Explorer" Click="LibMenuShowInExplorer_Click"/>
-                                    <MenuItem Header="📋  Copy File Path to Clipboard" Click="LibMenuCopyPath_Click"/>
+                                    <MenuItem Header="ðŸ“‚  Show in Windows File Explorer" Click="LibMenuShowInExplorer_Click"/>
+                                    <MenuItem Header="ðŸ“‹  Copy File Path to Clipboard" Click="LibMenuCopyPath_Click"/>
                                     <Separator/>
-                                    <MenuItem Header="ℹ️  Document Properties &amp; Metadata" Click="LibMenuProperties_Click"/>
+                                    <MenuItem Header="â„¹ï¸  Document Properties &amp; Metadata" Click="LibMenuProperties_Click"/>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                         </ListBox>
@@ -1094,7 +1115,7 @@
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock x:Name="TxtHoverTitle" Text="Document Title" FontWeight="Bold" FontSize="12.5" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock x:Name="TxtHoverPages" Text="12 Pages • 2.4 MB" FontSize="9.5" Foreground="#38BDF8" Margin="0,1,0,0"/>
+                                        <TextBlock x:Name="TxtHoverPages" Text="12 Pages â€¢ 2.4 MB" FontSize="9.5" Foreground="#38BDF8" Margin="0,1,0,0"/>
                                     </StackPanel>
                                 </DockPanel>
 
@@ -1122,7 +1143,7 @@
                                 </Grid>
 
                                 <Border Background="#141418" CornerRadius="4" Padding="8,4" Margin="0,4,0,0">
-                                    <TextBlock Text="💡 Double-click card to open • Auto-hides on cursor exit" FontSize="9" Foreground="#71717A" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="ðŸ’¡ Double-click card to open â€¢ Auto-hides on cursor exit" FontSize="9" Foreground="#71717A" HorizontalAlignment="Center"/>
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -1145,7 +1166,7 @@
                     <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,3,6,0">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,0,2">
-                                <Button x:Name="BtnNewTab" Content="➕ New Tab" Width="80" Height="22" 
+                                <Button x:Name="BtnNewTab" Content="âž• New Tab" Width="80" Height="22" 
                                         Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewTab_Click"/>
                             </StackPanel>
 
@@ -1163,7 +1184,7 @@
                                                 Padding="10,4,6,4" Margin="0,0,3,0">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="{Binding Title}" Foreground="{DynamicResource HeaderFgBrush}" FontSize="10.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                                <Button Content="✕" Width="13" Height="13" Margin="6,0,0,0" Background="Transparent" 
+                                                <Button Content="âœ•" Width="13" Height="13" Margin="6,0,0,0" Background="Transparent" 
                                                         Foreground="#A1A1AA" BorderThickness="0" Tag="{Binding}" Click="BtnCloseTab_Click"/>
                                             </StackPanel>
                                         </Border>
@@ -1174,25 +1195,25 @@
                     </Border>
 
                     <!-- Main Ribbon Toolbar -->
-                    <Border Grid.Row="1" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
+                    <Border x:Name="ReaderToolbarRibbon" Grid.Row="1" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
                         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <!-- View Toggles: Nav Rail, Thumbnails, Full Screen -->
-                            <Button x:Name="BtnToggleNavRail" Content="◫ Hide Sidebar (F4)" ToolTip="Toggle Navigation Sidebar (F4)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleNavRail_Click"/>
-                            <Button x:Name="BtnToggleThumbnails" Content="📑 Thumbs" ToolTip="Toggle Thumbnails Sidebar (Ctrl+T)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleThumbnails_Click"/>
-                            <Button x:Name="BtnFullScreen" Content="⛶ Presentation (F11)" ToolTip="Dedicated Full Screen View (F11)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnToggleFullScreen_Click"/>
+                            <Button x:Name="BtnToggleNavRail" Content="â—« Hide Sidebar (F4)" ToolTip="Toggle Navigation Sidebar (F4)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleNavRail_Click"/>
+                            <Button x:Name="BtnToggleThumbnails" Content="ðŸ“‘ Thumbs" ToolTip="Toggle Thumbnails Sidebar (Ctrl+T)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleThumbnails_Click"/>
+                            <Button x:Name="BtnFullScreen" Content="â›¶ Presentation (F11)" ToolTip="Dedicated Full Screen View (F11)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnToggleFullScreen_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Page View Modes: Continuous Scroll, Single Page, Two-Page Spread -->
-                            <Button x:Name="BtnViewContinuous" Content="📜 Continuous" ToolTip="Continuous Multi-Page Vertical Scroll (Ctrl+1)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnViewContinuous_Click"/>
-                            <Button x:Name="BtnViewSinglePage" Content="📄 Single" ToolTip="Single Page View (Ctrl+2)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnViewSinglePage_Click"/>
-                            <Button x:Name="BtnViewTwoPage" Content="📖 Two-Page" ToolTip="Two-Page Book Spread (Ctrl+3)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnViewTwoPage_Click"/>
+                            <Button x:Name="BtnViewContinuous" Content="ðŸ“œ Continuous" ToolTip="Continuous Multi-Page Vertical Scroll (Ctrl+1)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnViewContinuous_Click"/>
+                            <Button x:Name="BtnViewSinglePage" Content="ðŸ“„ Single" ToolTip="Single Page View (Ctrl+2)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnViewSinglePage_Click"/>
+                            <Button x:Name="BtnViewTwoPage" Content="ðŸ“– Two-Page" ToolTip="Two-Page Book Spread (Ctrl+3)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnViewTwoPage_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Navigation Steppers & Quick Jump -->
-                            <Button x:Name="BtnFirstPage" Content="⏮" ToolTip="First Page" Width="26" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFirstPage_Click"/>
-                            <Button x:Name="BtnPrevPage" Content="◀ Prev" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnPrevPage_Click"/>
+                            <Button x:Name="BtnFirstPage" Content="â®" ToolTip="First Page" Width="26" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFirstPage_Click"/>
+                            <Button x:Name="BtnPrevPage" Content="â—€ Prev" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnPrevPage_Click"/>
                             <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="3" Padding="5,2" Margin="1" VerticalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox x:Name="TxtJumpPage" Text="1" Width="28" Background="Transparent" Foreground="{DynamicResource WindowFgBrush}" BorderThickness="0" 
@@ -1200,31 +1221,31 @@
                                     <TextBlock x:Name="TxtNavPageIndicator" Text=" / 1" FontSize="10.5" FontWeight="SemiBold" Foreground="#A1A1AA" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
-                            <Button x:Name="BtnNextPage" Content="Next ▶" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnNextPage_Click"/>
-                            <Button x:Name="BtnLastPage" Content="⏭" ToolTip="Last Page" Width="26" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnLastPage_Click"/>
+                            <Button x:Name="BtnNextPage" Content="Next â–¶" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnNextPage_Click"/>
+                            <Button x:Name="BtnLastPage" Content="â­" ToolTip="Last Page" Width="26" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnLastPage_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Zoom Controls -->
-                            <Button x:Name="BtnZoomOut" Content="➖" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomOut_Click"/>
+                            <Button x:Name="BtnZoomOut" Content="âž–" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomOut_Click"/>
                             <TextBlock x:Name="TxtZoomLevel" Text="100%" Width="40" TextAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource WindowFgBrush}" FontSize="10.5" FontWeight="SemiBold"/>
-                            <Button x:Name="BtnZoomIn" Content="➕" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomIn_Click"/>
+                            <Button x:Name="BtnZoomIn" Content="âž•" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomIn_Click"/>
                             <Button x:Name="BtnFitWidth" Content="Fit Width" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFitWidth_Click"/>
-                            <Button x:Name="BtnRotatePage" Content="Rotate 90°" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnRotatePage_Click"/>
-                            <Button x:Name="BtnDarkModeToggle" Content="🌙 Dark Mode" ToolTip="Toggle Night / Invert Reading Mode (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnDarkModeToggle_Click"/>
+                            <Button x:Name="BtnRotatePage" Content="Rotate 90Â°" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnRotatePage_Click"/>
+                            <Button x:Name="BtnDarkModeToggle" Content="ðŸŒ™ Dark Mode" ToolTip="Toggle Night / Invert Reading Mode (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnDarkModeToggle_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Annotation Tools Suite -->
-                            <Button x:Name="BtnToolPointer" Content="👆 Pointer" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTool_Click"/>
-                            <Button x:Name="BtnToolSnapshot" Content="📷 Snapshot" ToolTip="Capture Area Snapshot to Clipboard (Ctrl+Shift+C)" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnToolSnapshot_Click"/>
+                            <Button x:Name="BtnToolPointer" Content="ðŸ‘† Pointer" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolSnapshot" Content="ðŸ“· Snapshot" ToolTip="Capture Area Snapshot to Clipboard (Ctrl+Shift+C)" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnToolSnapshot_Click"/>
 
                             <!-- Pen Sketch & Palette -->
-                            <Button x:Name="BtnToolInk" Content="✏️ Sketch" Style="{StaticResource ModernBtn}" Foreground="#F87171" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolInk" Content="âœï¸ Sketch" Style="{StaticResource ModernBtn}" Foreground="#F87171" Margin="1" Click="BtnTool_Click"/>
                             <Button x:Name="BtnPdfPenColor" ToolTip="Sketch Pen Color Palette" Style="{StaticResource ModernBtn}" Margin="0,1,1,1" Padding="4,2" Click="BtnPdfPenColor_Click">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <Border x:Name="IndicatorPenColor" Width="10" Height="10" CornerRadius="2" Background="#DC2626"/>
-                                    <TextBlock Text=" ▾" FontSize="8" Margin="2,0,0,0" Foreground="#A1A1AA"/>
+                                    <TextBlock Text=" â–¾" FontSize="8" Margin="2,0,0,0" Foreground="#A1A1AA"/>
                                 </StackPanel>
                             </Button>
                             <Popup x:Name="PopupPdfPenColor" PlacementTarget="{Binding ElementName=BtnPdfPenColor}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
@@ -1259,34 +1280,34 @@
                                 <ComboBoxItem Content="10.0 pt"/>
                             </ComboBox>
 
-                            <Button x:Name="BtnToolHighlight" Content="🖍️ Highlight" Style="{StaticResource ModernBtn}" Foreground="#FACC15" Margin="1" Click="BtnTool_Click"/>
-                            <Button x:Name="BtnToolSticky" Content="📌 Note" Style="{StaticResource ModernBtn}" Foreground="#FB923C" Margin="1" Click="BtnTool_Click"/>
-                            <Button x:Name="BtnToolMeasure" Content="📐 Measure" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnTool_Click"/>
-                            <Button x:Name="BtnToolSignature" Content="🔏 Sign &amp; Audit" ToolTip="Enterprise Electronic Signature Studio" Style="{StaticResource ModernBtn}" Foreground="#60A5FA" Margin="1" Click="BtnToolSignature_Click"/>
-                            <Button x:Name="BtnToolbarCopilot" Content="🤖 Copilot" ToolTip="PSD AI Document Copilot" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnToggleAiCopilot_Click"/>
-                            <Button x:Name="BtnToolbarOrganize" Content="📑 Organize" ToolTip="Page Matrix Organizer" Style="{StaticResource ModernBtn}" Foreground="#34D399" Margin="1" Click="BtnPageOrganizer_Click"/>
+                            <Button x:Name="BtnToolHighlight" Content="ðŸ–ï¸ Highlight" Style="{StaticResource ModernBtn}" Foreground="#FACC15" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolSticky" Content="ðŸ“Œ Note" Style="{StaticResource ModernBtn}" Foreground="#FB923C" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolMeasure" Content="ðŸ“ Measure" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnTool_Click"/>
+                            <Button x:Name="BtnToolSignature" Content="ðŸ” Sign &amp; Audit" ToolTip="Enterprise Electronic Signature Studio" Style="{StaticResource ModernBtn}" Foreground="#60A5FA" Margin="1" Click="BtnToolSignature_Click"/>
+                            <Button x:Name="BtnToolbarCopilot" Content="ðŸ¤– Copilot" ToolTip="PSD AI Document Copilot" Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Margin="1" Click="BtnToggleAiCopilot_Click"/>
+                            <Button x:Name="BtnToolbarOrganize" Content="ðŸ“‘ Organize" ToolTip="Page Matrix Organizer" Style="{StaticResource ModernBtn}" Foreground="#34D399" Margin="1" Click="BtnPageOrganizer_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Read Aloud Speech Synthesizer -->
-                            <Button x:Name="BtnTtsPlay" Content="🔊 Read" ToolTip="Read Page Aloud" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTtsPlay_Click"/>
-                            <Button x:Name="BtnTtsPause" Content="⏸" ToolTip="Pause Speech" Style="{StaticResource ModernBtn}" Width="26" Height="22" Padding="2" Margin="1" Click="BtnTtsPause_Click"/>
-                            <Button x:Name="BtnTtsStop" Content="⏹" ToolTip="Stop Speech" Style="{StaticResource ModernBtn}" Width="26" Height="22" Padding="2" Margin="1" Click="BtnTtsStop_Click"/>
+                            <Button x:Name="BtnTtsPlay" Content="ðŸ”Š Read" ToolTip="Read Page Aloud" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTtsPlay_Click"/>
+                            <Button x:Name="BtnTtsPause" Content="â¸" ToolTip="Pause Speech" Style="{StaticResource ModernBtn}" Width="26" Height="22" Padding="2" Margin="1" Click="BtnTtsPause_Click"/>
+                            <Button x:Name="BtnTtsStop" Content="â¹" ToolTip="Stop Speech" Style="{StaticResource ModernBtn}" Width="26" Height="22" Padding="2" Margin="1" Click="BtnTtsStop_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Enterprise Operations -->
-                            <Button Content="🛡️ Security" ToolTip="AES-256 &amp; Redaction" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnSecurity_Click"/>
-                            <Button Content="🗜️ Optimize" ToolTip="Compress PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnOptimizer_Click"/>
-                            <Button Content="💧 Watermark" ToolTip="Watermark &amp; Headers" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWatermark_Click"/>
-                            <Button Content="ℹ️ Info" ToolTip="Document Properties &amp; Metadata (Ctrl+D)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnDocumentProperties_Click"/>
+                            <Button Content="ðŸ›¡ï¸ Security" ToolTip="AES-256 &amp; Redaction" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnSecurity_Click"/>
+                            <Button Content="ðŸ—œï¸ Optimize" ToolTip="Compress PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnOptimizer_Click"/>
+                            <Button Content="ðŸ’§ Watermark" ToolTip="Watermark &amp; Headers" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWatermark_Click"/>
+                            <Button Content="â„¹ï¸ Info" ToolTip="Document Properties &amp; Metadata (Ctrl+D)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnDocumentProperties_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Actions & Search -->
-                            <Button x:Name="BtnSaveFile" Content="💾 Save" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnSaveFile_Click"/>
-                            <Button x:Name="BtnToggleSearch" Content="🔍 Find" Style="{StaticResource ModernBtn}" Margin="2,1,1,1" Click="BtnToggleSearch_Click"/>
-                            <Button Content="📝 Edit in Word Suite" Style="{StaticResource ModernBtn}" Margin="2,1,1,1" Click="NavBtnWord_Click"/>
+                            <Button x:Name="BtnSaveFile" Content="ðŸ’¾ Save" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnSaveFile_Click"/>
+                            <Button x:Name="BtnToggleSearch" Content="ðŸ” Find" Style="{StaticResource ModernBtn}" Margin="2,1,1,1" Click="BtnToggleSearch_Click"/>
+                            <Button Content="ðŸ“ Edit in Word Suite" Style="{StaticResource ModernBtn}" Margin="2,1,1,1" Click="NavBtnWord_Click"/>
                         </WrapPanel>
                     </Border>
 
@@ -1295,8 +1316,8 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Search Document:" VerticalAlignment="Center" Margin="0,0,6,0" Foreground="#A1A1AA" FontSize="10.5"/>
                             <TextBox x:Name="TxtSearchQuery" Width="200" Background="#121214" Foreground="White" BorderBrush="{DynamicResource BorderBrushLight}" Padding="5,2" KeyUp="TxtSearchQuery_KeyUp"/>
-                            <Button x:Name="BtnFindPrev" Content="◀ Prev" Style="{StaticResource ModernBtn}" Margin="4,0,2,0" Click="BtnFindPrev_Click"/>
-                            <Button x:Name="BtnFindNext" Content="Next ▶" Style="{StaticResource ModernBtn}" Margin="2,0,4,0" Click="BtnFindNext_Click"/>
+                            <Button x:Name="BtnFindPrev" Content="â—€ Prev" Style="{StaticResource ModernBtn}" Margin="4,0,2,0" Click="BtnFindPrev_Click"/>
+                            <Button x:Name="BtnFindNext" Content="Next â–¶" Style="{StaticResource ModernBtn}" Margin="2,0,4,0" Click="BtnFindNext_Click"/>
                             <TextBlock x:Name="TxtMatchCount" Text="0 matches" VerticalAlignment="Center" Margin="6,0" Foreground="#38BDF8" FontWeight="SemiBold" FontSize="10.5"/>
                             <Button x:Name="BtnCloseSearch" Content="Close" Style="{StaticResource ModernBtn}" Margin="4,0" Click="BtnCloseSearch_Click"/>
                         </StackPanel>
@@ -1343,32 +1364,32 @@
                                       ManipulationDelta="MainScrollViewer_ManipulationDelta">
                             <ScrollViewer.ContextMenu>
                                 <ContextMenu x:Name="PdfContextMenu">
-                                    <MenuItem Header="📋  Copy Text" InputGestureText="Ctrl+C" Click="MenuCopy_Click"/>
-                                    <MenuItem Header="📷  Take Area Snapshot" InputGestureText="Ctrl+Shift+C" Click="BtnToolSnapshot_Click"/>
+                                    <MenuItem Header="ðŸ“‹  Copy Text" InputGestureText="Ctrl+C" Click="MenuCopy_Click"/>
+                                    <MenuItem Header="ðŸ“·  Take Area Snapshot" InputGestureText="Ctrl+Shift+C" Click="BtnToolSnapshot_Click"/>
                                     <Separator/>
-                                    <MenuItem Header="📜  Continuous Page Scroll" InputGestureText="Ctrl+1" Click="BtnViewContinuous_Click"/>
-                                    <MenuItem Header="📄  Single Page View" InputGestureText="Ctrl+2" Click="BtnViewSinglePage_Click"/>
-                                    <MenuItem Header="📖  Two-Page Book Spread" InputGestureText="Ctrl+3" Click="BtnViewTwoPage_Click"/>
-                                    <MenuItem Header="⛶  Presentation Full Screen" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
+                                    <MenuItem Header="ðŸ“œ  Continuous Page Scroll" InputGestureText="Ctrl+1" Click="BtnViewContinuous_Click"/>
+                                    <MenuItem Header="ðŸ“„  Single Page View" InputGestureText="Ctrl+2" Click="BtnViewSinglePage_Click"/>
+                                    <MenuItem Header="ðŸ“–  Two-Page Book Spread" InputGestureText="Ctrl+3" Click="BtnViewTwoPage_Click"/>
+                                    <MenuItem Header="â›¶  Presentation Full Screen" InputGestureText="F11" Click="BtnToggleFullScreen_Click"/>
                                     <Separator/>
-                                    <MenuItem Header="👆  Pointer / Hand Tool" Click="BtnToolPointer_Click"/>
-                                    <MenuItem Header="✏️  Ink Sketch Pen" Click="BtnToolInk_Click"/>
-                                    <MenuItem Header="🖍️  Highlighter Tool" Click="BtnToolHighlight_Click"/>
-                                    <MenuItem Header="📌  Add Sticky Note" Click="BtnToolSticky_Click"/>
-                                    <MenuItem Header="📐  Measure Calibration" Click="BtnToolMeasure_Click"/>
-                                    <MenuItem Header="✂️  Mark for Redaction" Click="BtnRedactTool_Click"/>
+                                    <MenuItem Header="ðŸ‘†  Pointer / Hand Tool" Click="BtnToolPointer_Click"/>
+                                    <MenuItem Header="âœï¸  Ink Sketch Pen" Click="BtnToolInk_Click"/>
+                                    <MenuItem Header="ðŸ–ï¸  Highlighter Tool" Click="BtnToolHighlight_Click"/>
+                                    <MenuItem Header="ðŸ“Œ  Add Sticky Note" Click="BtnToolSticky_Click"/>
+                                    <MenuItem Header="ðŸ“  Measure Calibration" Click="BtnToolMeasure_Click"/>
+                                    <MenuItem Header="âœ‚ï¸  Mark for Redaction" Click="BtnRedactTool_Click"/>
                                     <Separator/>
-                                    <MenuItem Header="➕  Zoom In" InputGestureText="Ctrl++" Click="BtnZoomIn_Click"/>
-                                    <MenuItem Header="➖  Zoom Out" InputGestureText="Ctrl+-" Click="BtnZoomOut_Click"/>
-                                    <MenuItem Header="🔍  Actual Size (100%)" InputGestureText="Ctrl+0" Click="BtnZoomActual_Click"/>
-                                    <MenuItem Header="↔  Fit to Width" Click="BtnFitWidth_Click"/>
-                                    <MenuItem Header="↕  Fit Entire Page" Click="BtnFitPage_Click"/>
-                                    <MenuItem Header="🔄  Rotate Clockwise (90°)" InputGestureText="Ctrl+R" Click="BtnRotatePage_Click"/>
-                                    <MenuItem Header="🌙  Dark Reading Mode / Invert" InputGestureText="Ctrl+I" Click="BtnDarkModeToggle_Click"/>
+                                    <MenuItem Header="âž•  Zoom In" InputGestureText="Ctrl++" Click="BtnZoomIn_Click"/>
+                                    <MenuItem Header="âž–  Zoom Out" InputGestureText="Ctrl+-" Click="BtnZoomOut_Click"/>
+                                    <MenuItem Header="ðŸ”  Actual Size (100%)" InputGestureText="Ctrl+0" Click="BtnZoomActual_Click"/>
+                                    <MenuItem Header="â†”  Fit to Width" Click="BtnFitWidth_Click"/>
+                                    <MenuItem Header="â†•  Fit Entire Page" Click="BtnFitPage_Click"/>
+                                    <MenuItem Header="ðŸ”„  Rotate Clockwise (90Â°)" InputGestureText="Ctrl+R" Click="BtnRotatePage_Click"/>
+                                    <MenuItem Header="ðŸŒ™  Dark Reading Mode / Invert" InputGestureText="Ctrl+I" Click="BtnDarkModeToggle_Click"/>
                                     <Separator/>
-                                    <MenuItem Header="🔊  Read Aloud Page" Click="BtnTtsPlay_Click"/>
-                                    <MenuItem Header="🖨️  Print Document..." InputGestureText="Ctrl+P" Click="BtnPrint_Click"/>
-                                    <MenuItem Header="ℹ️  Document Properties &amp; Security..." InputGestureText="Ctrl+D" Click="BtnDocumentProperties_Click"/>
+                                    <MenuItem Header="ðŸ”Š  Read Aloud Page" Click="BtnTtsPlay_Click"/>
+                                    <MenuItem Header="ðŸ–¨ï¸  Print Document..." InputGestureText="Ctrl+P" Click="BtnPrint_Click"/>
+                                    <MenuItem Header="â„¹ï¸  Document Properties &amp; Security..." InputGestureText="Ctrl+D" Click="BtnDocumentProperties_Click"/>
                                 </ContextMenu>
                             </ScrollViewer.ContextMenu>
 
@@ -1398,7 +1419,7 @@
                                             <!-- PKCS#7 Digital Signature Badge -->
                                             <Border x:Name="SignatureBadge" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                                                     Margin="16" Background="#EFF6FF" BorderBrush="#0284C7" BorderThickness="1.5" CornerRadius="4" Padding="8,4" Visibility="Collapsed">
-                                                <TextBlock Text="✓ PKCS#7 Verified Digital Signature" FontWeight="Bold" Foreground="#0284C7" FontSize="10"/>
+                                                <TextBlock Text="âœ“ PKCS#7 Verified Digital Signature" FontWeight="Bold" Foreground="#0284C7" FontSize="10"/>
                                             </Border>
                                         </Grid>
                                     </Border>
@@ -1410,6 +1431,39 @@
                                 </Canvas>
                             </Grid>
                         </ScrollViewer>
+
+                        <!-- Floating Distraction-Free Focus Mode HUD Overlay (Shown when in Zen Focus Mode) -->
+                        <Border x:Name="FocusModeHud" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,24"
+                                Background="#F018181B" BorderBrush="#0D9488" BorderThickness="1.5" CornerRadius="22" Padding="14,6"
+                                Visibility="Collapsed" Panel.ZIndex="999">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.8" Color="#000000"/>
+                            </Border.Effect>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- Zoom Controls -->
+                                <Button Content="➖ Zoom Out" Style="{StaticResource ModernBtn}" Margin="2,0" Padding="8,4" Click="BtnZoomOut_Click"/>
+                                <Border Background="#27272A" CornerRadius="4" Padding="8,3" Margin="4,0" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TxtFocusZoomLevel" Text="100%" Foreground="#38BDF8" FontWeight="Bold" FontSize="11"/>
+                                </Border>
+                                <Button Content="Zoom In ➕" Style="{StaticResource ModernBtn}" Margin="2,0" Padding="8,4" Click="BtnZoomIn_Click"/>
+                                <Button Content="Fit Width" Style="{StaticResource ModernBtn}" Margin="2,0" Padding="8,4" Click="BtnFitWidth_Click"/>
+
+                                <Separator Width="1" Height="18" Background="#3F3F46" Margin="8,0"/>
+
+                                <!-- Page Steppers -->
+                                <Button Content="⏮" Width="28" Height="24" Style="{StaticResource ModernBtn}" Margin="1,0" Click="BtnPrevPage_Click"/>
+                                <TextBlock x:Name="TxtFocusPageIndicator" Text="Page 1 of 1" Foreground="#A1A1AA" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" Margin="6,0"/>
+                                <Button Content="⏭" Width="28" Height="24" Style="{StaticResource ModernBtn}" Margin="1,0" Click="BtnNextPage_Click"/>
+
+                                <Separator Width="1" Height="18" Background="#3F3F46" Margin="8,0"/>
+
+                                <!-- Toggle Menus Button -->
+                                <Button x:Name="BtnFocusToggleMenus" Content="Show All Menus" Style="{StaticResource ModernBtn}" Margin="2,0" Padding="8,4" Click="BtnFocusToggleMenus_Click"/>
+
+                                <!-- Exit Focus Mode -->
+                                <Button Content="✕ Exit Focus (Esc)" Style="{StaticResource AccentBtn}" Background="#DC2626" BorderBrush="#EF4444" Margin="6,0,2,0" Padding="10,4" Click="BtnExitFocusMode_Click"/>
+                            </StackPanel>
+                        </Border>
                     </Grid>
 
                     <!-- Reader Status Bar -->
@@ -1440,18 +1494,18 @@
                     <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
                         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <!-- History: Undo / Redo -->
-                            <Button x:Name="BtnWordUndo" Content="↶" ToolTip="Undo (Ctrl+Z)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUndo_Click"/>
-                            <Button x:Name="BtnWordRedo" Content="↷" ToolTip="Redo (Ctrl+Y)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordRedo_Click"/>
+                            <Button x:Name="BtnWordUndo" Content="â†¶" ToolTip="Undo (Ctrl+Z)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUndo_Click"/>
+                            <Button x:Name="BtnWordRedo" Content="â†·" ToolTip="Redo (Ctrl+Y)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordRedo_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- File & Document Operations -->
-                            <Button Content="➕ New" ToolTip="New Document" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNew_Click"/>
-                            <Button Content="📂 Open" ToolTip="Open Word/RTF/Markdown/HTML/PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordOpen_Click"/>
-                            <Button Content="💾 Save" ToolTip="Save Document (Ctrl+S)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordSave_Click"/>
-                            <Button Content="💾 Save As..." ToolTip="Save as DOCX, RTF, Markdown, HTML" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSaveAs_Click"/>
-                            <Button Content="📄 Export PDF" ToolTip="Compile to Vector PDF" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordExportPdf_Click"/>
-                            <Button Content="🖨️ Print" ToolTip="Print Document (Ctrl+P)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordPrint_Click"/>
+                            <Button Content="âž• New" ToolTip="New Document" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNew_Click"/>
+                            <Button Content="ðŸ“‚ Open" ToolTip="Open Word/RTF/Markdown/HTML/PDF" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordOpen_Click"/>
+                            <Button Content="ðŸ’¾ Save" ToolTip="Save Document (Ctrl+S)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordSave_Click"/>
+                            <Button Content="ðŸ’¾ Save As..." ToolTip="Save as DOCX, RTF, Markdown, HTML" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSaveAs_Click"/>
+                            <Button Content="ðŸ“„ Export PDF" ToolTip="Compile to Vector PDF" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnWordExportPdf_Click"/>
+                            <Button Content="ðŸ–¨ï¸ Print" ToolTip="Print Document (Ctrl+P)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordPrint_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
@@ -1512,11 +1566,11 @@
                             <Button Width="26" Height="22" Padding="2" ToolTip="Strikethrough" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordStrikethrough_Click">
                                 <TextBlock Text="S" TextDecorations="Strikethrough"/>
                             </Button>
-                            <Button x:Name="BtnWordSubscript" Content="X₂" ToolTip="Subscript" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSubscript_Click"/>
-                            <Button x:Name="BtnWordSuperscript" Content="X²" ToolTip="Superscript" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSuperscript_Click"/>
-                            <Button x:Name="BtnWordClearFormat" Content="🧹" ToolTip="Clear Formatting" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordClearFormat_Click"/>
-                            <Button x:Name="BtnWordFormatPainter" Content="🖌️" ToolTip="Format Painter (Copy &amp; Apply Style)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordFormatPainter_Click"/>
-                            <Button x:Name="BtnWordChangeCase" Content="Aa ▾" ToolTip="Change Case (Shift+F3)" Style="{StaticResource ModernBtn}" Margin="1" Padding="4,2" Click="BtnWordChangeCase_Click"/>
+                            <Button x:Name="BtnWordSubscript" Content="Xâ‚‚" ToolTip="Subscript" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSubscript_Click"/>
+                            <Button x:Name="BtnWordSuperscript" Content="XÂ²" ToolTip="Superscript" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSuperscript_Click"/>
+                            <Button x:Name="BtnWordClearFormat" Content="ðŸ§¹" ToolTip="Clear Formatting" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordClearFormat_Click"/>
+                            <Button x:Name="BtnWordFormatPainter" Content="ðŸ–Œï¸" ToolTip="Format Painter (Copy &amp; Apply Style)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordFormatPainter_Click"/>
+                            <Button x:Name="BtnWordChangeCase" Content="Aa â–¾" ToolTip="Change Case (Shift+F3)" Style="{StaticResource ModernBtn}" Margin="1" Padding="4,2" Click="BtnWordChangeCase_Click"/>
                             <Popup x:Name="PopupWordChangeCase" PlacementTarget="{Binding ElementName=BtnWordChangeCase}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                 <Border Background="{DynamicResource SubmenuBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="8" Padding="6" Width="160" SnapsToDevicePixels="True">
                                     <Border.Effect>
@@ -1542,7 +1596,7 @@
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock Text="A" FontWeight="Bold" FontSize="11"/>
                                         <Border x:Name="IndicatorTextColor" Width="10" Height="3" Background="#1E293B" Margin="3,8,0,0" VerticalAlignment="Bottom"/>
-                                        <TextBlock Text=" ▾" FontSize="8" Margin="1,0,0,0" Foreground="#A1A1AA"/>
+                                        <TextBlock Text=" â–¾" FontSize="8" Margin="1,0,0,0" Foreground="#A1A1AA"/>
                                     </StackPanel>
                                 </Button>
                                 <Popup x:Name="PopupWordTextColor" PlacementTarget="{Binding ElementName=BtnWordTextColor}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
@@ -1617,7 +1671,7 @@
                                                 <Button Width="18" Height="18" Margin="1" Background="#7030A0" BorderThickness="0" Focusable="False" ToolTip="Purple" Click="ColorChip_Click" Tag="#7030A0"/>
                                             </UniformGrid>
 
-                                            <Button Content="🎨 Custom Hex Color..." Focusable="False" Background="#27272A" Foreground="#38BDF8" 
+                                            <Button Content="ðŸŽ¨ Custom Hex Color..." Focusable="False" Background="#27272A" Foreground="#38BDF8" 
                                                     BorderBrush="#3F3F46" Padding="6,3" FontSize="10" HorizontalContentAlignment="Center"
                                                     Click="BtnCustomTextColor_Click"/>
                                         </StackPanel>
@@ -1627,9 +1681,9 @@
                                 <!-- Text Highlight Button + Dropdown Palette -->
                                 <Button x:Name="BtnWordHighlightColor" ToolTip="Highlight Color Palette" Style="{StaticResource ModernBtn}" Margin="1" Padding="5,2" Click="BtnWordHighlightColor_Click">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="🖍️" FontSize="11"/>
+                                        <TextBlock Text="ðŸ–ï¸" FontSize="11"/>
                                         <Border x:Name="IndicatorHighlightColor" Width="10" Height="3" Background="#FACC15" Margin="3,8,0,0" VerticalAlignment="Bottom"/>
-                                        <TextBlock Text=" ▾" FontSize="8" Margin="1,0,0,0" Foreground="#A1A1AA"/>
+                                        <TextBlock Text=" â–¾" FontSize="8" Margin="1,0,0,0" Foreground="#A1A1AA"/>
                                     </StackPanel>
                                 </Button>
                                 <Popup x:Name="PopupWordHighlightColor" PlacementTarget="{Binding ElementName=BtnWordHighlightColor}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
@@ -1638,7 +1692,7 @@
                                             <DropShadowEffect BlurRadius="16" ShadowDepth="4" Direction="270" Color="#000000" Opacity="0.5"/>
                                         </Border.Effect>
                                         <StackPanel>
-                                            <Button Content="🚫 No Color / Clear" Focusable="False" Background="#27272A" Foreground="#FFFFFF" 
+                                            <Button Content="ðŸš« No Color / Clear" Focusable="False" Background="#27272A" Foreground="#FFFFFF" 
                                                     BorderBrush="#3F3F46" Margin="0,0,0,6" Padding="6,3" FontSize="10.5" HorizontalContentAlignment="Left"
                                                     Click="HighlightChip_Click" Tag="Transparent"/>
 
@@ -1679,27 +1733,27 @@
                                 <ComboBoxItem Content="3.0"/>
                             </ComboBox>
 
-                            <Button Content="⬅" Width="26" Height="22" Padding="2" ToolTip="Align Left (Ctrl+L)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignLeft_Click"/>
-                            <Button Content="⏺" Width="26" Height="22" Padding="2" ToolTip="Align Center (Ctrl+E)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignCenter_Click"/>
-                            <Button Content="➡" Width="26" Height="22" Padding="2" ToolTip="Align Right (Ctrl+R)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignRight_Click"/>
-                            <Button Content="↔" Width="26" Height="22" Padding="2" ToolTip="Justify (Ctrl+J)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignJustify_Click"/>
+                            <Button Content="â¬…" Width="26" Height="22" Padding="2" ToolTip="Align Left (Ctrl+L)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignLeft_Click"/>
+                            <Button Content="âº" Width="26" Height="22" Padding="2" ToolTip="Align Center (Ctrl+E)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignCenter_Click"/>
+                            <Button Content="âž¡" Width="26" Height="22" Padding="2" ToolTip="Align Right (Ctrl+R)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignRight_Click"/>
+                            <Button Content="â†”" Width="26" Height="22" Padding="2" ToolTip="Justify (Ctrl+J)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignJustify_Click"/>
                             
-                            <Button x:Name="BtnWordIndentDecrease" Content="⇤" ToolTip="Decrease Indent" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentDecrease_Click"/>
-                            <Button x:Name="BtnWordIndentIncrease" Content="⇥" ToolTip="Increase Indent" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentIncrease_Click"/>
-                            <Button Content="• List" Width="46" Height="22" Padding="3,2" ToolTip="Bulleted List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBullets_Click"/>
+                            <Button x:Name="BtnWordIndentDecrease" Content="â‡¤" ToolTip="Decrease Indent" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentDecrease_Click"/>
+                            <Button x:Name="BtnWordIndentIncrease" Content="â‡¥" ToolTip="Increase Indent" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentIncrease_Click"/>
+                            <Button Content="â€¢ List" Width="46" Height="22" Padding="3,2" ToolTip="Bulleted List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBullets_Click"/>
                             <Button Content="1. List" Width="48" Height="22" Padding="3,2" ToolTip="Numbered List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNumbering_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Insert Elements (Table, Image, Date, Line, Link, Symbol) -->
-                            <Button Content="⊞ Table" ToolTip="Insert 3x3 Table" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertTable_Click"/>
-                            <Button Content="🖼 Picture" ToolTip="Insert Image" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertImage_Click"/>
-                            <Button Content="― Rule" ToolTip="Insert Divider Line" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertHr_Click"/>
-                            <Button Content="📅 Date" ToolTip="Insert Timestamp" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertDate_Click"/>
-                            <Button x:Name="BtnWordInsertLink" Content="🔗 Link" ToolTip="Insert Hyperlink (Ctrl+K)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertLink_Click"/>
+                            <Button Content="âŠž Table" ToolTip="Insert 3x3 Table" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertTable_Click"/>
+                            <Button Content="ðŸ–¼ Picture" ToolTip="Insert Image" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertImage_Click"/>
+                            <Button Content="â€• Rule" ToolTip="Insert Divider Line" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertHr_Click"/>
+                            <Button Content="ðŸ“… Date" ToolTip="Insert Timestamp" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertDate_Click"/>
+                            <Button x:Name="BtnWordInsertLink" Content="ðŸ”— Link" ToolTip="Insert Hyperlink (Ctrl+K)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertLink_Click"/>
 
                             <!-- Quick Symbols Dropdown -->
-                            <Button x:Name="BtnWordInsertSymbol" Content="Ω Symbol ▾" ToolTip="Insert Special Symbol / Emoji" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertSymbol_Click"/>
+                            <Button x:Name="BtnWordInsertSymbol" Content="Î© Symbol â–¾" ToolTip="Insert Special Symbol / Emoji" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordInsertSymbol_Click"/>
                             <Popup x:Name="PopupWordSymbol" PlacementTarget="{Binding ElementName=BtnWordInsertSymbol}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                 <Border Background="{DynamicResource SubmenuBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="8" Padding="8" Width="180" SnapsToDevicePixels="True">
                                     <Border.Effect>
@@ -1708,30 +1762,30 @@
                                     <StackPanel>
                                         <TextBlock Text="SPECIAL SYMBOLS &amp; ICONS" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="0,0,0,4"/>
                                         <UniformGrid Columns="6" Rows="4">
-                                            <Button Content="©" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="©"/>
-                                            <Button Content="®" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="®"/>
-                                            <Button Content="™" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="™"/>
-                                            <Button Content="€" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="€"/>
-                                            <Button Content="£" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="£"/>
-                                            <Button Content="¥" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="¥"/>
-                                            <Button Content="•" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="•"/>
-                                            <Button Content="—" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="—"/>
-                                            <Button Content="–" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="–"/>
-                                            <Button Content="→" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="→"/>
-                                            <Button Content="←" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="←"/>
-                                            <Button Content="↔" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="↔"/>
-                                            <Button Content="✓" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#4ADE80" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="✓"/>
-                                            <Button Content="✕" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#F87171" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="✕"/>
-                                            <Button Content="★" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#FACC15" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="★"/>
-                                            <Button Content="♥" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#F472B6" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="♥"/>
-                                            <Button Content="°" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="°"/>
-                                            <Button Content="±" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="±"/>
-                                            <Button Content="×" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="×"/>
-                                            <Button Content="÷" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="÷"/>
-                                            <Button Content="∞" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="∞"/>
-                                            <Button Content="≈" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="≈"/>
-                                            <Button Content="√" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="√"/>
-                                            <Button Content="⚠️" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="⚠️"/>
+                                            <Button Content="Â©" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Â©"/>
+                                            <Button Content="Â®" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Â®"/>
+                                            <Button Content="â„¢" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â„¢"/>
+                                            <Button Content="â‚¬" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â‚¬"/>
+                                            <Button Content="Â£" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Â£"/>
+                                            <Button Content="Â¥" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Â¥"/>
+                                            <Button Content="â€¢" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â€¢"/>
+                                            <Button Content="â€”" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â€”"/>
+                                            <Button Content="â€“" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â€“"/>
+                                            <Button Content="â†’" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â†’"/>
+                                            <Button Content="â†" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â†"/>
+                                            <Button Content="â†”" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â†”"/>
+                                            <Button Content="âœ“" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#4ADE80" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="âœ“"/>
+                                            <Button Content="âœ•" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#F87171" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="âœ•"/>
+                                            <Button Content="â˜…" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#FACC15" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â˜…"/>
+                                            <Button Content="â™¥" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="#F472B6" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â™¥"/>
+                                            <Button Content="Â°" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Â°"/>
+                                            <Button Content="Â±" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Â±"/>
+                                            <Button Content="Ã—" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Ã—"/>
+                                            <Button Content="Ã·" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="Ã·"/>
+                                            <Button Content="âˆž" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="âˆž"/>
+                                            <Button Content="â‰ˆ" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="â‰ˆ"/>
+                                            <Button Content="âˆš" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="âˆš"/>
+                                            <Button Content="âš ï¸" Width="24" Height="22" Margin="1" Background="#27272A" Foreground="White" BorderThickness="0" Focusable="False" Click="SymbolChip_Click" Tag="âš ï¸"/>
                                         </UniformGrid>
                                     </StackPanel>
                                 </Border>
@@ -1748,12 +1802,12 @@
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Find & Replace -->
-                            <Button x:Name="BtnWordToggleFindReplace" Content="🔍 Replace" ToolTip="Find &amp; Replace (Ctrl+H)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordToggleFindReplace_Click"/>
+                            <Button x:Name="BtnWordToggleFindReplace" Content="ðŸ” Replace" ToolTip="Find &amp; Replace (Ctrl+H)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordToggleFindReplace_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Document Templates Dropdown -->
-                            <Button x:Name="BtnWordTemplates" Content="📋 Templates ▾" ToolTip="Quick Starter Enterprise Templates" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordTemplates_Click"/>
+                            <Button x:Name="BtnWordTemplates" Content="ðŸ“‹ Templates â–¾" ToolTip="Quick Starter Enterprise Templates" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordTemplates_Click"/>
                             <Popup x:Name="PopupWordTemplates" PlacementTarget="{Binding ElementName=BtnWordTemplates}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                 <Border Background="{DynamicResource SubmenuBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="8" Padding="6" Width="200" SnapsToDevicePixels="True">
                                     <Border.Effect>
@@ -1761,16 +1815,16 @@
                                     </Border.Effect>
                                     <StackPanel>
                                         <TextBlock Text="DOCUMENT TEMPLATES" FontSize="8" FontWeight="Bold" Foreground="#71717A" Margin="4,0,0,4"/>
-                                        <Button Content="📊 Project Charter" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Project Charter"/>
-                                        <Button Content="👤 Modern Resume / CV" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Resume"/>
-                                        <Button Content="💼 Business Proposal" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Business Proposal"/>
-                                        <Button Content="🔒 Mutual NDA Agreement" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="NDA"/>
-                                        <Button Content="📝 Meeting Minutes" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Meeting Minutes"/>
+                                        <Button Content="ðŸ“Š Project Charter" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Project Charter"/>
+                                        <Button Content="ðŸ‘¤ Modern Resume / CV" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Resume"/>
+                                        <Button Content="ðŸ’¼ Business Proposal" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Business Proposal"/>
+                                        <Button Content="ðŸ”’ Mutual NDA Agreement" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="NDA"/>
+                                        <Button Content="ðŸ“ Meeting Minutes" Style="{StaticResource ModernBtn}" HorizontalContentAlignment="Left" Padding="6,4" Margin="1" Focusable="False" Click="WordTemplateChip_Click" Tag="Meeting Minutes"/>
                                     </StackPanel>
                                 </Border>
                             </Popup>
 
-                            <Button x:Name="BtnWordDetailedStats" Content="📊 Audit &amp; Readability" ToolTip="Detailed Document Word Count &amp; Readability Analysis" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordDetailedStats_Click"/>
+                            <Button x:Name="BtnWordDetailedStats" Content="ðŸ“Š Audit &amp; Readability" ToolTip="Detailed Document Word Count &amp; Readability Analysis" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordDetailedStats_Click"/>
                         </WrapPanel>
                     </Border>
 
@@ -1792,7 +1846,7 @@
                                 <TextBlock x:Name="TxtWordFindCount" Text="" Foreground="#38BDF8" VerticalAlignment="Center" Margin="8,0,0,0" FontSize="10.5" FontWeight="SemiBold"/>
                             </StackPanel>
 
-                            <Button Content="✕" DockPanel.Dock="Right" Width="20" Height="20" Style="{StaticResource ModernBtn}" Padding="0" Click="BtnWordCloseFind_Click"/>
+                            <Button Content="âœ•" DockPanel.Dock="Right" Width="20" Height="20" Style="{StaticResource ModernBtn}" Padding="0" Click="BtnWordCloseFind_Click"/>
                         </DockPanel>
                     </Border>
 
@@ -1813,23 +1867,23 @@
                                              TextChanged="RtbWordEditor_TextChanged">
                                     <RichTextBox.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="✂️  Cut" Command="ApplicationCommands.Cut"/>
-                                            <MenuItem Header="📋  Copy" Command="ApplicationCommands.Copy"/>
-                                            <MenuItem Header="📄  Paste" Command="ApplicationCommands.Paste"/>
+                                            <MenuItem Header="âœ‚ï¸  Cut" Command="ApplicationCommands.Cut"/>
+                                            <MenuItem Header="ðŸ“‹  Copy" Command="ApplicationCommands.Copy"/>
+                                            <MenuItem Header="ðŸ“„  Paste" Command="ApplicationCommands.Paste"/>
                                             <Separator/>
-                                            <MenuItem Header="🔤  Font Dialog..." Click="BtnWordFont_Click"/>
-                                            <MenuItem Header="📏  Align Left" InputGestureText="Ctrl+L" Click="BtnWordAlignLeft_Click"/>
-                                            <MenuItem Header="📏  Align Center" InputGestureText="Ctrl+E" Click="BtnWordAlignCenter_Click"/>
-                                            <MenuItem Header="📏  Align Right" InputGestureText="Ctrl+R" Click="BtnWordAlignRight_Click"/>
-                                            <MenuItem Header="📏  Justify" InputGestureText="Ctrl+J" Click="BtnWordAlignJustify_Click"/>
+                                            <MenuItem Header="ðŸ”¤  Font Dialog..." Click="BtnWordFont_Click"/>
+                                            <MenuItem Header="ðŸ“  Align Left" InputGestureText="Ctrl+L" Click="BtnWordAlignLeft_Click"/>
+                                            <MenuItem Header="ðŸ“  Align Center" InputGestureText="Ctrl+E" Click="BtnWordAlignCenter_Click"/>
+                                            <MenuItem Header="ðŸ“  Align Right" InputGestureText="Ctrl+R" Click="BtnWordAlignRight_Click"/>
+                                            <MenuItem Header="ðŸ“  Justify" InputGestureText="Ctrl+J" Click="BtnWordAlignJustify_Click"/>
                                             <Separator/>
-                                            <MenuItem Header="🖼️  Insert Picture..." Click="BtnWordInsertImage_Click"/>
-                                            <MenuItem Header="⊞  Insert Table (3x3)..." Click="BtnWordInsertTable_Click"/>
-                                            <MenuItem Header="―  Insert Horizontal Line" Click="BtnWordInsertHr_Click"/>
-                                            <MenuItem Header="📅  Insert Date &amp; Time" Click="BtnWordInsertDate_Click"/>
+                                            <MenuItem Header="ðŸ–¼ï¸  Insert Picture..." Click="BtnWordInsertImage_Click"/>
+                                            <MenuItem Header="âŠž  Insert Table (3x3)..." Click="BtnWordInsertTable_Click"/>
+                                            <MenuItem Header="â€•  Insert Horizontal Line" Click="BtnWordInsertHr_Click"/>
+                                            <MenuItem Header="ðŸ“…  Insert Date &amp; Time" Click="BtnWordInsertDate_Click"/>
                                             <Separator/>
-                                            <MenuItem Header="💾  Save Document" InputGestureText="Ctrl+S" Click="BtnWordSave_Click"/>
-                                            <MenuItem Header="🖨️  Print Document..." InputGestureText="Ctrl+P" Click="BtnWordPrint_Click"/>
+                                            <MenuItem Header="ðŸ’¾  Save Document" InputGestureText="Ctrl+S" Click="BtnWordSave_Click"/>
+                                            <MenuItem Header="ðŸ–¨ï¸  Print Document..." InputGestureText="Ctrl+P" Click="BtnWordPrint_Click"/>
                                         </ContextMenu>
                                     </RichTextBox.ContextMenu>
                                 </RichTextBox>
@@ -1872,21 +1926,21 @@
                             <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.8" Color="#000000"/>
                         </Border.Effect>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Button Content="⏮ Prev" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsPrev_Click"/>
+                            <Button Content="â® Prev" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsPrev_Click"/>
                             <Border Background="#27272A" CornerRadius="4" Padding="8,3" Margin="4,0" VerticalAlignment="Center">
                                 <TextBlock x:Name="TxtFsPageIndicator" Text="Page 1 of 1" Foreground="#38BDF8" FontWeight="Bold" FontSize="11"/>
                             </Border>
-                            <Button Content="Next ⏭" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsNext_Click"/>
+                            <Button Content="Next â­" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsNext_Click"/>
                             
                             <Separator Width="1" Height="16" Background="#3F3F46" Margin="6,0"/>
 
-                            <Button Content="➖ Zoom" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsZoomOut_Click"/>
-                            <Button Content="Zoom ➕" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsZoomIn_Click"/>
+                            <Button Content="âž– Zoom" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsZoomOut_Click"/>
+                            <Button Content="Zoom âž•" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsZoomIn_Click"/>
                             <Button Content="Fit Width" Style="{StaticResource ModernBtn}" Margin="2,0" Click="BtnFsFitWidth_Click"/>
 
                             <Separator Width="1" Height="16" Background="#3F3F46" Margin="6,0"/>
 
-                            <Button Content="✕ Exit Full Screen (Esc)" Style="{StaticResource AccentBtn}" Margin="2,0" Click="BtnExitFullScreen_Click"/>
+                            <Button Content="âœ• Exit Full Screen (Esc)" Style="{StaticResource AccentBtn}" Margin="2,0" Click="BtnExitFullScreen_Click"/>
                         </StackPanel>
                     </Border>
                 </Grid>
@@ -1908,13 +1962,13 @@
                         <!-- Header -->
                         <Border Grid.Row="0" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="12,10">
                             <DockPanel>
-                                <Button Content="✕" DockPanel.Dock="Right" Width="20" Height="20" Style="{StaticResource ModernBtn}" Padding="0" Click="BtnCloseAiCopilot_Click"/>
+                                <Button Content="âœ•" DockPanel.Dock="Right" Width="20" Height="20" Style="{StaticResource ModernBtn}" Padding="0" Click="BtnCloseAiCopilot_Click"/>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="🤖" FontSize="14" Margin="0,0,6,0"/>
+                                        <TextBlock Text="ðŸ¤–" FontSize="14" Margin="0,0,6,0"/>
                                         <TextBlock Text="PSD AI DOCUMENT COPILOT" FontWeight="Bold" FontSize="11" Foreground="#38BDF8"/>
                                     </StackPanel>
-                                    <TextBlock Text="Offline Neural Intelligence • Zero Cloud Leakage" FontSize="9" Foreground="#4ADE80" Margin="20,1,0,0"/>
+                                    <TextBlock Text="Offline Neural Intelligence â€¢ Zero Cloud Leakage" FontSize="9" Foreground="#4ADE80" Margin="20,1,0,0"/>
                                 </StackPanel>
                             </DockPanel>
                         </Border>
@@ -1922,12 +1976,12 @@
                         <!-- Action Pills -->
                         <Border Grid.Row="1" Background="{DynamicResource WindowBgBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="0,0,0,1">
                             <WrapPanel Orientation="Horizontal">
-                                <Button Content="⚡ Summary" ToolTip="Generate Executive Summary" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiExecSummary_Click"/>
-                                <Button Content="📋 Actions" ToolTip="Extract Action Items &amp; Deadlines" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiActionItems_Click"/>
-                                <Button Content="⚠️ Risks" ToolTip="Contract Risk &amp; Clause Audit" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiContractRisks_Click"/>
-                                <Button Content="💰 Figures" ToolTip="Extract Financials &amp; Entities" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiKeyFigures_Click"/>
-                                <Button Content="💡 Simplify" ToolTip="Translate into Plain English" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiPlainEnglish_Click"/>
-                                <Button Content="📤 RAG JSON" ToolTip="Export for LLM Vector Search" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Foreground="#38BDF8" Click="BtnExportRagJson_Click"/>
+                                <Button Content="âš¡ Summary" ToolTip="Generate Executive Summary" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiExecSummary_Click"/>
+                                <Button Content="ðŸ“‹ Actions" ToolTip="Extract Action Items &amp; Deadlines" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiActionItems_Click"/>
+                                <Button Content="âš ï¸ Risks" ToolTip="Contract Risk &amp; Clause Audit" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiContractRisks_Click"/>
+                                <Button Content="ðŸ’° Figures" ToolTip="Extract Financials &amp; Entities" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiKeyFigures_Click"/>
+                                <Button Content="ðŸ’¡ Simplify" ToolTip="Translate into Plain English" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Click="BtnAiPlainEnglish_Click"/>
+                                <Button Content="ðŸ“¤ RAG JSON" ToolTip="Export for LLM Vector Search" Style="{StaticResource ModernBtn}" FontSize="9.5" Margin="2" Padding="6,3" Foreground="#38BDF8" Click="BtnExportRagJson_Click"/>
                             </WrapPanel>
                         </Border>
 
@@ -1936,7 +1990,7 @@
                             <StackPanel x:Name="AiResponseContainer">
                                 <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,8">
                                     <StackPanel>
-                                        <TextBlock Text="👋 Welcome to PSD AI Copilot" FontWeight="Bold" FontSize="11" Foreground="#38BDF8" Margin="0,0,0,4"/>
+                                        <TextBlock Text="ðŸ‘‹ Welcome to PSD AI Copilot" FontWeight="Bold" FontSize="11" Foreground="#38BDF8" Margin="0,0,0,4"/>
                                         <TextBlock Text="I can analyze active PDF documents or Word files entirely offline. Click an action above or type any question below to inspect clauses, deadlines, figures, or risks." 
                                                    TextWrapping="Wrap" FontSize="10" Foreground="{DynamicResource WindowFgBrush}" LineHeight="15"/>
                                     </StackPanel>
@@ -1954,7 +2008,7 @@
                                 <TextBox x:Name="TxtAiPrompt" Grid.Column="0" Background="#18181B" Foreground="White" BorderBrush="{DynamicResource BorderBrushLight}" 
                                          Padding="8,5" FontSize="10.5" KeyDown="TxtAiPrompt_KeyDown"
                                          ToolTip="Ask anything about this document..."/>
-                                <Button Grid.Column="1" Content="Ask AI ➔" Style="{StaticResource AccentBtn}" Margin="6,0,0,0" Padding="10,4" FontSize="10.5" Click="BtnAiAsk_Click"/>
+                                <Button Grid.Column="1" Content="Ask AI âž”" Style="{StaticResource AccentBtn}" Margin="6,0,0,0" Padding="10,4" FontSize="10.5" Click="BtnAiAsk_Click"/>
                             </Grid>
                         </Border>
                     </Grid>

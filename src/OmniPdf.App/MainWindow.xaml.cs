@@ -696,6 +696,113 @@ namespace OmniPdf.App
 
         #region View Toggles (Nav Rail, Thumbnails, Full Screen)
 
+                private bool _isFocusMode = false;
+        private bool _autoZenReading = false;
+
+        private void BtnToggleZenFocus_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleFocusMode(!_isFocusMode);
+        }
+
+        private void BtnExitFocusMode_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleFocusMode(false);
+        }
+
+        private void BtnFocusToggleMenus_Click(object sender, RoutedEventArgs e)
+        {
+            if (TopHeaderBar != null)
+            {
+                bool willShow = (TopHeaderBar.Visibility != Visibility.Visible);
+                TopHeaderBar.Visibility = willShow ? Visibility.Visible : Visibility.Collapsed;
+                if (ReaderToolbarRibbon != null) ReaderToolbarRibbon.Visibility = willShow ? Visibility.Visible : Visibility.Collapsed;
+                if (BtnFocusToggleMenus != null) BtnFocusToggleMenus.Content = willShow ? "Hide Menus" : "Show All Menus";
+            }
+        }
+
+        public void ToggleFocusMode(bool enable)
+        {
+            _isFocusMode = enable;
+            if (_isFocusMode)
+            {
+                if (TopHeaderBar != null) TopHeaderBar.Visibility = Visibility.Collapsed;
+                if (BorderNavRail != null) BorderNavRail.Visibility = Visibility.Collapsed;
+                if (ColNavRail != null) ColNavRail.Width = new GridLength(0);
+                if (ReaderToolbarRibbon != null) ReaderToolbarRibbon.Visibility = Visibility.Collapsed;
+                if (BorderThumbnails != null) BorderThumbnails.Visibility = Visibility.Collapsed;
+                if (ColThumbnails != null) ColThumbnails.Width = new GridLength(0);
+                if (ReaderStatusBar != null) ReaderStatusBar.Visibility = Visibility.Collapsed;
+                if (FocusModeHud != null) FocusModeHud.Visibility = Visibility.Visible;
+                if (BtnFocusToggleMenus != null) BtnFocusToggleMenus.Content = "Show All Menus";
+                UpdateFocusHud();
+            }
+            else
+            {
+                if (TopHeaderBar != null) TopHeaderBar.Visibility = Visibility.Visible;
+                if (BorderNavRail != null) BorderNavRail.Visibility = Visibility.Visible;
+                if (ColNavRail != null) ColNavRail.Width = new GridLength(190);
+                if (ReaderToolbarRibbon != null) ReaderToolbarRibbon.Visibility = Visibility.Visible;
+                if (BorderThumbnails != null) BorderThumbnails.Visibility = Visibility.Visible;
+                if (ColThumbnails != null) ColThumbnails.Width = new GridLength(160);
+                if (ReaderStatusBar != null) ReaderStatusBar.Visibility = Visibility.Visible;
+                if (FocusModeHud != null) FocusModeHud.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void UpdateFocusHud()
+        {
+            if (TxtFocusZoomLevel != null)
+            {
+                TxtFocusZoomLevel.Text = $"{(int)(_currentZoom * 100)}%";
+            }
+            if (TxtFocusPageIndicator != null && _activeDoc != null && _activeDoc.Pages.Count > 0)
+            {
+                int curr = Math.Clamp(_activeDoc.CurrentPageIndex + 1, 1, _activeDoc.Pages.Count);
+                TxtFocusPageIndicator.Text = $"Page {curr} of {_activeDoc.Pages.Count}";
+            }
+        }
+
+        private void BtnToggleRibbon_Click(object sender, RoutedEventArgs e)
+        {
+            if (ReaderToolbarRibbon != null)
+            {
+                ReaderToolbarRibbon.Visibility = (ReaderToolbarRibbon.Visibility == Visibility.Visible)
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+            }
+        }
+
+        private void BtnToggleStatusBar_Click(object sender, RoutedEventArgs e)
+        {
+            if (ReaderStatusBar != null)
+            {
+                ReaderStatusBar.Visibility = (ReaderStatusBar.Visibility == Visibility.Visible)
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+            }
+        }
+
+        private void BtnToggleTopHeader_Click(object sender, RoutedEventArgs e)
+        {
+            if (TopHeaderBar != null)
+            {
+                TopHeaderBar.Visibility = (TopHeaderBar.Visibility == Visibility.Visible)
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+            }
+        }
+
+        private void MenuAutoZenReading_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mi)
+            {
+                _autoZenReading = mi.IsChecked;
+                if (_autoZenReading && _activeDoc != null)
+                {
+                    ToggleFocusMode(true);
+                }
+            }
+        }
         private void BtnToggleNavRail_Click(object sender, RoutedEventArgs e)
         {
             if (ColNavRail == null) return;
@@ -864,6 +971,8 @@ namespace OmniPdf.App
             if (NotesCanvas != null) NotesCanvas.Children.Clear();
             RebuildPageCards();
             UpdateStatus();
+            UpdateFocusHud();
+            if (_autoZenReading) ToggleFocusMode(true);
         }
 
         private void RebuildPageCards()
@@ -922,6 +1031,7 @@ namespace OmniPdf.App
             {
                 if (_activeDoc != null) _activeDoc.CurrentPageIndex = index;
                 UpdateStatus();
+            UpdateFocusHud();
                 if (ThumbnailList != null && ThumbnailList.SelectedIndex != index)
                 {
                     ThumbnailList.SelectedIndex = index;
@@ -1002,6 +1112,8 @@ namespace OmniPdf.App
                 UpdatePageCardAppearance(_pageCards[idx], _pageImages[idx], _pageTextBoxes[idx], _activeDoc.Pages[idx], idx);
             }
             UpdateStatus();
+            UpdateFocusHud();
+            if (_autoZenReading) ToggleFocusMode(true);
         }
 
         private void ApplyViewModeLayout()
@@ -1077,6 +1189,7 @@ namespace OmniPdf.App
             }
 
             UpdateStatus();
+            UpdateFocusHud();
             if (ThumbnailList != null && ThumbnailList.SelectedIndex != targetIndex)
             {
                 ThumbnailList.SelectedIndex = targetIndex;
@@ -1111,6 +1224,7 @@ namespace OmniPdf.App
             {
                 _activeDoc.CurrentPageIndex = visible;
                 UpdateStatus();
+            UpdateFocusHud();
                 if (ThumbnailList != null && ThumbnailList.SelectedIndex != visible)
                 {
                     ThumbnailList.SelectedIndex = visible;
@@ -1332,6 +1446,8 @@ namespace OmniPdf.App
             _activeTool = "Snapshot";
             if (MainScrollViewer != null) MainScrollViewer.Cursor = Cursors.Cross;
             UpdateStatus();
+            UpdateFocusHud();
+            if (_autoZenReading) ToggleFocusMode(true);
         }
 
         private void MainScrollViewer_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -1378,6 +1494,7 @@ namespace OmniPdf.App
                 _activeTool = "Pointer";
                 if (MainScrollViewer != null) MainScrollViewer.Cursor = Cursors.Arrow;
                 UpdateStatus();
+            UpdateFocusHud();
 
                 Point cur = e.GetPosition(CanvasContainer);
                 double x = Math.Min(cur.X, _snapshotStartPoint.X);
@@ -1422,6 +1539,7 @@ namespace OmniPdf.App
             {
                 if (TabList != null) TabList.Items.Refresh();
                 UpdateStatus();
+            UpdateFocusHud();
             }
         }
 
@@ -1715,6 +1833,7 @@ namespace OmniPdf.App
             if (TxtZoomLevel != null)
             {
                 TxtZoomLevel.Text = $"{(int)(_currentZoom * 100)}%";
+                UpdateFocusHud();
             }
         }
 
@@ -2708,6 +2827,7 @@ namespace OmniPdf.App
             _activeTool = toolName;
             _measureStartPoint = null;
             UpdateStatus();
+            UpdateFocusHud();
 
             if (PageInkCanvas == null) return;
 
@@ -3159,224 +3279,49 @@ namespace OmniPdf.App
 
         private void ApplyTheme(string theme)
         {
-            SolidColorBrush winBg, winFg, headerBg, headerFg, menuBg, menuFg, submenuBg, submenuFg,
-                hoverBg, navBg, canvasBg, cardBg, borderDef, borderLt, accentDef, accentHov, statusBg, statusFg;
-
-            switch (theme)
+            if (string.Equals(theme, "🖌️ Custom Theme Studio & Palette...", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(theme, "Custom Theme", StringComparison.OrdinalIgnoreCase))
             {
-                case "Modern Light":
-                    winBg = new SolidColorBrush(Color.FromRgb(248, 250, 252));
-                    winFg = new SolidColorBrush(Color.FromRgb(15, 23, 42));
-                    headerBg = new SolidColorBrush(Color.FromRgb(241, 245, 249));
-                    headerFg = new SolidColorBrush(Color.FromRgb(15, 23, 42));
-                    menuBg = new SolidColorBrush(Color.FromRgb(241, 245, 249));
-                    menuFg = new SolidColorBrush(Color.FromRgb(15, 23, 42));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(15, 23, 42));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(226, 232, 240));
-                    navBg = new SolidColorBrush(Color.FromRgb(241, 245, 249));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(226, 232, 240));
-                    cardBg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    borderDef = new SolidColorBrush(Color.FromRgb(226, 232, 240));
-                    borderLt = new SolidColorBrush(Color.FromRgb(203, 213, 225));
-                    accentDef = new SolidColorBrush(Color.FromRgb(2, 132, 199));
-                    accentHov = new SolidColorBrush(Color.FromRgb(3, 105, 161));
-                    statusBg = new SolidColorBrush(Color.FromRgb(2, 132, 199));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
-
-                case "Glass Theme":
-                    winBg = new SolidColorBrush(Color.FromRgb(15, 23, 42));
-                    winFg = new SolidColorBrush(Color.FromRgb(241, 245, 249));
-                    headerBg = new SolidColorBrush(Color.FromRgb(30, 41, 59));
-                    headerFg = new SolidColorBrush(Color.FromRgb(56, 189, 248));
-                    menuBg = new SolidColorBrush(Color.FromRgb(30, 41, 59));
-                    menuFg = new SolidColorBrush(Color.FromRgb(241, 245, 249));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(30, 41, 59));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(241, 245, 249));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(51, 65, 85));
-                    navBg = new SolidColorBrush(Color.FromRgb(24, 33, 47));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(11, 17, 32));
-                    cardBg = new SolidColorBrush(Color.FromRgb(30, 41, 59));
-                    borderDef = new SolidColorBrush(Color.FromRgb(51, 65, 85));
-                    borderLt = new SolidColorBrush(Color.FromRgb(71, 85, 105));
-                    accentDef = new SolidColorBrush(Color.FromRgb(14, 165, 233));
-                    accentHov = new SolidColorBrush(Color.FromRgb(2, 132, 199));
-                    statusBg = new SolidColorBrush(Color.FromRgb(14, 165, 233));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
-
-                case "Word Classic Blue":
-                    winBg = new SolidColorBrush(Color.FromRgb(243, 242, 241));
-                    winFg = new SolidColorBrush(Color.FromRgb(32, 31, 30));
-                    headerBg = new SolidColorBrush(Color.FromRgb(24, 90, 189)); // Word Blue
-                    headerFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    menuBg = new SolidColorBrush(Color.FromRgb(24, 90, 189));
-                    menuFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(32, 31, 30));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(16, 75, 165));
-                    navBg = new SolidColorBrush(Color.FromRgb(237, 235, 233));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(225, 223, 221));
-                    cardBg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    borderDef = new SolidColorBrush(Color.FromRgb(210, 208, 206));
-                    borderLt = new SolidColorBrush(Color.FromRgb(180, 178, 176));
-                    accentDef = new SolidColorBrush(Color.FromRgb(24, 90, 189));
-                    accentHov = new SolidColorBrush(Color.FromRgb(16, 75, 165));
-                    statusBg = new SolidColorBrush(Color.FromRgb(24, 90, 189));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
-
-                case "OLED Black":
-                    winBg = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                    winFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    headerBg = new SolidColorBrush(Color.FromRgb(10, 10, 10));
-                    headerFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    menuBg = new SolidColorBrush(Color.FromRgb(10, 10, 10));
-                    menuFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(16, 16, 16));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(32, 32, 32));
-                    navBg = new SolidColorBrush(Color.FromRgb(8, 8, 8));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                    cardBg = new SolidColorBrush(Color.FromRgb(12, 12, 12));
-                    borderDef = new SolidColorBrush(Color.FromRgb(28, 28, 28));
-                    borderLt = new SolidColorBrush(Color.FromRgb(48, 48, 48));
-                    accentDef = new SolidColorBrush(Color.FromRgb(37, 99, 235));
-                    accentHov = new SolidColorBrush(Color.FromRgb(29, 78, 216));
-                    statusBg = new SolidColorBrush(Color.FromRgb(20, 20, 20));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
-
-                case "Sepia Reading":
-                    winBg = new SolidColorBrush(Color.FromRgb(245, 235, 225));
-                    winFg = new SolidColorBrush(Color.FromRgb(69, 50, 33));
-                    headerBg = new SolidColorBrush(Color.FromRgb(234, 219, 196));
-                    headerFg = new SolidColorBrush(Color.FromRgb(69, 50, 33));
-                    menuBg = new SolidColorBrush(Color.FromRgb(234, 219, 196));
-                    menuFg = new SolidColorBrush(Color.FromRgb(69, 50, 33));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(253, 248, 238));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(69, 50, 33));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(223, 206, 180));
-                    navBg = new SolidColorBrush(Color.FromRgb(234, 219, 196));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(223, 206, 180));
-                    cardBg = new SolidColorBrush(Color.FromRgb(253, 248, 238));
-                    borderDef = new SolidColorBrush(Color.FromRgb(215, 196, 165));
-                    borderLt = new SolidColorBrush(Color.FromRgb(195, 176, 145));
-                    accentDef = new SolidColorBrush(Color.FromRgb(141, 110, 99));
-                    accentHov = new SolidColorBrush(Color.FromRgb(121, 85, 72));
-                    statusBg = new SolidColorBrush(Color.FromRgb(141, 110, 99));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
-
-                case "Cyberpunk Neon":
-                    winBg = new SolidColorBrush(Color.FromRgb(13, 11, 24));
-                    winFg = new SolidColorBrush(Color.FromRgb(0, 240, 255));
-                    headerBg = new SolidColorBrush(Color.FromRgb(21, 16, 42));
-                    headerFg = new SolidColorBrush(Color.FromRgb(0, 240, 255));
-                    menuBg = new SolidColorBrush(Color.FromRgb(21, 16, 42));
-                    menuFg = new SolidColorBrush(Color.FromRgb(0, 240, 255));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(28, 20, 56));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(0, 240, 255));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(255, 0, 127));
-                    navBg = new SolidColorBrush(Color.FromRgb(21, 16, 42));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(8, 6, 16));
-                    cardBg = new SolidColorBrush(Color.FromRgb(28, 20, 56));
-                    borderDef = new SolidColorBrush(Color.FromRgb(255, 0, 127));
-                    borderLt = new SolidColorBrush(Color.FromRgb(0, 240, 255));
-                    accentDef = new SolidColorBrush(Color.FromRgb(255, 0, 127));
-                    accentHov = new SolidColorBrush(Color.FromRgb(218, 0, 108));
-                    statusBg = new SolidColorBrush(Color.FromRgb(255, 0, 127));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
-
-                case "Emerald Forest":
-                    winBg = new SolidColorBrush(Color.FromRgb(6, 26, 20));
-                    winFg = new SolidColorBrush(Color.FromRgb(52, 211, 153));
-                    headerBg = new SolidColorBrush(Color.FromRgb(10, 41, 32));
-                    headerFg = new SolidColorBrush(Color.FromRgb(52, 211, 153));
-                    menuBg = new SolidColorBrush(Color.FromRgb(10, 41, 32));
-                    menuFg = new SolidColorBrush(Color.FromRgb(52, 211, 153));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(13, 53, 41));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(52, 211, 153));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(4, 120, 87));
-                    navBg = new SolidColorBrush(Color.FromRgb(10, 41, 32));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(4, 18, 14));
-                    cardBg = new SolidColorBrush(Color.FromRgb(13, 53, 41));
-                    borderDef = new SolidColorBrush(Color.FromRgb(5, 150, 105));
-                    borderLt = new SolidColorBrush(Color.FromRgb(16, 185, 129));
-                    accentDef = new SolidColorBrush(Color.FromRgb(16, 185, 129));
-                    accentHov = new SolidColorBrush(Color.FromRgb(5, 150, 105));
-                    statusBg = new SolidColorBrush(Color.FromRgb(5, 150, 105));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
-
-                default: // Fluent Dark & Custom Theme
-                    winBg = new SolidColorBrush(Color.FromRgb(15, 15, 18));
-                    winFg = new SolidColorBrush(Color.FromRgb(236, 236, 239));
-                    headerBg = new SolidColorBrush(Color.FromRgb(24, 24, 27));
-                    headerFg = new SolidColorBrush(Color.FromRgb(244, 244, 245));
-                    menuBg = new SolidColorBrush(Color.FromRgb(24, 24, 27));
-                    menuFg = new SolidColorBrush(Color.FromRgb(236, 236, 239));
-                    submenuBg = new SolidColorBrush(Color.FromRgb(39, 39, 42));
-                    submenuFg = new SolidColorBrush(Color.FromRgb(244, 244, 245));
-                    hoverBg = new SolidColorBrush(Color.FromRgb(63, 63, 70));
-                    navBg = new SolidColorBrush(Color.FromRgb(24, 24, 27));
-                    canvasBg = new SolidColorBrush(Color.FromRgb(9, 9, 11));
-                    cardBg = new SolidColorBrush(Color.FromRgb(24, 24, 27));
-                    borderDef = new SolidColorBrush(Color.FromRgb(39, 39, 42));
-                    borderLt = new SolidColorBrush(Color.FromRgb(63, 63, 70));
-                    accentDef = new SolidColorBrush(Color.FromRgb(2, 132, 199));
-                    accentHov = new SolidColorBrush(Color.FromRgb(3, 105, 161));
-                    statusBg = new SolidColorBrush(Color.FromRgb(2, 132, 199));
-                    statusFg = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    break;
+                OpenCustomThemeStudio();
+                return;
             }
 
-            // Update Dynamic Theme Resources (Window and Global Application Scope)
-            Resources["WindowBgBrush"] = winBg;
-            Resources["WindowFgBrush"] = winFg;
-            Resources["HeaderBgBrush"] = headerBg;
-            Resources["HeaderFgBrush"] = headerFg;
-            Resources["MenuBgBrush"] = menuBg;
-            Resources["MenuFgBrush"] = menuFg;
-            Resources["SubmenuBgBrush"] = submenuBg;
-            Resources["SubmenuFgBrush"] = submenuFg;
-            Resources["ItemHoverBgBrush"] = hoverBg;
-            Resources["NavRailBgBrush"] = navBg;
-            Resources["CanvasBgBrush"] = canvasBg;
-            Resources["CardBgBrush"] = cardBg;
-            Resources["BorderBrushDefault"] = borderDef;
-            Resources["BorderBrushLight"] = borderLt;
-            Resources["AccentBrushDefault"] = accentDef;
-            Resources["AccentHoverBrush"] = accentHov;
-            Resources["StatusBarBgBrush"] = statusBg;
-            Resources["StatusBarFgBrush"] = statusFg;
-
-            if (Application.Current != null)
+            if (string.Equals(theme, "🎨 105+ Themes Gallery...", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(theme, "🎨 More Themes (105+ Themes Gallery)...", StringComparison.OrdinalIgnoreCase))
             {
-                Application.Current.Resources["WindowBgBrush"] = winBg;
-                Application.Current.Resources["WindowFgBrush"] = winFg;
-                Application.Current.Resources["HeaderBgBrush"] = headerBg;
-                Application.Current.Resources["HeaderFgBrush"] = headerFg;
-                Application.Current.Resources["MenuBgBrush"] = menuBg;
-                Application.Current.Resources["MenuFgBrush"] = menuFg;
-                Application.Current.Resources["SubmenuBgBrush"] = submenuBg;
-                Application.Current.Resources["SubmenuFgBrush"] = submenuFg;
-                Application.Current.Resources["ItemHoverBgBrush"] = hoverBg;
-                Application.Current.Resources["NavRailBgBrush"] = navBg;
-                Application.Current.Resources["CanvasBgBrush"] = canvasBg;
-                Application.Current.Resources["CardBgBrush"] = cardBg;
-                Application.Current.Resources["BorderBrushDefault"] = borderDef;
-                Application.Current.Resources["BorderBrushLight"] = borderLt;
-                Application.Current.Resources["AccentBrushDefault"] = accentDef;
-                Application.Current.Resources["AccentHoverBrush"] = accentHov;
-                Application.Current.Resources["StatusBarBgBrush"] = statusBg;
-                Application.Current.Resources["StatusBarFgBrush"] = statusFg;
+                OpenCustomThemeStudio();
+                return;
             }
 
-            Background = winBg;
-            Foreground = winFg;
+            var themeDef = ThemeManager.GetTheme(theme);
+            ThemeManager.ApplyTheme(themeDef, Resources);
+
+            Background = new SolidColorBrush(themeDef.WindowBg);
+            Foreground = new SolidColorBrush(themeDef.WindowFg);
+        }
+
+        private void OpenCustomThemeStudio()
+        {
+            var dlg = new CustomThemeDialog { Owner = this };
+            if (dlg.ShowDialog() == true)
+            {
+                if (ThemeManager.CustomTheme != null)
+                {
+                    ThemeManager.ApplyTheme(ThemeManager.CustomTheme, Resources);
+                    Background = new SolidColorBrush(ThemeManager.CustomTheme.WindowBg);
+                    Foreground = new SolidColorBrush(ThemeManager.CustomTheme.WindowFg);
+                }
+            }
+        }
+
+        private void MenuCustomThemeStudio_Click(object sender, RoutedEventArgs e)
+        {
+            OpenCustomThemeStudio();
+        }
+
+        private void MenuOpenThemeGallery_Click(object sender, RoutedEventArgs e)
+        {
+            OpenCustomThemeStudio();
         }
 
         #endregion
@@ -3729,10 +3674,31 @@ namespace OmniPdf.App
         {
             if (e.Key == Key.F11)
             {
-                if (_isFullScreen) ExitFullScreenPresentation();
-                else EnterFullScreenPresentation();
+                if (_isFocusMode) ToggleFocusMode(false);
+                else ToggleFocusMode(true);
                 e.Handled = true;
             }
+            else if (e.Key == Key.Escape && _isFocusMode)
+            {
+                ToggleFocusMode(false);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F1 && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                BtnToggleRibbon_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
+            else if (e.Key == Key.B && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                BtnToggleStatusBar_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
+            else if (e.Key == Key.H && (Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) == (ModifierKeys.Control | ModifierKeys.Alt))
+            {
+                BtnToggleTopHeader_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
+            
             else if (e.Key == Key.F4)
             {
                 BtnToggleNavRail_Click(this, new RoutedEventArgs());
