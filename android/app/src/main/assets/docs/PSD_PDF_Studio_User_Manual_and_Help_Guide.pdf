@@ -1,0 +1,362 @@
+%PDF-1.7
+%????
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 6 /Kids [ 5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R ] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 4676 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - OFFICIAL USER MANUAL & HELP GUIDE) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: MANUAL-PSD-300) Tj ET
+BT
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 710.0 Tm (SECTION 1: WELCOME TO PSD PDF STUDIO & VIEWER ENTERPRISE) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 695.5 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 681.0 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 666.5 Tm (Product Name: PSD PDF Studio and Viewer Enterprise Edition) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm (\(v3.0.0-ENTERPRISE-FLAGSHIP\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm (Vendor: PSD Software Studio / Prabhu Kannan) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 623.0 Tm (License: MIT Open Source License \(Permissive Commercial & Enterprise Deployment\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (Official Project Repository:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm (https://github.com/prabhususith/PSD_pdf_studio_and_viewer) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm () Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 565.0 Tm (PSD PDF Studio and Viewer is a modern, unified desktop document platform combining) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 550.5 Tm (the precision) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (of professional vector PDF engineering suites with the rich authorship capabilities) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (of Microsoft) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 507.0 Tm (Word, reinforced by air-gapped offline AI document intelligence and legally binding) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (e-signatures.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 478.0 Tm () Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm (1.1 PRIMARY NAVIGATION RAIL WORKSPACES) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 449.0 Tm (The left navigation rail \(toggleable with F4\) provides one-click switching between) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 434.5 Tm (core workspaces:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 420.0 Tm (1. Library Hub: Device-wide automated document indexer and search dashboard.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 405.5 Tm (2. PDF Studio: High-performance vector reader with continuous multi-page vertical) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 391.0 Tm (scrolling.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 376.5 Tm (3. Word Suite: Full rich text document editor supporting .docx, RTF, Markdown, PSD,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 362.0 Tm (and HTML.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 347.5 Tm (4. AI Copilot: Air-gapped offline neural document analyzer and Q&A engine.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 333.0 Tm (5. e-Sign & Audit: Professional electronic signature capture and PKCS#7) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 318.5 Tm (certification.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 304.0 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 289.5 Tm (SECTION 2: STEP-BY-STEP SETUP & INSTALLATION GUIDANCE) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 275.0 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 260.5 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 246.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 231.5 Tm (2.1 PORTABLE ZERO-INSTALL METHOD \(RECOMMENDED FOR USB DRIVES & RESTRICTED IT\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 217.0 Tm (1. Download PSD-PDF-Studio-Portable.zip from the official GitHub Release portal.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 202.5 Tm (2. Extract the ZIP archive to any directory \(e.g., C:\\Tools\\PSDPdfStudio or) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 188.0 Tm (P:\\Portable\).) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 173.5 Tm (3. Double-click psd_pdf.exe. The application launches instantly with zero) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 159.0 Tm (prerequisite installs.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 144.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 130.0 Tm (2.2 STANDARD WINDOWS INSTALLER \(INNO SETUP\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 115.5 Tm (1. Download PSD-PDF-Studio-Setup.exe.) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 1 of 6) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 4632 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - OFFICIAL USER MANUAL & HELP GUIDE) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: MANUAL-PSD-300) Tj ET
+BT
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 710.0 Tm (2. Double-click to launch the modern installation wizard.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 695.5 Tm (3. Select desired shortcuts \(Desktop, Start Menu\) and file associations \(.pdf, .psd,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 681.0 Tm (.docx\).) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 666.5 Tm (4. Click Install. Launch the program from your Desktop shortcut or Start Menu.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 637.5 Tm (2.3 ENTERPRISE IT SILENT DEPLOYMENT \(WIX MSI PACKAGE\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 623.0 Tm (For system administrators managing Active Directory, Microsoft Intune, or SCCM:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (- Command: msiexec.exe /i "PSD-PDF-Studio-Enterprise.msi" /qn /norestart) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm (- The application will silently install to %ProgramFiles%\\PSD PDF Studio and Viewer) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm (with zero prompts.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 565.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 550.5 Tm (2.4 ANDROID UNIVERSAL APK INSTALLATION \(API 23 TO 34+\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (1. Download PSD-PDF-Studio-Release-universal.apk to your Android device or via USB) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (file transfer.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 507.0 Tm (2. In Android Settings, ensure 'Install Unknown Apps' is enabled for your file) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (browser.) Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 478.0 Tm (3. Tap the APK file and select 'Install'. Launch 'PSD PDF Studio & Viewer' from your) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm (app drawer.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 449.0 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 434.5 Tm (SECTION 3: MASTERING THE PDF STUDIO & READING VIEWPORT) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 420.0 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 405.5 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 391.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 376.5 Tm (3.1 CONTINUOUS MULTI-PAGE VERTICAL SCROLL) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 362.0 Tm (- Open any PDF document by pressing Ctrl+O or dragging and dropping a file into the) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 347.5 Tm (window.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 333.0 Tm (- Use your mouse scroll-wheel or touch gestures to scroll continuously across all) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 318.5 Tm (document pages.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 304.0 Tm (- The thumbnail strip on the left automatically tracks your scroll position in real) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 289.5 Tm (time.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 275.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 260.5 Tm (3.2 VIEWING MODES & PRESENTATION) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 246.0 Tm (- Borderless Full-Screen Presentation Mode: Press F11 \(or Esc to exit\). This) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 231.5 Tm (maximizes your) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 217.0 Tm (  viewing canvas to 100% borderless presentation with a floating semi-transparent) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 202.5 Tm (bottom pill.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 188.0 Tm (- Zoom Controls: Use Ctrl++ to zoom in, Ctrl+- to zoom out, and Ctrl+0 for 100%) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 173.5 Tm (Actual Size.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 159.0 Tm (- Page Rotation: Press Ctrl+R to rotate the active page 90 degrees clockwise.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 144.5 Tm (- Distraction-Free Layout: Press F4 to auto-hide the left rail, and Ctrl+T to toggle) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 130.0 Tm (thumbnails.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 115.5 Tm () Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 2 of 6) Tj ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 10 0 R >>
+endobj
+10 0 obj
+<< /Length 4451 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - OFFICIAL USER MANUAL & HELP GUIDE) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: MANUAL-PSD-300) Tj ET
+BT
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 710.0 Tm (3.3 SEARCH & IN-DOCUMENT LOOKUP) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 695.5 Tm (- Press Ctrl+F to open the top search bar. Type any term to highlight all matching) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 681.0 Tm (occurrences.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 666.5 Tm (- Use Next \(Enter\) and Previous \(Shift+Enter\) to cycle through matches across all) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm (pages.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 623.0 Tm (SECTION 4: ANNOTATION, SKETCH PEN & VECTOR TOOLS) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 608.5 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 594.0 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 565.0 Tm (4.1 VECTOR INK SKETCH & HIGHLIGHTER) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 550.5 Tm (- Select the Ink Sketch tool from the ribbon. Choose from 10 colors and 4 line) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (widths) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (  \(1.5pt Fine, 3.0pt Standard, 5.0pt Bold, 10.0pt Marker\). Sketch directly onto) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 507.0 Tm (pages.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (- Select the Highlighter tool for semi-transparent emphasis over text passages.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 478.0 Tm (- Use the Eraser tool to cleanly remove strokes.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 449.0 Tm (4.2 DRAGGABLE STICKY NOTES) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 434.5 Tm (- Click the Note tool and click anywhere on a PDF page to pin a bright yellow note) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 420.0 Tm (card.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 405.5 Tm (- Type notes, feedback, or review comments. Click and drag the header to reposition) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 391.0 Tm (notes anywhere.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 376.5 Tm (- Click the close button on any note card to remove it.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 362.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 347.5 Tm (4.3 AREA SNAPSHOT & CLIPBOARD CAPTURE) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 333.0 Tm (- Select the Pointer tool, hold your mouse, and drag a selection rectangle over any) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 318.5 Tm (region.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 304.0 Tm (- The high-DPI rasterizer instantly crops the selected area and copies it to your) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 289.5 Tm (Windows Clipboard.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 275.0 Tm (- Paste the screenshot directly into Microsoft Word, Paint, Slack, Teams, or) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 260.5 Tm (Outlook.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 246.0 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 231.5 Tm (SECTION 5: MICROSOFT WORD COMPATIBLE SUITE \(.DOCX, RTF, MD, PSD\)) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 217.0 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 202.5 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 188.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 173.5 Tm (5.1 RICH DOCUMENT AUTHORSHIP) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 159.0 Tm (- Click Word Suite from the navigation rail or press Ctrl+N to open a blank) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 144.5 Tm (document.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 130.0 Tm (- Full formatting controls: Font Family, Font Size, Bold, Italic, Underline,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 115.5 Tm (Strikethrough,) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 3 of 6) Tj ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 12 0 R >>
+endobj
+12 0 obj
+<< /Length 4724 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - OFFICIAL USER MANUAL & HELP GUIDE) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: MANUAL-PSD-300) Tj ET
+BT
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 710.0 Tm (  Subscript, Superscript, and Paragraph Alignments \(Left, Center, Right, Justify\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 695.5 Tm (- Headings & Paragraph Styles: Title, Subtitle, Heading 1, Heading 2, Heading 3,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 681.0 Tm (Quote, Code.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 666.5 Tm (- Color Matrices: 40 theme colors, 10 standard colors, custom hex picker, and 15) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm (highlight swatches.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 623.0 Tm (5.2 WORD CASE CONVERSION \(Aa\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (- Select any text block and click the Aa dropdown to convert casing instantly:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm (  * Sentence case: Capitalizes the initial letter of each sentence.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm (  * lowercase: Converts all selected text to lowercase letters.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 565.0 Tm (  * UPPERCASE: Converts all selected text to capital letters.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 550.5 Tm (  * Capitalize Each Word: Title cases every word.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (  * Toggle Case: Inverts the case of each individual character.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 507.0 Tm (5.3 READABILITY & DOCUMENT AUDIT MODAL \(DETAILED STATS\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (- Click Detailed Stats in the Word ribbon to open a comprehensive telemetry audit:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 478.0 Tm (  * Word Count, Character Count \(with and without spaces\), Paragraph Count, Line) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm (Count.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 449.0 Tm (  * Estimated Reading Time \(based on standard 220 WPM rate\) and Speaking Time \(130) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 434.5 Tm (WPM\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 420.0 Tm (  * Flesch Reading Ease Score \(0-100\) and US School Grade Level rating.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 405.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 391.0 Tm (5.4 TEMPLATE GALLERY) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 376.5 Tm (- Click Templates to instantiate pre-designed enterprise templates:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 362.0 Tm (  * Project Charter, Modern Executive Resume, Business Proposal, Mutual NDA, Meeting) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 347.5 Tm (Minutes.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 333.0 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 318.5 Tm (SECTION 6: AIR-GAPPED OFFLINE AI DOCUMENT COPILOT & INTELLIGENCE) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 304.0 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 289.5 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 275.0 Tm () Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 260.5 Tm (PSD AI Copilot operates 100% locally on your machine with ZERO cloud APIs or) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 246.0 Tm (external servers.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 231.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 217.0 Tm (6.1 QUICK-ACTION AI AUDIT PILLS) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 202.5 Tm (Click AI Copilot in the top header or navigation rail to dock the intelligent) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 188.0 Tm (assistant:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 173.5 Tm (- Summary: Generates a high-level executive brief, key strategic takeaways, and tone) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 159.0 Tm (telemetry.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 144.5 Tm (- Actions: Scans document for commitments, tasks, assignees, deadlines, and urgency) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 130.0 Tm (ratings.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 115.5 Tm (- Risks: Audits agreements against uncapped liability, indemnification, and) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 4 of 6) Tj ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 14 0 R >>
+endobj
+14 0 obj
+<< /Length 4559 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - OFFICIAL USER MANUAL & HELP GUIDE) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: MANUAL-PSD-300) Tj ET
+BT
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 710.0 Tm (termination risks.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 695.5 Tm (- Figures: Identifies financial metrics, monetary amounts, interest rates, and) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 681.0 Tm (milestone dates.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 666.5 Tm (- Simplify: Translates dense legal and technical jargon into straightforward plain) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm (English.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm (- RAG JSON: Exports standard vectorized JSON chunks with page citations for LLM) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 623.0 Tm (pipelines) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (  \(compatible with Pinecone, ChromaDB, Azure AI Search, LangChain, and Semantic) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm (Kernel\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 565.0 Tm (6.2 NATURAL LANGUAGE DOCUMENT Q&A) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 550.5 Tm (- Type any question into the AI Ask prompt \(e.g., 'What are the payment terms?' or) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm ('Who is liable?'\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (- The local BM25 ranking algorithm scans active text and answers with exact clause) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 507.0 Tm (citations.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 478.0 Tm (SECTION 7: ENTERPRISE ELECTRONIC SIGNATURE STUDIO & SECURITY) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 463.5 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 449.0 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 434.5 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 420.0 Tm (7.1 ELECTRONIC SIGNATURE STUDIO) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 405.5 Tm (- Click Sign & Audit to launch the full-featured signing window.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 391.0 Tm (- Three Signing Modes:) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 376.5 Tm (  1. Freehand Ink: Draw your signature using a mouse, stylus, or touch screen.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 362.0 Tm (  2. Typed Cursive Calligraphy: Type your name and select Segoe Script, Lucida, or) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 347.5 Tm (Mistral.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 333.0 Tm (  3. Signer Credentials: Enter Name, Corporate Title, Email, Organization, and) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 318.5 Tm (Signing Reason.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 304.0 Tm (- Cryptographic Audit Trail: Computes a SHA-256 hash digest, RFC 3161 UTC timestamp,) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 289.5 Tm (and generates) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 275.0 Tm (  an exportable digital certificate. Click Sign & Apply to embed the signature badge) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 260.5 Tm (into the document.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 246.0 Tm () Tj
+/F2 10 Tf 0.1 0.15 0.2 rg 1 0 0 1 50 231.5 Tm (7.2 SECURITY, AES-256 ENCRYPTION & REDACTION) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 217.0 Tm (- AES-256 Permissions Handler: Protect PDF files with 256-bit AES encryption) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 202.5 Tm (passwords.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 188.0 Tm (- PII Deep-Stream Sanitizer: Permanently scrubs Social Security Numbers, Credit) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 173.5 Tm (Cards, and Phone Numbers.) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 159.0 Tm (- Serialized Bates Stamping: Applies legal discovery indices \(e.g., PSD-000001 to) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 144.5 Tm (PSD-999999\).) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 130.0 Tm () Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 115.5 Tm (SECTION 8: COMPLETE KEYBOARD SHORTCUTS REFERENCE TABLE) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 5 of 6) Tj ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 16 0 R >>
+endobj
+16 0 obj
+<< /Length 2429 >>
+stream
+q 0.01 0.52 0.78 rg 50 750 512 2 re f Q
+BT /F2 8.5 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 756 Tm (PSD PDF STUDIO & VIEWER - OFFICIAL USER MANUAL & HELP GUIDE) Tj
+/F1 8.5 Tf 0.4 0.4 0.4 rg 1 0 0 1 450 756 Tm (ID: MANUAL-PSD-300) Tj ET
+BT
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 710.0 Tm (====================================================================================) Tj
+/F2 11 Tf 0.01 0.52 0.78 rg 1 0 0 1 50 695.5 Tm (====) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 681.0 Tm (- F11           : Dedicated Full-Screen Presentation Mode \(Press Esc to exit\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 666.5 Tm (- F4            : Toggle Left Navigation Rail \(Expand / Collapse\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 652.0 Tm (- Ctrl + T      : Toggle Thumbnail Filmstrip Sidebar) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 637.5 Tm (- Ctrl + O      : Open Document \(PDF, Word .docx, RTF, Markdown, HTML, PSD\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 623.0 Tm (- Ctrl + N      : Create New Word Document \(.docx\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 608.5 Tm (- Ctrl + Shift+N: Create New Blank PDF Document) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 594.0 Tm (- Ctrl + S      : Save Incremental Updates) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 579.5 Tm (- Ctrl + Shift+S: Save As New File) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 565.0 Tm (- Ctrl + P      : Print Document via Windows Print Spooler) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 550.5 Tm (- Ctrl + F      : Find in Document \(Next / Previous match cycling\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 536.0 Tm (- Ctrl + H      : Word Find & Replace Panel) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 521.5 Tm (- Ctrl + R      : Rotate Page Clockwise 90 Degrees) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 507.0 Tm (- Ctrl + +      : Zoom In Viewport) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 492.5 Tm (- Ctrl + -      : Zoom Out Viewport) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 478.0 Tm (- Ctrl + 0      : Actual Size \(100% Zoom\)) Tj
+/F1 10.0 Tf 0.15 0.15 0.15 rg 1 0 0 1 50 463.5 Tm (- Esc           : Exit Search / Exit Full-Screen Presentation Mode) Tj
+ET
+q 0.85 0.85 0.88 rg 50 40 512 1 re f Q
+BT /F1 8.5 Tf 0.45 0.45 0.45 rg 1 0 0 1 50 28 Tm (PSD PDF Studio and Viewer Enterprise Edition | MIT License | Confidential) Tj
+/F2 8.5 Tf 0.2 0.2 0.2 rg 1 0 0 1 480 28 Tm (Page 6 of 6) Tj ET
+endstream
+endobj
+xref
+0 17
+0000000000 65535 f 
+0000000107 00000 n 
+0000000199 00000 n 
+0000000291 00000 n 
+0000000383 00000 n 
+0000000475 00000 n 
+0000000567 00000 n 
+0000000659 00000 n 
+0000000751 00000 n 
+0000000843 00000 n 
+0000000935 00000 n 
+0000001027 00000 n 
+0000001119 00000 n 
+0000001211 00000 n 
+0000001303 00000 n 
+0000001395 00000 n 
+0000001487 00000 n 
+trailer
+<< /Size 17 /Root 1 0 R >>
+startxref
+26624
+%%EOF

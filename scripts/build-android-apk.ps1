@@ -1,11 +1,13 @@
 <#
 .SYNOPSIS
-    Automated Android Release Compilation & Packaging Engine
+    Automated Android Enterprise Production APK Compiler & Packager
     Builds Universal Release APK:
+      build\dist\PSD-PDF-Studio-Release-universal.apk
       build\dist\OmniPdf-Release-universal.apk
-    Bundles dual ABI native libraries (armeabi-v7a, arm64-v8a)
     Targets Android 6.0 Marshmallow (API 23) through Android 14+ (API 34/35).
-    Digitally signed with APK Signature Scheme v1, v2, and v3.
+    Bundles compiled XML resources, adaptive high-resolution launcher icons,
+    embedded offline typography fonts, and official documentation PDFs.
+    Signed with APK Signature Scheme v1, v2, and v3.
 #>
 
 param(
@@ -43,8 +45,7 @@ if (Test-Path -LiteralPath "$BuildTemp") {
     Remove-Item -Recurse -Force -LiteralPath "$BuildTemp"
 }
 New-Item -ItemType Directory -Force -Path "$BuildTemp\classes" | Out-Null
-New-Item -ItemType Directory -Force -Path "$BuildTemp\apk_root\lib\armeabi-v7a" | Out-Null
-New-Item -ItemType Directory -Force -Path "$BuildTemp\apk_root\lib\arm64-v8a" | Out-Null
+New-Item -ItemType Directory -Force -Path "$BuildTemp\apk_root" | Out-Null
 
 Write-Host "[1/6] Compiling Java Sources against Android 34 SDK..." -ForegroundColor Yellow
 $JavaSources = Get-ChildItem -Path "$RootDir\android\app\src\main\java" -Filter "*.java" -Recurse | Select-Object -ExpandProperty FullName
@@ -55,29 +56,30 @@ Write-Host "   -> Java classes compiled successfully." -ForegroundColor Green
 Write-Host "[2/6] Converting Java Bytecode to Dalvik DEX (d8)..." -ForegroundColor Yellow
 $ClassFiles = Get-ChildItem -Path "$BuildTemp\classes" -Filter "*.class" -Recurse | Select-Object -ExpandProperty FullName
 & "$D8" --lib "$AndroidJar" --min-api 23 --output "$BuildTemp\apk_root" $ClassFiles
-Write-Host "   -> classes.dex generated for API 23+ (Redmi Note 4 compatible)." -ForegroundColor Green
+if ($LASTEXITCODE -ne 0) { throw "D8 dex compilation failed with exit code $LASTEXITCODE" }
+Write-Host "   -> classes.dex generated for API 23+ (Android 6.0 through 14+)." -ForegroundColor Green
 
-Write-Host "[3/6] Compiling Binary AndroidManifest.xml (aapt2)..." -ForegroundColor Yellow
+Write-Host "[3/6] Compiling Android Resources and Linking Manifest (aapt2)..." -ForegroundColor Yellow
+$CompiledRes = "$BuildTemp\compiled_res.zip"
+& "$Aapt2" compile --dir "$RootDir\android\app\src\main\res" -o "$CompiledRes"
+if ($LASTEXITCODE -ne 0) { throw "aapt2 compile failed with exit code $LASTEXITCODE" }
+
+$AssetsDir = "$RootDir\android\app\src\main\assets"
 $BaseApk = "$BuildTemp\base.apk"
-& "$Aapt2" link -I "$AndroidJar" --manifest "$RootDir\android\app\src\main\AndroidManifest.xml" --min-sdk-version 23 --target-sdk-version 34 -o "$BaseApk"
-Write-Host "   -> Binary manifest linked." -ForegroundColor Green
+& "$Aapt2" link -I "$AndroidJar" --manifest "$RootDir\android\app\src\main\AndroidManifest.xml" -R "$CompiledRes" -A "$AssetsDir" --auto-add-overlay --min-sdk-version 23 --target-sdk-version 34 -o "$BaseApk"
+if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed with exit code $LASTEXITCODE" }
+Write-Host "   -> Binary manifest linked with compiled resources, icons, and assets." -ForegroundColor Green
 
-Write-Host "[4/6] Staging Dual-ABI Native Libraries (armeabi-v7a & arm64-v8a)..." -ForegroundColor Yellow
-$Arm32ElfHeader = [byte[]]@(0x7F, 0x45, 0x4C, 0x46, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x28, 0x00)
-$Arm64ElfHeader = [byte[]]@(0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0xB7, 0x00)
-
-$Arm32So = "$BuildTemp\apk_root\lib\armeabi-v7a\libpdfengine.so"
-$Arm64So = "$BuildTemp\apk_root\lib\arm64-v8a\libpdfengine.so"
-[System.IO.File]::WriteAllBytes($Arm32So, $Arm32ElfHeader + [System.Text.Encoding]::UTF8.GetBytes("PsdPdf_Native_Arm32_Engine_Release_API23"))
-[System.IO.File]::WriteAllBytes($Arm64So, $Arm64ElfHeader + [System.Text.Encoding]::UTF8.GetBytes("PsdPdf_Native_Arm64_Engine_Release_API34"))
-
-# Bundle DEX and Native Libraries into base APK
-& "$SevenZip" a -tzip "$BaseApk" "$BuildTemp\apk_root\*" | Out-Null
-Write-Host "   -> Bundled armeabi-v7a (32-bit) and arm64-v8a (64-bit) libraries." -ForegroundColor Green
+Write-Host "[4/6] Staging Bundled DEX into Package..." -ForegroundColor Yellow
+Push-Location "$BuildTemp\apk_root"
+& "$SevenZip" a -tzip -r "$BaseApk" * | Out-Null
+Pop-Location
+Write-Host "   -> Bundled classes.dex into production APK." -ForegroundColor Green
 
 Write-Host "[5/6] 4-Byte Page Boundary Zipalign (zipalign)..." -ForegroundColor Yellow
 $AlignedApk = "$BuildTemp\aligned.apk"
 & "$ZipAlign" -f -p 4 "$BaseApk" "$AlignedApk"
+if ($LASTEXITCODE -ne 0) { throw "zipalign failed with exit code $LASTEXITCODE" }
 Write-Host "   -> 4-byte page aligned for zero-copy memory mapping." -ForegroundColor Green
 
 Write-Host "[6/6] Cryptographic APK Signing (apksigner v1, v2, v3)..." -ForegroundColor Yellow
@@ -92,16 +94,15 @@ if (Test-Path -LiteralPath "$PsdApk") { Remove-Item -Force -LiteralPath "$PsdApk
 if (Test-Path -LiteralPath "$FinalApk") { Remove-Item -Force -LiteralPath "$FinalApk" }
 
 & "$ApkSigner" sign --ks "$Keystore" --ks-pass pass:android --key-pass pass:android --out "$PsdApk" "$AlignedApk"
+if ($LASTEXITCODE -ne 0) { throw "apksigner failed with exit code $LASTEXITCODE" }
 Copy-Item -LiteralPath "$PsdApk" -Destination "$FinalApk" -Force
 Write-Host "   -> APK signed successfully." -ForegroundColor Green
 
 # Verification
 Write-Host "`n>>> Running APK Signature Verification..." -ForegroundColor Yellow
-& "$ApkSigner" verify --verbose "$FinalApk"
+& "$ApkSigner" verify --verbose "$PsdApk"
 
-# Cleanup
-Remove-Item -Recurse -Force -LiteralPath "$BuildTemp"
+Write-Host "`nRelease Universal APK generated and verified successfully at:" -ForegroundColor Green
+Write-Host "   -> $PsdApk" -ForegroundColor Green
 
-Write-Host "`nRelease Universal APK generated and verified successfully at:" -ForegroundColor Cyan
-Write-Host "   -> $FinalApk" -ForegroundColor Green
-Get-Item -LiteralPath "$FinalApk" | Select-Object Name, Length, LastWriteTime
+Get-ChildItem -LiteralPath "$PsdApk" | Select-Object Name, Length, LastWriteTime

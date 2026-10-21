@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PSD PDF Studio &amp; Viewer</string>
+    <string name="app_description">Sovereign High-Performance Mobile PDF Studio and Word-Compatible Suite</string>
+    <string name="title_library">Device Library Hub</string>
+    <string name="title_viewer">Vector PDF Studio</string>
+    <string name="title_creator">Word &amp; PDF Creator</string>
+</resources>

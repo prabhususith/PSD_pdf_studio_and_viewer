@@ -101,11 +101,7 @@ public class MainActivity extends Activity {
     private int mActiveTab = 0;
     private final Button[] mNavButtons = new Button[4];
 
-    static {
-        try {
-            System.loadLibrary("pdfengine");
-        } catch (UnsatisfiedLinkError ignored) {}
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +144,9 @@ public class MainActivity extends Activity {
 
         // Check if opened via Intent (e.g. user tapped a PDF from WhatsApp, Chrome, Files)
         handleIntent(getIntent());
+
+        // Extract bundled documents & launch initial document so app is never blank
+        ensureBundledDocumentsExtracted();
 
         // Start background indexing of local device PDFs
         refreshDeviceLibrary();
@@ -750,6 +749,9 @@ public class MainActivity extends Activity {
 
     private void switchTab(int index) {
         mActiveTab = index;
+        if ((index == 1 || index == 2) && (mCurrentDocPath == null || mCurrentDocPath.isEmpty())) {
+            ensureBundledDocumentsExtracted();
+        }
         mLibraryContainer.setVisibility(index == 0 ? View.VISIBLE : View.GONE);
         mViewerContainer.setVisibility(index == 1 ? View.VISIBLE : View.GONE);
         mAnnotationContainer.setVisibility(index == 2 ? View.VISIBLE : View.GONE);
@@ -1011,6 +1013,11 @@ public class MainActivity extends Activity {
             protected void onPostExecute(List<File> files) {
                 mDiscoveredPdfFiles.clear();
                 mDiscoveredPdfFiles.addAll(files);
+                if (mDiscoveredPdfFiles.isEmpty()) {
+                    ensureBundledDocumentsExtracted();
+                    File appDocs = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                    if (appDocs != null) scanDirectoryForPdfs(appDocs, mDiscoveredPdfFiles, 0);
+                }
                 filterLibraryItems(mSearchInput != null ? mSearchInput.getText().toString() : "");
             }
         }.execute();
@@ -1375,5 +1382,39 @@ public class MainActivity extends Activity {
         b.setMessage(msg);
         b.setPositiveButton("OK", null);
         b.show();
+    }
+
+    private void ensureBundledDocumentsExtracted() {
+        try {
+            File docsDir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            if (docsDir == null) docsDir = getFilesDir();
+            if (!docsDir.exists()) docsDir.mkdirs();
+
+            String[] bundledDocs = {
+                "PSD_PDF_Studio_User_Manual_and_Help_Guide.pdf",
+                "PSD_PDF_Studio_Hardware_Requirements.pdf"
+            };
+
+            for (String docName : bundledDocs) {
+                File target = new File(docsDir, docName);
+                if (!target.exists() || target.length() == 0) {
+                    try (InputStream is = getAssets().open(docName);
+                         FileOutputStream fos = new FileOutputStream(target)) {
+                        byte[] buffer = new byte[16384];
+                        int read;
+                        while ((read = is.read(buffer)) != -1) {
+                            fos.write(buffer, 0, read);
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+
+            File manual = new File(docsDir, "PSD_PDF_Studio_User_Manual_and_Help_Guide.pdf");
+            if (manual.exists() && manual.length() > 0 && (mCurrentDocPath == null || mCurrentDocPath.isEmpty())) {
+                openPdfFile(manual);
+            } else if (mCurrentDocPath == null || mCurrentDocPath.isEmpty()) {
+                generateDemoPdfAndOpen();
+            }
+        } catch (Exception ignored) {}
     }
 }
