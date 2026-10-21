@@ -56,6 +56,13 @@ Copy-Item -LiteralPath "$ExeSource" -Destination "$DistDir\omni_pdf.exe" -Force
 Copy-Item -LiteralPath "$ExeSource" -Destination "$PortableDir\psd_pdf.exe" -Force
 [System.IO.File]::WriteAllText("$DistDir\pdfengine.dll", "PsdPdf_Native_Core_Engine_v3.0.0")
 
+# Bundle official documentation PDFs
+if (-not (Test-Path -LiteralPath "$PortableDir\docs")) {
+    New-Item -ItemType Directory -Force -Path "$PortableDir\docs" | Out-Null
+}
+Copy-Item -LiteralPath "$RootDir\docs\*.pdf" -Destination "$PortableDir\docs\" -Force
+Copy-Item -LiteralPath "$RootDir\docs\*.pdf" -Destination "$DistDir\" -Force
+
 Write-Host "   -> Standalone psd_pdf.exe & omni_pdf.exe compiled successfully." -ForegroundColor Green
 
 Write-Host "`n[2/4] Generating Windows Standalone Portable ZIP..." -ForegroundColor Yellow

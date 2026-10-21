@@ -98,6 +98,28 @@ namespace OmniPdf.App
             {
                 ApplyTheme("Fluent Dark");
                 await StartDeviceLibraryScanAsync();
+
+                try
+                {
+                    string appDir = AppDomain.CurrentDomain.BaseDirectory;
+                    string[] candidates = new[]
+                    {
+                        Path.Combine(appDir, "docs", "PSD_PDF_Studio_User_Manual_and_Help_Guide.pdf"),
+                        Path.Combine(appDir, "PSD_PDF_Studio_User_Manual_and_Help_Guide.pdf"),
+                        Path.GetFullPath(@"docs\PSD_PDF_Studio_User_Manual_and_Help_Guide.pdf")
+                    };
+
+                    foreach (var c in candidates)
+                    {
+                        if (File.Exists(c))
+                        {
+                            _documents.Clear();
+                            await LoadPdfPathAsync(c);
+                            break;
+                        }
+                    }
+                }
+                catch { }
             };
         }
 
@@ -288,11 +310,15 @@ namespace OmniPdf.App
             {
                 ColNavRail.Width = new GridLength(0);
                 if (BtnToggleNavRail != null) BtnToggleNavRail.Content = "▶ Rail";
+                if (BtnFloatingShowRail != null) BtnFloatingShowRail.Visibility = Visibility.Visible;
+                if (BtnHeaderToggleNav != null) BtnHeaderToggleNav.ToolTip = "Expand Navigation Rail (F4)";
             }
             else
             {
                 ColNavRail.Width = new GridLength(190);
                 if (BtnToggleNavRail != null) BtnToggleNavRail.Content = "◀ Rail";
+                if (BtnFloatingShowRail != null) BtnFloatingShowRail.Visibility = Visibility.Collapsed;
+                if (BtnHeaderToggleNav != null) BtnHeaderToggleNav.ToolTip = "Collapse Navigation Rail (F4)";
             }
         }
 

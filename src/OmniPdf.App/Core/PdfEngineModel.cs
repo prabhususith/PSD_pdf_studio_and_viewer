@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -22,15 +23,34 @@ namespace OmniPdf.App.Core
         public List<(double X, double Y)> Points { get; set; } = new();
     }
 
-    public class PdfPageModel
+    public class PdfPageModel : INotifyPropertyChanged
     {
+        private BitmapSource? _renderedImage;
+
         public int PageNumber { get; set; }
         public int Rotation { get; set; } = 0; // 0, 90, 180, 270
         public double Width { get; set; } = 612.0;
         public double Height { get; set; } = 792.0;
         public string ContentText { get; set; } = "";
-        public BitmapSource? RenderedImage { get; set; }
+        
+        public BitmapSource? RenderedImage
+        {
+            get => _renderedImage;
+            set
+            {
+                if (_renderedImage != value)
+                {
+                    _renderedImage = value;
+                    OnPropertyChanged(nameof(RenderedImage));
+                }
+            }
+        }
+
         public List<AnnotationItem> Annotations { get; set; } = new();
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public class PdfDocumentModel

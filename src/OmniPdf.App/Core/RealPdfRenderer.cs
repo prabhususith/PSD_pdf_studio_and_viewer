@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Windows.Data.Pdf;
+using Windows.Storage;
 using Windows.Storage.Streams;
 
 namespace OmniPdf.App.Core
@@ -16,13 +17,21 @@ namespace OmniPdf.App.Core
     /// </summary>
     public static class RealPdfRenderer
     {
-        private class CachedPdfEntry
+        private class CachedPdfEntry : IDisposable
         {
             public required PdfDocument Document { get; init; }
+            public FileStream? FileStream { get; init; }
+            public IRandomAccessStream? RandomAccessStream { get; init; }
             public required DateTime LastWriteTime { get; init; }
             public required int PageCount { get; init; }
             public required double DefaultWidth { get; init; }
             public required double DefaultHeight { get; init; }
+
+            public void Dispose()
+            {
+                try { RandomAccessStream?.Dispose(); } catch { }
+                try { FileStream?.Dispose(); } catch { }
+            }
         }
 
         private class CachedBitmapEntry
@@ -59,7 +68,10 @@ namespace OmniPdf.App.Core
                     return (entry.PageCount, entry.DefaultWidth, entry.DefaultHeight);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[RealPdfRenderer] GetPdfInfoAsync error for '{pdfPath}': {ex.Message}");
+            }
 
             return (0, 612, 792);
         }
@@ -129,8 +141,9 @@ namespace OmniPdf.App.Core
 
                 return bitmapImage;
             }
-            catch
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"[RealPdfRenderer] Page {pageIndex} render error in '{pdfPath}': {ex}");
                 return null;
             }
             finally
@@ -153,16 +166,36 @@ namespace OmniPdf.App.Core
                 {
                     return cached;
                 }
-                // File modified externally, invalidate
-                _documentCache.TryRemove(fullPath, out _);
+                // File modified externally, invalidate and release previous handle
+                if (_documentCache.TryRemove(fullPath, out var oldEntry))
+                {
+                    oldEntry.Dispose();
+                }
                 InvalidateBitmapsForFile(fullPath);
             }
 
             try
             {
-                using var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                using var ras = fs.AsRandomAccessStream();
-                var pdfDoc = await PdfDocument.LoadFromStreamAsync(ras);
+                PdfDocument? pdfDoc = null;
+                FileStream? fs = null;
+                IRandomAccessStream? ras = null;
+
+                // Method 1: StorageFile native OS mapping (cleanest, zero-stream-leak architecture)
+                try
+                {
+                    var storageFile = await StorageFile.GetFileFromPathAsync(fullPath);
+                    pdfDoc = await PdfDocument.LoadFromFileAsync(storageFile);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[RealPdfRenderer] StorageFile direct load fallback: {ex.Message}");
+                    // Method 2: Managed FileStream + AsRandomAccessStream kept alive for lifetime of cached session
+                    fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                    ras = fs.AsRandomAccessStream();
+                    pdfDoc = await PdfDocument.LoadFromStreamAsync(ras);
+                }
+
+                if (pdfDoc == null) return null;
 
                 int count = (int)pdfDoc.PageCount;
                 double w = 612.0;
@@ -178,6 +211,8 @@ namespace OmniPdf.App.Core
                 var newEntry = new CachedPdfEntry
                 {
                     Document = pdfDoc,
+                    FileStream = fs,
+                    RandomAccessStream = ras,
                     LastWriteTime = lastWrite,
                     PageCount = count,
                     DefaultWidth = w,
@@ -187,8 +222,9 @@ namespace OmniPdf.App.Core
                 _documentCache[fullPath] = newEntry;
                 return newEntry;
             }
-            catch
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"[RealPdfRenderer] Failed to load PDF document '{fullPath}': {ex}");
                 return null;
             }
         }
@@ -241,7 +277,10 @@ namespace OmniPdf.App.Core
             try
             {
                 var fullPath = Path.GetFullPath(pdfPath);
-                _documentCache.TryRemove(fullPath, out _);
+                if (_documentCache.TryRemove(fullPath, out var removedEntry))
+                {
+                    removedEntry.Dispose();
+                }
                 InvalidateBitmapsForFile(fullPath);
             }
             catch { }
@@ -253,6 +292,10 @@ namespace OmniPdf.App.Core
         public static void ClearAllCaches()
         {
             _bitmapCache.Clear();
+            foreach (var kvp in _documentCache)
+            {
+                kvp.Value.Dispose();
+            }
             _documentCache.Clear();
             Interlocked.Exchange(ref _currentBitmapCacheBytes, 0);
             GC.Collect(2, GCCollectionMode.Optimized, false);

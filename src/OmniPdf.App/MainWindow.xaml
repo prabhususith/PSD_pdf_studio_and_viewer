@@ -360,6 +360,9 @@
 
                 <!-- Left: Application Branding Logo & Title -->
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="2,0,10,0">
+                    <Button x:Name="BtnHeaderToggleNav" Content="☰" Width="26" Height="22" Margin="0,0,6,0"
+                            ToolTip="Toggle Workspaces &amp; Navigation Rail (F4)" Style="{StaticResource ModernBtn}"
+                            FontSize="13" FontWeight="Bold" Padding="0" Click="BtnToggleNavRail_Click"/>
                     <Border Width="32" Height="22" CornerRadius="4" Background="{DynamicResource AccentBrushDefault}" Margin="0,0,6,0">
                         <TextBlock Text="PSD" FontWeight="Bold" FontSize="10.5" Foreground="White" 
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -540,6 +543,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition x:Name="ColAiCopilotPanel" Width="0"/>
                 </Grid.ColumnDefinitions>
+
+                <!-- Floating Show Rail Tab (Appears pinned to edge when rail is collapsed) -->
+                <Button x:Name="BtnFloatingShowRail" Grid.Column="0" Content="▶" Width="18" Height="48"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0"
+                        Panel.ZIndex="1000" ToolTip="Expand Workspaces &amp; Navigation Rail (F4)"
+                        Style="{StaticResource ModernBtn}" Visibility="Collapsed"
+                        Click="BtnToggleNavRail_Click" Background="{DynamicResource AccentBrushDefault}" Foreground="White"
+                        FontWeight="Bold" FontSize="11" Opacity="0.92"
+                        BorderThickness="0,1,1,1" BorderBrush="{DynamicResource BorderBrushLight}"/>
 
                 <Grid Grid.Column="0">
                 
