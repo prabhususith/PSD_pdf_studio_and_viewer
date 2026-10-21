@@ -48,7 +48,8 @@ New-Item -ItemType Directory -Force -Path "$BuildTemp\apk_root\lib\arm64-v8a" | 
 
 Write-Host "[1/6] Compiling Java Sources against Android 34 SDK..." -ForegroundColor Yellow
 $JavaSources = Get-ChildItem -Path "$RootDir\android\app\src\main\java" -Filter "*.java" -Recurse | Select-Object -ExpandProperty FullName
-& "$Javac" -cp "$AndroidJar" -d "$BuildTemp\classes" -source 1.8 -target 1.8 $JavaSources
+& "$Javac" -encoding UTF-8 -cp "$AndroidJar" -d "$BuildTemp\classes" -source 1.8 -target 1.8 $JavaSources
+if ($LASTEXITCODE -ne 0) { throw "Java compilation failed with exit code $LASTEXITCODE" }
 Write-Host "   -> Java classes compiled successfully." -ForegroundColor Green
 
 Write-Host "[2/6] Converting Java Bytecode to Dalvik DEX (d8)..." -ForegroundColor Yellow

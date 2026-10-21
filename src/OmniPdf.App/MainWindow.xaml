@@ -333,6 +333,123 @@
             </Setter>
         </Style>
 
+        <!-- Dynamic High-Contrast ComboBox ToggleButton Template -->
+        <ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
+            <Border x:Name="templateRoot" Background="{TemplateBinding Background}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                    CornerRadius="4" SnapsToDevicePixels="True">
+                <Border x:Name="splitBorder" Width="20" HorizontalAlignment="Right" SnapsToDevicePixels="True">
+                    <Path x:Name="arrow" Data="M 0 0 L 4 4 L 8 0 Z" 
+                          Fill="{DynamicResource WindowFgBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.8"/>
+                </Border>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="templateRoot" Property="BorderBrush" Value="{DynamicResource AccentBrushDefault}"/>
+                    <Setter TargetName="arrow" Property="Opacity" Value="1.0"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="templateRoot" Property="BorderBrush" Value="{DynamicResource AccentBrushDefault}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- Dynamic High-Contrast Modern ComboBox Template -->
+        <ControlTemplate x:Key="ModernComboBoxTemplate" TargetType="{x:Type ComboBox}">
+            <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
+                <ToggleButton x:Name="toggleButton" Background="{TemplateBinding Background}" 
+                              BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                              Template="{StaticResource ComboBoxToggleButtonTemplate}" 
+                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                              ClickMode="Press" Focusable="False"/>
+                <ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding SelectionBoxItem}" 
+                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
+                                  ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                  Margin="8,2,22,2" IsHitTestVisible="False" 
+                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+                <Popup x:Name="PART_Popup" AllowsTransparency="True" 
+                       IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                       Placement="Bottom" PopupAnimation="Fade">
+                    <Border x:Name="dropDownBorder" Background="{DynamicResource SubmenuBgBrush}" 
+                            BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" 
+                            CornerRadius="6" Padding="3" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" 
+                            MaxHeight="{TemplateBinding MaxDropDownHeight}" SnapsToDevicePixels="True">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="18" ShadowDepth="4" Direction="270" Color="#000000" Opacity="0.55"/>
+                        </Border.Effect>
+                        <ScrollViewer x:Name="DropDownScrollViewer" CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </ScrollViewer>
+                    </Border>
+                </Popup>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.45"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- High-Contrast Dynamic ComboBoxItem Style (100% Theme Synchronized Text Visibility) -->
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border x:Name="ItemBorder" Background="{TemplateBinding Background}" 
+                                BorderBrush="Transparent" BorderThickness="0" 
+                                CornerRadius="4" Padding="{TemplateBinding Padding}" Margin="1,1" SnapsToDevicePixels="True">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left"
+                                              TextElement.Foreground="{DynamicResource SubmenuFgBrush}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource ItemHoverBgBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource AccentBrushDefault}"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- High-Contrast Dynamic ComboBox Style -->
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowFgBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial"/>
+            <Setter Property="FontSize" Value="10.5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="MaxDropDownHeight" Value="320"/>
+            <Setter Property="Template" Value="{StaticResource ModernComboBoxTemplate}"/>
+        </Style>
+
         <!-- Dashboard ItemsPanel Templates -->
         <ItemsPanelTemplate x:Key="WrapPanelHost">
             <WrapPanel Orientation="Horizontal" IsItemsHost="True"/>
@@ -513,10 +630,10 @@
                             Style="{StaticResource ModernBtn}" Click="BtnToggleAiCopilot_Click"/>
 
                     <!-- Quick Theme Selector in Header -->
-                    <TextBlock Text="🎨" VerticalAlignment="Center" Margin="0,0,3,0" FontSize="11"/>
-                    <ComboBox x:Name="CmbTheme" Width="110" Height="22" VerticalAlignment="Center" Margin="0,0,8,0"
-                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}"
-                              FontSize="10" SelectionChanged="CmbTheme_SelectionChanged">
+                    <TextBlock Text="🎨" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="11"/>
+                    <ComboBox x:Name="CmbTheme" Width="120" Height="22" VerticalAlignment="Center" Margin="0,0,8,0"
+                              Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" 
+                              BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10" SelectionChanged="CmbTheme_SelectionChanged">
                         <ComboBoxItem Content="Fluent Dark"/>
                         <ComboBoxItem Content="Modern Light"/>
                         <ComboBoxItem Content="Glass Theme"/>
@@ -696,10 +813,10 @@
                     <StackPanel DockPanel.Dock="Top">
                         <Button x:Name="NavBtnLibrary" Style="{StaticResource NavRailBtn}" Click="NavBtnLibrary_Click">
                             <DockPanel Width="160">
-                                <TextBlock Text="📚  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="{DynamicResource AccentBrushDefault}" CornerRadius="9" Padding="5,1">
+                                <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="{DynamicResource AccentBrushDefault}" CornerRadius="9" Padding="6,1" Margin="4,0,0,0">
                                     <TextBlock x:Name="TxtLibraryBadge" Text="0" FontSize="8.5" FontWeight="Bold" Foreground="White"/>
                                 </Border>
+                                <TextBlock Text="📚  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Button>
 
@@ -852,8 +969,8 @@
                                 <!-- File Format Filter -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
                                     <TextBlock Text="Format:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <ComboBox x:Name="CmbFilterType" Width="105" Height="22" SelectionChanged="CmbFilterType_SelectionChanged"
-                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                    <ComboBox x:Name="CmbFilterType" Width="110" Height="22" SelectionChanged="CmbFilterType_SelectionChanged"
+                                              Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
                                         <ComboBoxItem Content="All Formats" IsSelected="True"/>
                                         <ComboBoxItem Content="PDF Documents"/>
                                         <ComboBoxItem Content="Word Documents"/>
@@ -865,8 +982,8 @@
                                 <!-- Date Filter -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
                                     <TextBlock Text="Date:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <ComboBox x:Name="CmbFilterDate" Width="90" Height="22" SelectionChanged="CmbFilterDate_SelectionChanged"
-                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                    <ComboBox x:Name="CmbFilterDate" Width="95" Height="22" SelectionChanged="CmbFilterDate_SelectionChanged"
+                                              Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
                                         <ComboBoxItem Content="All Time" IsSelected="True"/>
                                         <ComboBoxItem Content="Today"/>
                                         <ComboBoxItem Content="This Week"/>
@@ -878,8 +995,8 @@
                                 <!-- Size Filter -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
                                     <TextBlock Text="Size:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <ComboBox x:Name="CmbFilterSize" Width="95" Height="22" SelectionChanged="CmbFilterSize_SelectionChanged"
-                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                    <ComboBox x:Name="CmbFilterSize" Width="100" Height="22" SelectionChanged="CmbFilterSize_SelectionChanged"
+                                              Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
                                         <ComboBoxItem Content="All Sizes" IsSelected="True"/>
                                         <ComboBoxItem Content="&lt; 1 MB (Small)"/>
                                         <ComboBoxItem Content="1 - 10 MB (Med)"/>
@@ -890,8 +1007,8 @@
                                 <!-- Sort Order -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
                                     <TextBlock Text="Sort:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <ComboBox x:Name="CmbSortOrder" Width="135" Height="22" SelectionChanged="CmbSortOrder_SelectionChanged"
-                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                    <ComboBox x:Name="CmbSortOrder" Width="145" Height="22" SelectionChanged="CmbSortOrder_SelectionChanged"
+                                              Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
                                         <ComboBoxItem Content="Date Modified (Newest)" IsSelected="True"/>
                                         <ComboBoxItem Content="Date Modified (Oldest)"/>
                                         <ComboBoxItem Content="Name (A → Z)"/>
@@ -1012,24 +1129,24 @@
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Navigation Steppers & Quick Jump -->
-                            <Button x:Name="BtnFirstPage" Content="⏮" ToolTip="First Page" Width="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFirstPage_Click"/>
+                            <Button x:Name="BtnFirstPage" Content="⏮" ToolTip="First Page" Width="26" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFirstPage_Click"/>
                             <Button x:Name="BtnPrevPage" Content="◀ Prev" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnPrevPage_Click"/>
-                            <Border Background="#27272A" CornerRadius="3" Padding="5,2" Margin="1" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="3" Padding="5,2" Margin="1" VerticalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBox x:Name="TxtJumpPage" Text="1" Width="28" Background="Transparent" Foreground="#38BDF8" BorderThickness="0" 
+                                    <TextBox x:Name="TxtJumpPage" Text="1" Width="28" Background="Transparent" Foreground="{DynamicResource WindowFgBrush}" BorderThickness="0" 
                                              TextAlignment="Center" FontWeight="Bold" FontSize="10.5" KeyDown="TxtJumpPage_KeyDown"/>
                                     <TextBlock x:Name="TxtNavPageIndicator" Text=" / 1" FontSize="10.5" FontWeight="SemiBold" Foreground="#A1A1AA" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
                             <Button x:Name="BtnNextPage" Content="Next ▶" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnNextPage_Click"/>
-                            <Button x:Name="BtnLastPage" Content="⏭" ToolTip="Last Page" Width="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnLastPage_Click"/>
+                            <Button x:Name="BtnLastPage" Content="⏭" ToolTip="Last Page" Width="26" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnLastPage_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Zoom Controls -->
-                            <Button x:Name="BtnZoomOut" Content="➖" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomOut_Click"/>
-                            <TextBlock x:Name="TxtZoomLevel" Text="100%" Width="36" TextAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource WindowFgBrush}" FontSize="10.5" FontWeight="SemiBold"/>
-                            <Button x:Name="BtnZoomIn" Content="➕" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomIn_Click"/>
+                            <Button x:Name="BtnZoomOut" Content="➖" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomOut_Click"/>
+                            <TextBlock x:Name="TxtZoomLevel" Text="100%" Width="40" TextAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource WindowFgBrush}" FontSize="10.5" FontWeight="SemiBold"/>
+                            <Button x:Name="BtnZoomIn" Content="➕" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnZoomIn_Click"/>
                             <Button x:Name="BtnFitWidth" Content="Fit Width" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnFitWidth_Click"/>
                             <Button x:Name="BtnRotatePage" Content="Rotate 90°" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnRotatePage_Click"/>
                             <Button x:Name="BtnDarkModeToggle" Content="🌙 Dark Mode" ToolTip="Toggle Night / Invert Reading Mode (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnDarkModeToggle_Click"/>
@@ -1071,8 +1188,8 @@
                                 </Border>
                             </Popup>
 
-                            <ComboBox x:Name="CmbPdfPenWidth" Width="58" Height="22" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                            <ComboBox x:Name="CmbPdfPenWidth" Width="68" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
                                       ToolTip="Pen Stroke Thickness" SelectionChanged="CmbPdfPenWidth_SelectionChanged">
                                 <ComboBoxItem Content="1.5 pt" IsSelected="True"/>
                                 <ComboBoxItem Content="3.0 pt"/>
@@ -1091,8 +1208,8 @@
 
                             <!-- Read Aloud Speech Synthesizer -->
                             <Button x:Name="BtnTtsPlay" Content="🔊 Read" ToolTip="Read Page Aloud" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnTtsPlay_Click"/>
-                            <Button x:Name="BtnTtsPause" Content="⏸" ToolTip="Pause Speech" Style="{StaticResource ModernBtn}" Width="22" Margin="1" Click="BtnTtsPause_Click"/>
-                            <Button x:Name="BtnTtsStop" Content="⏹" ToolTip="Stop Speech" Style="{StaticResource ModernBtn}" Width="22" Margin="1" Click="BtnTtsStop_Click"/>
+                            <Button x:Name="BtnTtsPause" Content="⏸" ToolTip="Pause Speech" Style="{StaticResource ModernBtn}" Width="26" Height="22" Padding="2" Margin="1" Click="BtnTtsPause_Click"/>
+                            <Button x:Name="BtnTtsStop" Content="⏹" ToolTip="Stop Speech" Style="{StaticResource ModernBtn}" Width="26" Height="22" Padding="2" Margin="1" Click="BtnTtsStop_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
@@ -1258,8 +1375,8 @@
                     <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
                         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <!-- History: Undo / Redo -->
-                            <Button x:Name="BtnWordUndo" Content="↶" ToolTip="Undo (Ctrl+Z)" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUndo_Click"/>
-                            <Button x:Name="BtnWordRedo" Content="↷" ToolTip="Redo (Ctrl+Y)" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordRedo_Click"/>
+                            <Button x:Name="BtnWordUndo" Content="↶" ToolTip="Undo (Ctrl+Z)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUndo_Click"/>
+                            <Button x:Name="BtnWordRedo" Content="↷" ToolTip="Redo (Ctrl+Y)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordRedo_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
@@ -1274,8 +1391,8 @@
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Heading & Style Hierarchy -->
-                            <ComboBox x:Name="CmbWordStyle" Width="85" Height="22" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                            <ComboBox x:Name="CmbWordStyle" Width="90" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
                                       ToolTip="Typography &amp; Heading Style" SelectionChanged="CmbWordStyle_SelectionChanged">
                                 <ComboBoxItem Content="Normal" IsSelected="True"/>
                                 <ComboBoxItem Content="Title"/>
@@ -1288,8 +1405,8 @@
                             </ComboBox>
 
                             <!-- Font Family & Font Size -->
-                            <ComboBox x:Name="CmbWordFontFamily" Width="105" Height="22" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                            <ComboBox x:Name="CmbWordFontFamily" Width="115" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
                                       SelectionChanged="CmbWordFontFamily_SelectionChanged">
                                 <ComboBoxItem Content="Segoe UI" IsSelected="True"/>
                                 <ComboBoxItem Content="Calibri"/>
@@ -1301,8 +1418,8 @@
                                 <ComboBoxItem Content="Verdana"/>
                             </ComboBox>
 
-                            <ComboBox x:Name="CmbWordFontSize" Width="48" Height="22" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                            <ComboBox x:Name="CmbWordFontSize" Width="52" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
                                       SelectionChanged="CmbWordFontSize_SelectionChanged">
                                 <ComboBoxItem Content="9"/>
                                 <ComboBoxItem Content="10"/>
@@ -1322,18 +1439,18 @@
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Character Styles: Bold, Italic, Underline, Strikethrough, Subscript, Superscript -->
-                            <Button Content="B" FontWeight="Bold" Width="24" Height="22" ToolTip="Bold (Ctrl+B)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBold_Click"/>
-                            <Button Content="I" FontStyle="Italic" Width="24" Height="22" ToolTip="Italic (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordItalic_Click"/>
-                            <Button Width="24" Height="22" ToolTip="Underline (Ctrl+U)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUnderline_Click">
+                            <Button Content="B" FontWeight="Bold" Width="26" Height="22" Padding="2" ToolTip="Bold (Ctrl+B)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBold_Click"/>
+                            <Button Content="I" FontStyle="Italic" Width="26" Height="22" Padding="2" ToolTip="Italic (Ctrl+I)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordItalic_Click"/>
+                            <Button Width="26" Height="22" Padding="2" ToolTip="Underline (Ctrl+U)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordUnderline_Click">
                                 <TextBlock Text="U" TextDecorations="Underline"/>
                             </Button>
-                            <Button Width="24" Height="22" ToolTip="Strikethrough" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordStrikethrough_Click">
+                            <Button Width="26" Height="22" Padding="2" ToolTip="Strikethrough" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordStrikethrough_Click">
                                 <TextBlock Text="S" TextDecorations="Strikethrough"/>
                             </Button>
-                            <Button x:Name="BtnWordSubscript" Content="X₂" ToolTip="Subscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSubscript_Click"/>
-                            <Button x:Name="BtnWordSuperscript" Content="X²" ToolTip="Superscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSuperscript_Click"/>
-                            <Button x:Name="BtnWordClearFormat" Content="🧹" ToolTip="Clear Formatting" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordClearFormat_Click"/>
-                            <Button x:Name="BtnWordFormatPainter" Content="🖌️" ToolTip="Format Painter (Copy &amp; Apply Style)" Width="26" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordFormatPainter_Click"/>
+                            <Button x:Name="BtnWordSubscript" Content="X₂" ToolTip="Subscript" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSubscript_Click"/>
+                            <Button x:Name="BtnWordSuperscript" Content="X²" ToolTip="Superscript" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSuperscript_Click"/>
+                            <Button x:Name="BtnWordClearFormat" Content="🧹" ToolTip="Clear Formatting" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordClearFormat_Click"/>
+                            <Button x:Name="BtnWordFormatPainter" Content="🖌️" ToolTip="Format Painter (Copy &amp; Apply Style)" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordFormatPainter_Click"/>
                             <Button x:Name="BtnWordChangeCase" Content="Aa ▾" ToolTip="Change Case (Shift+F3)" Style="{StaticResource ModernBtn}" Margin="1" Padding="4,2" Click="BtnWordChangeCase_Click"/>
                             <Popup x:Name="PopupWordChangeCase" PlacementTarget="{Binding ElementName=BtnWordChangeCase}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                 <Border Background="{DynamicResource SubmenuBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="8" Padding="6" Width="160" SnapsToDevicePixels="True">
@@ -1486,8 +1603,8 @@
                             <Separator Width="1" Height="18" Margin="4,0"/>
 
                             <!-- Paragraph Spacing, Alignments & Indents -->
-                            <ComboBox x:Name="CmbWordLineSpacing" Width="55" Height="22" VerticalAlignment="Center" Margin="1"
-                                      Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
+                            <ComboBox x:Name="CmbWordLineSpacing" Width="60" Height="22" VerticalAlignment="Center" Margin="1"
+                                      Background="{DynamicResource CardBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10"
                                       ToolTip="Line Spacing Multiplier" SelectionChanged="CmbWordLineSpacing_SelectionChanged">
                                 <ComboBoxItem Content="1.0" IsSelected="True"/>
                                 <ComboBoxItem Content="1.15"/>
@@ -1497,15 +1614,15 @@
                                 <ComboBoxItem Content="3.0"/>
                             </ComboBox>
 
-                            <Button Content="⬅" Width="24" Height="22" ToolTip="Align Left (Ctrl+L)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignLeft_Click"/>
-                            <Button Content="⏺" Width="24" Height="22" ToolTip="Align Center (Ctrl+E)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignCenter_Click"/>
-                            <Button Content="➡" Width="24" Height="22" ToolTip="Align Right (Ctrl+R)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignRight_Click"/>
-                            <Button Content="↔" Width="24" Height="22" ToolTip="Justify (Ctrl+J)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignJustify_Click"/>
+                            <Button Content="⬅" Width="26" Height="22" Padding="2" ToolTip="Align Left (Ctrl+L)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignLeft_Click"/>
+                            <Button Content="⏺" Width="26" Height="22" Padding="2" ToolTip="Align Center (Ctrl+E)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignCenter_Click"/>
+                            <Button Content="➡" Width="26" Height="22" Padding="2" ToolTip="Align Right (Ctrl+R)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignRight_Click"/>
+                            <Button Content="↔" Width="26" Height="22" Padding="2" ToolTip="Justify (Ctrl+J)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordAlignJustify_Click"/>
                             
-                            <Button x:Name="BtnWordIndentDecrease" Content="⇤" ToolTip="Decrease Indent" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentDecrease_Click"/>
-                            <Button x:Name="BtnWordIndentIncrease" Content="⇥" ToolTip="Increase Indent" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentIncrease_Click"/>
-                            <Button Content="• List" Width="42" Height="22" ToolTip="Bulleted List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBullets_Click"/>
-                            <Button Content="1. List" Width="44" Height="22" ToolTip="Numbered List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNumbering_Click"/>
+                            <Button x:Name="BtnWordIndentDecrease" Content="⇤" ToolTip="Decrease Indent" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentDecrease_Click"/>
+                            <Button x:Name="BtnWordIndentIncrease" Content="⇥" ToolTip="Increase Indent" Width="26" Height="22" Padding="2" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordIndentIncrease_Click"/>
+                            <Button Content="• List" Width="46" Height="22" Padding="3,2" ToolTip="Bulleted List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordBullets_Click"/>
+                            <Button Content="1. List" Width="48" Height="22" Padding="3,2" ToolTip="Numbered List" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordNumbering_Click"/>
 
                             <Separator Width="1" Height="18" Margin="4,0"/>
 

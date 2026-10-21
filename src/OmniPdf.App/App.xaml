@@ -22,5 +22,46 @@
         <SolidColorBrush x:Key="AccentHoverBrush" Color="#0369A1"/>
         <SolidColorBrush x:Key="StatusBarBgBrush" Color="#0284C7"/>
         <SolidColorBrush x:Key="StatusBarFgBrush" Color="#FFFFFF"/>
+
+        <!-- High-Contrast Dynamic ComboBoxItem Style (Application Scope) -->
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border x:Name="ItemBorder" Background="{TemplateBinding Background}" 
+                                BorderBrush="Transparent" BorderThickness="0" 
+                                CornerRadius="4" Padding="{TemplateBinding Padding}" Margin="1,1" SnapsToDevicePixels="True">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left"
+                                              TextElement.Foreground="{DynamicResource SubmenuFgBrush}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource ItemHoverBgBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource AccentBrushDefault}"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter Property="TextElement.Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
