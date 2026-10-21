@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -125,6 +127,221 @@ namespace OmniPdf.App
 
         #region Device Library & Dashboard Engine
 
+        public enum DashboardViewMode
+        {
+            Grid,
+            Thumbnails,
+            Compact
+        }
+
+        private DashboardViewMode _currentDashboardView = DashboardViewMode.Grid;
+
+        private void SetDashboardViewMode(DashboardViewMode mode)
+        {
+            _currentDashboardView = mode;
+            var accentBtnStyle = TryFindResource("AccentBtn") as Style;
+            var modernBtnStyle = TryFindResource("ModernBtn") as Style;
+
+            if (BtnDashboardGrid != null && accentBtnStyle != null && modernBtnStyle != null)
+                BtnDashboardGrid.Style = (mode == DashboardViewMode.Grid) ? accentBtnStyle : modernBtnStyle;
+
+            if (BtnDashboardThumbnails != null && accentBtnStyle != null && modernBtnStyle != null)
+                BtnDashboardThumbnails.Style = (mode == DashboardViewMode.Thumbnails) ? accentBtnStyle : modernBtnStyle;
+
+            if (BtnDashboardCompact != null && accentBtnStyle != null && modernBtnStyle != null)
+                BtnDashboardCompact.Style = (mode == DashboardViewMode.Compact) ? accentBtnStyle : modernBtnStyle;
+
+            if (LibraryList == null) return;
+
+            switch (mode)
+            {
+                case DashboardViewMode.Grid:
+                    if (TryFindResource("DashboardGridTemplate") is DataTemplate gridTmpl)
+                        LibraryList.ItemTemplate = gridTmpl;
+                    if (TryFindResource("WrapPanelHost") is ItemsPanelTemplate wrapPanel)
+                        LibraryList.ItemsPanel = wrapPanel;
+                    break;
+
+                case DashboardViewMode.Thumbnails:
+                    if (TryFindResource("DashboardThumbnailTemplate") is DataTemplate thumbTmpl)
+                        LibraryList.ItemTemplate = thumbTmpl;
+                    if (TryFindResource("WrapPanelHost") is ItemsPanelTemplate wrapPanel2)
+                        LibraryList.ItemsPanel = wrapPanel2;
+                    break;
+
+                case DashboardViewMode.Compact:
+                    if (TryFindResource("DashboardCompactTemplate") is DataTemplate compactTmpl)
+                        LibraryList.ItemTemplate = compactTmpl;
+                    if (TryFindResource("StackPanelHost") is ItemsPanelTemplate stackPanel)
+                        LibraryList.ItemsPanel = stackPanel;
+                    break;
+            }
+        }
+
+        private void BtnDashboardGrid_Click(object sender, RoutedEventArgs e)
+        {
+            SetDashboardViewMode(DashboardViewMode.Grid);
+        }
+
+        private void BtnDashboardThumbnails_Click(object sender, RoutedEventArgs e)
+        {
+            SetDashboardViewMode(DashboardViewMode.Thumbnails);
+        }
+
+        private void BtnDashboardCompact_Click(object sender, RoutedEventArgs e)
+        {
+            SetDashboardViewMode(DashboardViewMode.Compact);
+        }
+
+        private void CmbFilterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyLibraryFiltersAndSort();
+        }
+
+        private void CmbFilterDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyLibraryFiltersAndSort();
+        }
+
+        private void CmbFilterSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyLibraryFiltersAndSort();
+        }
+
+        private void CmbSortOrder_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyLibraryFiltersAndSort();
+        }
+
+        private void BtnResetFilters_Click(object sender, RoutedEventArgs e)
+        {
+            if (TxtLibrarySearch != null) TxtLibrarySearch.Text = "";
+            if (CmbFilterType != null) CmbFilterType.SelectedIndex = 0;
+            if (CmbFilterDate != null) CmbFilterDate.SelectedIndex = 0;
+            if (CmbFilterSize != null) CmbFilterSize.SelectedIndex = 0;
+            if (CmbSortOrder != null) CmbSortOrder.SelectedIndex = 0;
+            ApplyLibraryFiltersAndSort();
+        }
+
+        private void ApplyLibraryFiltersAndSort()
+        {
+            if (_libraryItems == null || _filteredLibraryItems == null) return;
+
+            string query = TxtLibrarySearch?.Text.Trim() ?? "";
+            string selectedType = (CmbFilterType?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "All Formats";
+            string selectedDate = (CmbFilterDate?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "All Time";
+            string selectedSize = (CmbFilterSize?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "All Sizes";
+            string selectedSort = (CmbSortOrder?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Date Modified (Newest)";
+
+            IEnumerable<PdfLibraryItem> filtered = _libraryItems;
+
+            // 1. Text Search Filter
+            if (!string.IsNullOrEmpty(query))
+            {
+                filtered = filtered.Where(item =>
+                    (item.Title != null && item.Title.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+                    (item.FileName != null && item.FileName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+                    (item.FilePath != null && item.FilePath.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+                    (item.DirectoryPath != null && item.DirectoryPath.Contains(query, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            // 2. Type / Format Filter
+            if (selectedType.StartsWith("PDF", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => string.Equals(x.Extension, ".pdf", StringComparison.OrdinalIgnoreCase));
+            }
+            else if (selectedType.StartsWith("Word", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => string.Equals(x.Extension, ".docx", StringComparison.OrdinalIgnoreCase) ||
+                                               string.Equals(x.Extension, ".doc", StringComparison.OrdinalIgnoreCase));
+            }
+            else if (selectedType.StartsWith("Text", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => string.Equals(x.Extension, ".txt", StringComparison.OrdinalIgnoreCase) ||
+                                               string.Equals(x.Extension, ".md", StringComparison.OrdinalIgnoreCase) ||
+                                               string.Equals(x.Extension, ".rtf", StringComparison.OrdinalIgnoreCase) ||
+                                               string.Equals(x.Extension, ".html", StringComparison.OrdinalIgnoreCase));
+            }
+            else if (selectedType.StartsWith("Photoshop", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => string.Equals(x.Extension, ".psd", StringComparison.OrdinalIgnoreCase));
+            }
+
+            // 3. Date Modified Filter
+            DateTime now = DateTime.Now;
+            if (selectedDate.Equals("Today", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => x.LastModified.Date == DateTime.Today);
+            }
+            else if (selectedDate.Equals("This Week", StringComparison.OrdinalIgnoreCase))
+            {
+                DateTime weekAgo = now.AddDays(-7);
+                filtered = filtered.Where(x => x.LastModified >= weekAgo);
+            }
+            else if (selectedDate.Equals("This Month", StringComparison.OrdinalIgnoreCase))
+            {
+                DateTime monthAgo = now.AddDays(-30);
+                filtered = filtered.Where(x => x.LastModified >= monthAgo);
+            }
+            else if (selectedDate.Equals("Past Year", StringComparison.OrdinalIgnoreCase))
+            {
+                DateTime yearAgo = now.AddDays(-365);
+                filtered = filtered.Where(x => x.LastModified >= yearAgo);
+            }
+
+            // 4. File Size Filter
+            if (selectedSize.StartsWith("< 1 MB", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => x.FileSizeBytes < 1024 * 1024);
+            }
+            else if (selectedSize.StartsWith("1 - 10 MB", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => x.FileSizeBytes >= 1024 * 1024 && x.FileSizeBytes <= 10 * 1024 * 1024);
+            }
+            else if (selectedSize.StartsWith("> 10 MB", StringComparison.OrdinalIgnoreCase))
+            {
+                filtered = filtered.Where(x => x.FileSizeBytes > 10 * 1024 * 1024);
+            }
+
+            // 5. Multi-field Sorting Engine
+            if (selectedSort.Contains("Oldest"))
+            {
+                filtered = filtered.OrderBy(x => x.LastModified);
+            }
+            else if (selectedSort.Contains("A → Z"))
+            {
+                filtered = filtered.OrderBy(x => x.Title, StringComparer.OrdinalIgnoreCase);
+            }
+            else if (selectedSort.Contains("Z → A"))
+            {
+                filtered = filtered.OrderByDescending(x => x.Title, StringComparer.OrdinalIgnoreCase);
+            }
+            else if (selectedSort.Contains("Largest"))
+            {
+                filtered = filtered.OrderByDescending(x => x.FileSizeBytes);
+            }
+            else if (selectedSort.Contains("Smallest"))
+            {
+                filtered = filtered.OrderBy(x => x.FileSizeBytes);
+            }
+            else // Date Modified (Newest) default
+            {
+                filtered = filtered.OrderByDescending(x => x.LastModified);
+            }
+
+            var list = filtered.ToList();
+            _filteredLibraryItems.Clear();
+            foreach (var item in list)
+            {
+                _filteredLibraryItems.Add(item);
+            }
+
+            if (TxtLibraryFooterCount != null)
+            {
+                TxtLibraryFooterCount.Text = $"Showing {_filteredLibraryItems.Count} of {_libraryItems.Count} indexed documents";
+            }
+        }
+
         private async Task StartDeviceLibraryScanAsync()
         {
             _scanCts?.Cancel();
@@ -149,9 +366,10 @@ namespace OmniPdf.App
 
             foreach (var item in _libraryItems)
             {
-                _filteredLibraryItems.Add(item);
                 totalBytes += item.FileSizeBytes;
             }
+
+            ApplyLibraryFiltersAndSort();
 
             if (TxtKpiTotalSize != null)
             {
@@ -162,30 +380,7 @@ namespace OmniPdf.App
 
         private void TxtLibrarySearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (TxtLibrarySearch == null) return;
-            string query = TxtLibrarySearch.Text.Trim();
-            _filteredLibraryItems.Clear();
-
-            if (string.IsNullOrEmpty(query))
-            {
-                foreach (var item in _libraryItems) _filteredLibraryItems.Add(item);
-            }
-            else
-            {
-                foreach (var item in _libraryItems)
-                {
-                    if (item.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                        item.FilePath.Contains(query, StringComparison.OrdinalIgnoreCase))
-                    {
-                        _filteredLibraryItems.Add(item);
-                    }
-                }
-            }
-
-            if (TxtLibraryFooterCount != null)
-            {
-                TxtLibraryFooterCount.Text = $"Showing {_filteredLibraryItems.Count} of {_libraryItems.Count} documents";
-            }
+            ApplyLibraryFiltersAndSort();
         }
 
         private async void BtnRescanLibrary_Click(object sender, RoutedEventArgs e)
@@ -235,6 +430,107 @@ namespace OmniPdf.App
                 await LoadPdfPathAsync(path);
                 ShowReaderView();
                 BtnTextConverter_Click(sender, e);
+            }
+        }
+
+        private async void LibraryList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                string ext = Path.GetExtension(item.FilePath).ToLowerInvariant();
+                if (ext == ".docx" || ext == ".rtf" || ext == ".txt" || ext == ".md" || ext == ".html")
+                {
+                    OpenWordDocumentPath(item.FilePath);
+                }
+                else
+                {
+                    await LoadPdfPathAsync(item.FilePath);
+                    ShowReaderView();
+                }
+            }
+        }
+
+        private async void LibMenuOpenReader_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                await LoadPdfPathAsync(item.FilePath);
+                ShowReaderView();
+            }
+        }
+
+        private void LibMenuOpenWord_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                OpenWordDocumentPath(item.FilePath);
+            }
+        }
+
+        private async void LibMenuOrganize_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                await LoadPdfPathAsync(item.FilePath);
+                ShowReaderView();
+                BtnPageOrganizer_Click(sender, e);
+            }
+        }
+
+        private async void LibMenuConvert_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                await LoadPdfPathAsync(item.FilePath);
+                ShowReaderView();
+                BtnTextConverter_Click(sender, e);
+            }
+        }
+
+        private void LibMenuShowInExplorer_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                try
+                {
+                    Process.Start("explorer.exe", $"/select,\"{item.FilePath}\"");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Could not open file explorer: {ex.Message}", "PSD PDF Studio", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void LibMenuCopyPath_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && !string.IsNullOrEmpty(item.FilePath))
+            {
+                try
+                {
+                    Clipboard.SetText(item.FilePath);
+                    if (TxtLibraryFooterCount != null)
+                    {
+                        TxtLibraryFooterCount.Text = $"Copied path to clipboard: {item.FilePath}";
+                    }
+                }
+                catch { }
+            }
+        }
+
+        private void LibMenuProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item)
+            {
+                string info = $"File Title: {item.Title}\n" +
+                              $"File Name: {item.FileName}\n" +
+                              $"Location: {item.FilePath}\n" +
+                              $"Directory: {item.DirectoryPath}\n" +
+                              $"Format: {item.FormatBadge} ({item.Extension})\n" +
+                              $"File Size: {item.FormattedSize} ({item.FileSizeBytes:N0} bytes)\n" +
+                              $"Last Modified: {item.FormattedDate}\n" +
+                              $"Estimated Pages: {item.PageCountDisplay}";
+                MessageBox.Show(info, $"Document Properties - {item.Title}", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -309,16 +605,16 @@ namespace OmniPdf.App
             if (ColNavRail.Width.Value > 0)
             {
                 ColNavRail.Width = new GridLength(0);
-                if (BtnToggleNavRail != null) BtnToggleNavRail.Content = "▶ Rail";
+                if (BtnToggleNavRail != null) BtnToggleNavRail.Content = "◫ Show Sidebar (F4)";
                 if (BtnFloatingShowRail != null) BtnFloatingShowRail.Visibility = Visibility.Visible;
-                if (BtnHeaderToggleNav != null) BtnHeaderToggleNav.ToolTip = "Expand Navigation Rail (F4)";
+                if (BtnHeaderToggleNav != null) BtnHeaderToggleNav.ToolTip = "Expand Navigation Sidebar (F4)";
             }
             else
             {
                 ColNavRail.Width = new GridLength(190);
-                if (BtnToggleNavRail != null) BtnToggleNavRail.Content = "◀ Rail";
+                if (BtnToggleNavRail != null) BtnToggleNavRail.Content = "◫ Hide Sidebar (F4)";
                 if (BtnFloatingShowRail != null) BtnFloatingShowRail.Visibility = Visibility.Collapsed;
-                if (BtnHeaderToggleNav != null) BtnHeaderToggleNav.ToolTip = "Collapse Navigation Rail (F4)";
+                if (BtnHeaderToggleNav != null) BtnHeaderToggleNav.ToolTip = "Collapse Navigation Sidebar (F4)";
             }
         }
 
@@ -2859,7 +3155,7 @@ namespace OmniPdf.App
                     break;
             }
 
-            // Update Dynamic Theme Resources
+            // Update Dynamic Theme Resources (Window and Global Application Scope)
             Resources["WindowBgBrush"] = winBg;
             Resources["WindowFgBrush"] = winFg;
             Resources["HeaderBgBrush"] = headerBg;
@@ -2878,6 +3174,28 @@ namespace OmniPdf.App
             Resources["AccentHoverBrush"] = accentHov;
             Resources["StatusBarBgBrush"] = statusBg;
             Resources["StatusBarFgBrush"] = statusFg;
+
+            if (Application.Current != null)
+            {
+                Application.Current.Resources["WindowBgBrush"] = winBg;
+                Application.Current.Resources["WindowFgBrush"] = winFg;
+                Application.Current.Resources["HeaderBgBrush"] = headerBg;
+                Application.Current.Resources["HeaderFgBrush"] = headerFg;
+                Application.Current.Resources["MenuBgBrush"] = menuBg;
+                Application.Current.Resources["MenuFgBrush"] = menuFg;
+                Application.Current.Resources["SubmenuBgBrush"] = submenuBg;
+                Application.Current.Resources["SubmenuFgBrush"] = submenuFg;
+                Application.Current.Resources["ItemHoverBgBrush"] = hoverBg;
+                Application.Current.Resources["NavRailBgBrush"] = navBg;
+                Application.Current.Resources["CanvasBgBrush"] = canvasBg;
+                Application.Current.Resources["CardBgBrush"] = cardBg;
+                Application.Current.Resources["BorderBrushDefault"] = borderDef;
+                Application.Current.Resources["BorderBrushLight"] = borderLt;
+                Application.Current.Resources["AccentBrushDefault"] = accentDef;
+                Application.Current.Resources["AccentHoverBrush"] = accentHov;
+                Application.Current.Resources["StatusBarBgBrush"] = statusBg;
+                Application.Current.Resources["StatusBarFgBrush"] = statusFg;
+            }
 
             Background = winBg;
             Foreground = winFg;

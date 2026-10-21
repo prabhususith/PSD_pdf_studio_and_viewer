@@ -175,18 +175,25 @@
         <!-- MenuItem SubmenuItem Template (Dropdown and ContextMenu items) -->
         <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" TargetType="{x:Type MenuItem}">
             <Border x:Name="templateRoot" Background="Transparent" BorderThickness="0" CornerRadius="4" Padding="8,5" Margin="2,1" SnapsToDevicePixels="True">
-                <Grid>
+                <Grid TextElement.Foreground="{DynamicResource SubmenuFgBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemGestureColumnGroup"/>
                     </Grid.ColumnDefinitions>
-                    <ContentPresenter Grid.Column="0" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="6,0,16,0"/>
-                    <TextBlock Grid.Column="1" Text="{TemplateBinding InputGestureText}" VerticalAlignment="Center" Margin="16,0,6,0" FontSize="10" Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.65"/>
+                    <ContentPresenter x:Name="menuItemContent" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="True" 
+                                      VerticalAlignment="Center" Margin="6,0,16,0" 
+                                      TextElement.Foreground="{DynamicResource SubmenuFgBrush}"/>
+                    <TextBlock x:Name="menuItemGesture" Grid.Column="1" Text="{TemplateBinding InputGestureText}" 
+                               VerticalAlignment="Center" Margin="16,0,6,0" FontSize="10" 
+                               Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.7"/>
                 </Grid>
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsHighlighted" Value="True">
                     <Setter TargetName="templateRoot" Property="Background" Value="{DynamicResource ItemHoverBgBrush}"/>
+                    <Setter TargetName="menuItemContent" Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                    <Setter TargetName="menuItemGesture" Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.4"/>
@@ -197,15 +204,20 @@
         <!-- MenuItem SubmenuHeader Template (Items that open nested submenus like Themes & Skins) -->
         <ControlTemplate x:Key="{x:Static MenuItem.SubmenuHeaderTemplateKey}" TargetType="{x:Type MenuItem}">
             <Border x:Name="templateRoot" Background="Transparent" BorderThickness="0" CornerRadius="4" Padding="8,5" Margin="2,1" SnapsToDevicePixels="True">
-                <Grid>
+                <Grid TextElement.Foreground="{DynamicResource SubmenuFgBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemGestureColumnGroup"/>
                         <ColumnDefinition Width="16"/>
                     </Grid.ColumnDefinitions>
-                    <ContentPresenter Grid.Column="0" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="6,0,12,0"/>
-                    <TextBlock Grid.Column="1" Text="{TemplateBinding InputGestureText}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="10" Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.65"/>
-                    <TextBlock Grid.Column="2" Text="▸" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.75"/>
+                    <ContentPresenter x:Name="headerContent" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="True" 
+                                      VerticalAlignment="Center" Margin="6,0,12,0" 
+                                      TextElement.Foreground="{DynamicResource SubmenuFgBrush}"/>
+                    <TextBlock x:Name="headerGesture" Grid.Column="1" Text="{TemplateBinding InputGestureText}" 
+                               VerticalAlignment="Center" Margin="12,0,4,0" FontSize="10" 
+                               Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.7"/>
+                    <TextBlock Grid.Column="2" Text="▸" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                               Foreground="{DynamicResource SubmenuFgBrush}" Opacity="0.85"/>
 
                     <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False"
                            IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
@@ -226,6 +238,9 @@
             <ControlTemplate.Triggers>
                 <Trigger Property="IsHighlighted" Value="True">
                     <Setter TargetName="templateRoot" Property="Background" Value="{DynamicResource ItemHoverBgBrush}"/>
+                    <Setter TargetName="headerContent" Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                    <Setter TargetName="headerGesture" Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
                 </Trigger>
                 <Trigger Property="IsSubmenuOpen" Value="True">
                     <Setter TargetName="templateRoot" Property="Background" Value="{DynamicResource ItemHoverBgBrush}"/>
@@ -240,6 +255,7 @@
         <Style TargetType="{x:Type MenuItem}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
             <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial"/>
             <Setter Property="FontSize" Value="11.5"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -265,8 +281,20 @@
 
         <!-- Native ContextMenu High-Contrast Dynamic Styles -->
         <Style TargetType="{x:Type ContextMenu}">
+            <Style.Resources>
+                <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+                    <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial"/>
+                    <Setter Property="FontSize" Value="11.5"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template" Value="{StaticResource {x:Static MenuItem.SubmenuItemTemplateKey}}"/>
+                </Style>
+            </Style.Resources>
             <Setter Property="Background" Value="{DynamicResource SubmenuBgBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource SubmenuFgBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushLight}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="4,6"/>
@@ -304,6 +332,163 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Dashboard ItemsPanel Templates -->
+        <ItemsPanelTemplate x:Key="WrapPanelHost">
+            <WrapPanel Orientation="Horizontal" IsItemsHost="True"/>
+        </ItemsPanelTemplate>
+
+        <ItemsPanelTemplate x:Key="StackPanelHost">
+            <VirtualizingStackPanel Orientation="Vertical" IsItemsHost="True"/>
+        </ItemsPanelTemplate>
+
+        <!-- Dashboard View Mode 1: Responsive Card Grid -->
+        <DataTemplate x:Key="DashboardGridTemplate">
+            <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" 
+                    BorderThickness="1" CornerRadius="6" Padding="12,10" Width="320" Margin="0,0,10,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Top Row: Badge + Title + Open Button -->
+                    <DockPanel Grid.Row="0" LastChildFill="True">
+                        <Border Width="38" Height="36" Background="{DynamicResource AccentBrushDefault}" CornerRadius="5" Margin="0,0,10,0" DockPanel.Dock="Left">
+                            <TextBlock Text="{Binding FormatBadge}" FontWeight="Bold" FontSize="10" Foreground="White" 
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Button DockPanel.Dock="Right" Content="Open" Style="{StaticResource AccentBtn}" Padding="8,3" VerticalAlignment="Top"
+                                Tag="{Binding FilePath}" Click="BtnOpenLibraryItem_Click"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Title}" FontSize="12.5" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}"
+                                       TextTrimming="CharacterEllipsis" MaxWidth="190"/>
+                            <TextBlock Text="{Binding PageCountDisplay}" FontSize="9.5" Foreground="#A1A1AA" Margin="0,1,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Middle Row: File Path -->
+                    <TextBlock Grid.Row="1" Text="{Binding FilePath}" FontSize="9.5" Foreground="#71717A" 
+                               Margin="0,6,0,6" MaxWidth="290" TextTrimming="CharacterEllipsis"/>
+
+                    <!-- Bottom Row: Metadata & Quick Actions -->
+                    <DockPanel Grid.Row="2" LastChildFill="True">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" DockPanel.Dock="Left">
+                            <Border Background="#27272A" CornerRadius="3" Padding="5,1" Margin="0,0,4,0">
+                                <TextBlock Text="{Binding FormattedSize}" FontSize="8.5" FontWeight="SemiBold" Foreground="#38BDF8"/>
+                            </Border>
+                            <Border Background="#27272A" CornerRadius="3" Padding="5,1">
+                                <TextBlock Text="{Binding FormattedDate}" FontSize="8.5" Foreground="#A1A1AA"/>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                            <Button Content="Word" Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9.5" Margin="0,0,3,0"
+                                    Tag="{Binding FilePath}" Click="BtnOpenLibraryInWord_Click"/>
+                            <Button Content="Convert" Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9.5"
+                                    Tag="{Binding FilePath}" Click="BtnConvertLibraryItem_Click"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <!-- Dashboard View Mode 2: Large Visual Cover Tile -->
+        <DataTemplate x:Key="DashboardThumbnailTemplate">
+            <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" 
+                    BorderThickness="1" CornerRadius="6" Width="170" Height="235" Margin="0,0,10,10" Padding="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Cover Tile Container -->
+                    <Border Grid.Row="0" Background="#18181B" CornerRadius="4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1">
+                        <Grid>
+                            <TextBlock Text="📄" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#71717A" Opacity="0.45"/>
+                            <Border Background="{DynamicResource AccentBrushDefault}" CornerRadius="3" Padding="5,1" 
+                                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6">
+                                <TextBlock Text="{Binding FormatBadge}" FontSize="8" FontWeight="Bold" Foreground="White"/>
+                            </Border>
+                            <Border Background="#18181B" Opacity="0.85" CornerRadius="3" Padding="4,1" 
+                                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6">
+                                <TextBlock Text="{Binding PageCountDisplay}" FontSize="8" FontWeight="SemiBold" Foreground="White"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Title -->
+                    <TextBlock Grid.Row="1" Text="{Binding Title}" FontSize="11" FontWeight="Bold" 
+                               Foreground="{DynamicResource HeaderFgBrush}" Margin="0,6,0,2"
+                               TextTrimming="CharacterEllipsis" MaxHeight="30" TextWrapping="Wrap"/>
+
+                    <!-- Metadata -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock Text="{Binding FormattedSize}" FontSize="8.5" Foreground="#38BDF8" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                        <TextBlock Text="{Binding FormattedDate}" FontSize="8.5" Foreground="#71717A"/>
+                    </StackPanel>
+
+                    <!-- Quick Action -->
+                    <Button Grid.Row="3" Content="Open Document" Style="{StaticResource AccentBtn}" 
+                            HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Padding="4,3" FontSize="10"
+                            Tag="{Binding FilePath}" Click="BtnOpenLibraryItem_Click"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <!-- Dashboard View Mode 3: High-Density Table Details Row -->
+        <DataTemplate x:Key="DashboardCompactTemplate">
+            <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" 
+                    BorderThickness="0,0,0,1" Padding="10,6" Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="42"/>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="170"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Col 0: Badge -->
+                    <Border Grid.Column="0" Background="{DynamicResource AccentBrushDefault}" CornerRadius="3" 
+                            Width="34" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding FormatBadge}" FontSize="8" FontWeight="Bold" Foreground="White" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Col 1: Title -->
+                    <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="11" FontWeight="SemiBold" 
+                               Foreground="{DynamicResource HeaderFgBrush}" VerticalAlignment="Center" 
+                               TextTrimming="CharacterEllipsis" Margin="4,0,8,0"/>
+
+                    <!-- Col 2: Size -->
+                    <TextBlock Grid.Column="2" Text="{Binding FormattedSize}" FontSize="9.5" Foreground="#38BDF8" 
+                               VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
+
+                    <!-- Col 3: Date -->
+                    <TextBlock Grid.Column="3" Text="{Binding FormattedDate}" FontSize="9.5" Foreground="#A1A1AA" 
+                               VerticalAlignment="Center"/>
+
+                    <!-- Col 4: Directory Path -->
+                    <TextBlock Grid.Column="4" Text="{Binding DirectoryPath}" FontSize="9" Foreground="#71717A" 
+                               VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="4,0,8,0"/>
+
+                    <!-- Col 5: Actions -->
+                    <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="Open" Style="{StaticResource AccentBtn}" Padding="8,2" FontSize="9" Margin="0,0,3,0"
+                                Tag="{Binding FilePath}" Click="BtnOpenLibraryItem_Click"/>
+                        <Button Content="Word" Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9" Margin="0,0,3,0"
+                                Tag="{Binding FilePath}" Click="BtnOpenLibraryInWord_Click"/>
+                        <Button Content="Convert" Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9"
+                                Tag="{Binding FilePath}" Click="BtnConvertLibraryItem_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -360,9 +545,14 @@
 
                 <!-- Left: Application Branding Logo & Title -->
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="2,0,10,0">
-                    <Button x:Name="BtnHeaderToggleNav" Content="☰" Width="26" Height="22" Margin="0,0,6,0"
-                            ToolTip="Toggle Workspaces &amp; Navigation Rail (F4)" Style="{StaticResource ModernBtn}"
-                            FontSize="13" FontWeight="Bold" Padding="0" Click="BtnToggleNavRail_Click"/>
+                    <Button x:Name="BtnHeaderToggleNav" ToolTip="Toggle Navigation Sidebar (F4)" 
+                            Style="{StaticResource ModernBtn}" Margin="0,0,8,0" Padding="7,2" Height="24"
+                            Click="BtnToggleNavRail_Click">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="☰" FontSize="11" FontWeight="Bold" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Sidebar" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                     <Border Width="32" Height="22" CornerRadius="4" Background="{DynamicResource AccentBrushDefault}" Margin="0,0,6,0">
                         <TextBlock Text="PSD" FontWeight="Bold" FontSize="10.5" Foreground="White" 
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -486,9 +676,9 @@
                     <!-- Brand / Workspace Switcher Header -->
                     <StackPanel DockPanel.Dock="Top" Margin="2,0,2,10">
                         <DockPanel>
-                            <TextBlock Text="WORKSPACES" FontSize="9" FontWeight="Bold" Foreground="#71717A" VerticalAlignment="Center"/>
-                            <Button Content="◀" Width="20" Height="20" DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                    ToolTip="Collapse Rail (F4)" Style="{StaticResource ModernBtn}" Padding="0" 
+                            <TextBlock Text="WORKSPACES" FontSize="9.5" FontWeight="Bold" Foreground="#71717A" VerticalAlignment="Center"/>
+                            <Button Content="◀ Collapse" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                    ToolTip="Collapse Navigation Sidebar (F4)" Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9.5"
                                     Click="BtnToggleNavRail_Click"/>
                         </DockPanel>
                         <Border Height="1" Background="{DynamicResource BorderBrushDefault}" Margin="0,8,0,0"/>
@@ -545,13 +735,16 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Floating Show Rail Tab (Appears pinned to edge when rail is collapsed) -->
-                <Button x:Name="BtnFloatingShowRail" Grid.Column="0" Content="▶" Width="18" Height="48"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0"
-                        Panel.ZIndex="1000" ToolTip="Expand Workspaces &amp; Navigation Rail (F4)"
-                        Style="{StaticResource ModernBtn}" Visibility="Collapsed"
-                        Click="BtnToggleNavRail_Click" Background="{DynamicResource AccentBrushDefault}" Foreground="White"
-                        FontWeight="Bold" FontSize="11" Opacity="0.92"
-                        BorderThickness="0,1,1,1" BorderBrush="{DynamicResource BorderBrushLight}"/>
+                <Button x:Name="BtnFloatingShowRail" Grid.Column="0" Width="auto" Height="28" Padding="8,2"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,8,0,0"
+                        Panel.ZIndex="1000" ToolTip="Expand Navigation Sidebar (F4)"
+                        Style="{StaticResource AccentBtn}" Visibility="Collapsed"
+                        Click="BtnToggleNavRail_Click" FontWeight="Bold" FontSize="11">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="▶" FontSize="10" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Sidebar (F4)" FontSize="10.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
                 <Grid Grid.Column="0">
                 
@@ -560,42 +753,34 @@
                 <!-- ========================================================== -->
                 <Grid x:Name="ViewLibrary" Visibility="Visible" Background="{DynamicResource WindowBgBrush}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/> <!-- Search & Quick Actions -->
-                        <RowDefinition Height="Auto"/> <!-- KPI Metric Cards -->
-                        <RowDefinition Height="*"/>    <!-- Scrollable Document Cards List -->
-                        <RowDefinition Height="24"/>   <!-- Bottom Library Status Bar -->
+                        <RowDefinition Height="Auto"/> <!-- 0: Header & Quick Actions -->
+                        <RowDefinition Height="Auto"/> <!-- 1: KPI Metric Cards -->
+                        <RowDefinition Height="Auto"/> <!-- 2: Filter, Sort & View Mode Ribbon -->
+                        <RowDefinition Height="*"/>    <!-- 3: Scrollable Document View Canvas -->
+                        <RowDefinition Height="26"/>   <!-- 4: Bottom Library Status Bar -->
                     </Grid.RowDefinitions>
 
-                    <!-- Library Header & Search Bar -->
+                    <!-- Library Header -->
                     <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" 
-                            BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="14,10">
+                            BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="14,8">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                                <TextBlock Text="Device Library &amp; Document Dashboard" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}"/>
+                                <TextBlock Text="Device Library &amp; Document Dashboard" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}"/>
                                 <TextBlock x:Name="TxtScanStatus" Text="Scanning device for PDFs, Word documents, RTF and Markdown..." 
-                                           FontSize="10.5" Foreground="#A1A1AA" Margin="0,1,0,0"/>
+                                           FontSize="10" Foreground="#A1A1AA" Margin="0,1,0,0"/>
                             </StackPanel>
 
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <!-- Search Input -->
-                                <Border Background="#1F1F23" CornerRadius="4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" Padding="5,2" Margin="0,0,6,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="🔍" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                        <TextBox x:Name="TxtLibrarySearch" Width="140" Background="Transparent" Foreground="White" 
-                                                 BorderThickness="0" FontSize="11" VerticalAlignment="Center"
-                                                 TextChanged="TxtLibrarySearch_TextChanged"/>
-                                    </StackPanel>
-                                </Border>
-
-                                <Button Content="🔄 Rescan" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnRescanLibrary_Click"/>
+                                <Button Content="🔄 Rescan All" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnRescanLibrary_Click"/>
                                 <Button Content="📝 New Word" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewWordTab_Click"/>
-                                <Button Content="📂 Open Doc" Style="{StaticResource AccentBtn}" Click="BtnOpenFile_Click"/>
+                                <Button Content="➕ New PDF" Style="{StaticResource ModernBtn}" Margin="0,0,4,0" Click="BtnNewPdfTab_Click"/>
+                                <Button Content="📂 Open Doc..." Style="{StaticResource AccentBtn}" Click="BtnOpenFile_Click"/>
                             </StackPanel>
                         </DockPanel>
                     </Border>
 
                     <!-- KPI Metric Cards Grid -->
-                    <Border Grid.Row="1" Padding="14,8,14,4">
+                    <Border Grid.Row="1" Padding="14,6,14,2">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -604,101 +789,162 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,4,0">
+                            <Border Grid.Column="0" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="8,6" Margin="0,0,4,0">
                                 <StackPanel>
-                                    <TextBlock Text="DOCUMENTS INDEXED" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock x:Name="TxtKpiTotalPdfs" Text="0 Documents" FontSize="16" FontWeight="Bold" Foreground="#38BDF8" Margin="0,2,0,0"/>
-                                    <TextBlock Text="PDF, Word &amp; Text files discovered" FontSize="9" Foreground="#71717A"/>
+                                    <TextBlock Text="DOCUMENTS INDEXED" FontSize="8.5" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock x:Name="TxtKpiTotalPdfs" Text="0 Documents" FontSize="14" FontWeight="Bold" Foreground="#38BDF8" Margin="0,1,0,0"/>
+                                    <TextBlock Text="PDF, Word, Text &amp; PSD files" FontSize="8.5" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
 
-                            <Border Grid.Column="1" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="2,0,2,0">
+                            <Border Grid.Column="1" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="8,6" Margin="2,0,2,0">
                                 <StackPanel>
-                                    <TextBlock Text="INDEXED STORAGE" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock x:Name="TxtKpiTotalSize" Text="0.0 MB" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}" Margin="0,2,0,0"/>
-                                    <TextBlock Text="Local device footprint" FontSize="9" Foreground="#71717A"/>
+                                    <TextBlock Text="INDEXED STORAGE" FontSize="8.5" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock x:Name="TxtKpiTotalSize" Text="0.0 MB" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}" Margin="0,1,0,0"/>
+                                    <TextBlock Text="Local device footprint" FontSize="8.5" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
 
-                            <Border Grid.Column="2" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="2,0,2,0">
+                            <Border Grid.Column="2" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="8,6" Margin="2,0,2,0">
                                 <StackPanel>
-                                    <TextBlock Text="WORD SUITE COMPAT" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock Text="Full DOCX / RTF / PDF" FontSize="16" FontWeight="Bold" Foreground="#4ADE80" Margin="0,2,0,0"/>
-                                    <TextBlock Text="OpenXML &amp; Vector native pipeline" FontSize="9" Foreground="#71717A"/>
+                                    <TextBlock Text="WORD SUITE PIPELINE" FontSize="8.5" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock Text="Full DOCX / RTF / PDF" FontSize="14" FontWeight="Bold" Foreground="#4ADE80" Margin="0,1,0,0"/>
+                                    <TextBlock Text="OpenXML &amp; Vector native engine" FontSize="8.5" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
 
-                            <Border Grid.Column="3" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="4,0,0,0">
+                            <Border Grid.Column="3" Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="8,6" Margin="4,0,0,0">
                                 <StackPanel>
-                                    <TextBlock Text="RAM CEILING" FontSize="9" FontWeight="Bold" Foreground="#71717A"/>
-                                    <TextBlock Text="64 MB Strict LRU" FontSize="16" FontWeight="Bold" Foreground="#A78BFA" Margin="0,2,0,0"/>
-                                    <TextBlock Text="Sub-128MB memory ceiling" FontSize="9" Foreground="#71717A"/>
+                                    <TextBlock Text="DIRECTX VECTOR CACHE" FontSize="8.5" FontWeight="Bold" Foreground="#71717A"/>
+                                    <TextBlock Text="256 MB LRU Cap" FontSize="14" FontWeight="Bold" Foreground="#A78BFA" Margin="0,1,0,0"/>
+                                    <TextBlock Text="Multi-threaded GPU pipeline" FontSize="8.5" Foreground="#71717A"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
                     </Border>
 
-                    <!-- Scrollable Document Cards List -->
-                    <ScrollViewer Grid.Row="2" Padding="14,4,14,8" VerticalScrollBarVisibility="Auto">
+                    <!-- Filter, Sort & Multiple View Modes Ribbon -->
+                    <Border Grid.Row="2" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,1,0,1" Padding="14,5" Margin="0,4,0,4">
+                        <DockPanel LastChildFill="True">
+                            <!-- Right: Multiple View Mode Switcher -->
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="View Mode:" FontSize="10" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <Button x:Name="BtnDashboardGrid" Content="⊞ Grid" ToolTip="Multi-column Responsive Card Grid" 
+                                        Style="{StaticResource AccentBtn}" Padding="8,3" Margin="0,0,2,0" FontSize="10.5" Click="BtnDashboardGrid_Click"/>
+                                <Button x:Name="BtnDashboardThumbnails" Content="🖼️ Cover Tile" ToolTip="Visual Cover Gallery View" 
+                                        Style="{StaticResource ModernBtn}" Padding="8,3" Margin="0,0,2,0" FontSize="10.5" Click="BtnDashboardThumbnails_Click"/>
+                                <Button x:Name="BtnDashboardCompact" Content="☰ Details List" ToolTip="High-Density Table View" 
+                                        Style="{StaticResource ModernBtn}" Padding="8,3" FontSize="10.5" Click="BtnDashboardCompact_Click"/>
+                            </StackPanel>
+
+                            <!-- Left: Filter & Sort Controls -->
+                            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- Search Input Box -->
+                                <Border Background="#1F1F23" CornerRadius="4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" Padding="6,2" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="🔍" Foreground="#71717A" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10"/>
+                                        <TextBox x:Name="TxtLibrarySearch" Width="130" Background="Transparent" Foreground="White" 
+                                                 BorderThickness="0" FontSize="10.5" VerticalAlignment="Center"
+                                                 TextChanged="TxtLibrarySearch_TextChanged"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- File Format Filter -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock Text="Format:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <ComboBox x:Name="CmbFilterType" Width="105" Height="22" SelectionChanged="CmbFilterType_SelectionChanged"
+                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                        <ComboBoxItem Content="All Formats" IsSelected="True"/>
+                                        <ComboBoxItem Content="PDF Documents"/>
+                                        <ComboBoxItem Content="Word Documents"/>
+                                        <ComboBoxItem Content="Text &amp; Markdown"/>
+                                        <ComboBoxItem Content="Photoshop PSD"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Date Filter -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock Text="Date:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <ComboBox x:Name="CmbFilterDate" Width="90" Height="22" SelectionChanged="CmbFilterDate_SelectionChanged"
+                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                        <ComboBoxItem Content="All Time" IsSelected="True"/>
+                                        <ComboBoxItem Content="Today"/>
+                                        <ComboBoxItem Content="This Week"/>
+                                        <ComboBoxItem Content="This Month"/>
+                                        <ComboBoxItem Content="Past Year"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Size Filter -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock Text="Size:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <ComboBox x:Name="CmbFilterSize" Width="95" Height="22" SelectionChanged="CmbFilterSize_SelectionChanged"
+                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                        <ComboBoxItem Content="All Sizes" IsSelected="True"/>
+                                        <ComboBoxItem Content="&lt; 1 MB (Small)"/>
+                                        <ComboBoxItem Content="1 - 10 MB (Med)"/>
+                                        <ComboBoxItem Content="&gt; 10 MB (Large)"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Sort Order -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock Text="Sort:" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <ComboBox x:Name="CmbSortOrder" Width="135" Height="22" SelectionChanged="CmbSortOrder_SelectionChanged"
+                                              Background="#27272A" Foreground="#FFFFFF" BorderBrush="{DynamicResource BorderBrushLight}" FontSize="10">
+                                        <ComboBoxItem Content="Date Modified (Newest)" IsSelected="True"/>
+                                        <ComboBoxItem Content="Date Modified (Oldest)"/>
+                                        <ComboBoxItem Content="Name (A → Z)"/>
+                                        <ComboBoxItem Content="Name (Z → A)"/>
+                                        <ComboBoxItem Content="Size (Largest First)"/>
+                                        <ComboBoxItem Content="Size (Smallest First)"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Reset Filters Button -->
+                                <Button x:Name="BtnResetFilters" Content="✕ Clear" ToolTip="Reset All Filters and Search" 
+                                        Style="{StaticResource ModernBtn}" Padding="6,2" FontSize="9.5" Click="BtnResetFilters_Click"/>
+                            </WrapPanel>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- Scrollable Document Cards List with View Mode Switching & Context Menu -->
+                    <ScrollViewer Grid.Row="3" Padding="14,4,14,8" VerticalScrollBarVisibility="Auto">
                         <ListBox x:Name="LibraryList" Background="Transparent" BorderThickness="0" 
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ItemTemplate="{StaticResource DashboardGridTemplate}"
+                                 ItemsPanel="{StaticResource WrapPanelHost}"
+                                 MouseDoubleClick="LibraryList_MouseDoubleClick">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Padding" Value="0"/>
-                                    <Setter Property="Margin" Value="0,0,0,5"/>
+                                    <Setter Property="Margin" Value="0"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 </Style>
                             </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="1" CornerRadius="5" Padding="12,8">
-                                        <DockPanel LastChildFill="True">
-                                            <!-- Actions Row -->
-                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
-                                                <Button Content="Open in Reader" Style="{StaticResource AccentBtn}" Padding="10,4" Margin="0,0,4,0"
-                                                        Tag="{Binding FilePath}" Click="BtnOpenLibraryItem_Click"/>
-                                                <Button Content="Edit in Word" Style="{StaticResource ModernBtn}" Padding="8,4" Margin="0,0,4,0"
-                                                        Tag="{Binding FilePath}" Click="BtnOpenLibraryInWord_Click"/>
-                                                <Button Content="Organize" Style="{StaticResource ModernBtn}" Padding="6,4" Margin="0,0,4,0"
-                                                        Tag="{Binding FilePath}" Click="BtnOrganizeLibraryItem_Click"/>
-                                                <Button Content="Convert" Style="{StaticResource ModernBtn}" Padding="6,4"
-                                                        Tag="{Binding FilePath}" Click="BtnConvertLibraryItem_Click"/>
-                                            </StackPanel>
-
-                                            <!-- Document Thumbnail Badge & Info -->
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <Border Width="34" Height="38" Background="#991B1B" CornerRadius="4" Margin="0,0,10,0">
-                                                    <TextBlock Text="DOC" FontWeight="Bold" FontSize="11" Foreground="White" 
-                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource HeaderFgBrush}"/>
-                                                    <TextBlock Text="{Binding FilePath}" FontSize="9.5" Foreground="#71717A" Margin="0,1,0,2" 
-                                                               MaxWidth="440" TextTrimming="CharacterEllipsis"/>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Border Background="#27272A" CornerRadius="3" Padding="4,1" Margin="0,0,4,0">
-                                                            <TextBlock Text="{Binding FormattedSize}" FontSize="8.5" FontWeight="SemiBold" Foreground="#A1A1AA"/>
-                                                        </Border>
-                                                        <Border Background="#27272A" CornerRadius="3" Padding="4,1">
-                                                            <TextBlock Text="{Binding FormattedDate, StringFormat='Modified: {0}'}" FontSize="8.5" Foreground="#A1A1AA"/>
-                                                        </Border>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </DockPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
+                            <ListBox.ContextMenu>
+                                <ContextMenu x:Name="LibraryContextMenu" Background="{DynamicResource SubmenuBgBrush}" Foreground="{DynamicResource SubmenuFgBrush}">
+                                    <MenuItem Header="📄  Open in PSD PDF Studio" Click="LibMenuOpenReader_Click"/>
+                                    <MenuItem Header="📝  Open in Word Suite (.docx)" Click="LibMenuOpenWord_Click"/>
+                                    <MenuItem Header="📑  Page Organizer &amp; Extraction" Click="LibMenuOrganize_Click"/>
+                                    <MenuItem Header="🔄  Convert Document to Text / Markdown" Click="LibMenuConvert_Click"/>
+                                    <Separator/>
+                                    <MenuItem Header="📂  Show in Windows File Explorer" Click="LibMenuShowInExplorer_Click"/>
+                                    <MenuItem Header="📋  Copy File Path to Clipboard" Click="LibMenuCopyPath_Click"/>
+                                    <Separator/>
+                                    <MenuItem Header="ℹ️  Document Properties &amp; Metadata" Click="LibMenuProperties_Click"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                         </ListBox>
                     </ScrollViewer>
 
                     <!-- Library Footer Status Bar -->
-                    <Border Grid.Row="3" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,1,0,0" Padding="14,0">
+                    <Border Grid.Row="4" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,1,0,0" Padding="14,0">
                         <DockPanel VerticalAlignment="Center">
                             <TextBlock x:Name="TxtLibraryFooterCount" Text="0 documents in library" FontSize="9.5" Foreground="#A1A1AA"/>
-                            <TextBlock Text="PSD Hybrid Document Hub: Double click or click Open to launch reader/editor" 
+                            <TextBlock Text="PSD Universal Hub: Double-click or Right-click any file to open, edit, organize, or convert" 
                                        HorizontalAlignment="Right" FontSize="9.5" Foreground="#71717A"/>
                         </DockPanel>
                     </Border>
@@ -752,7 +998,7 @@
                     <Border Grid.Row="1" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" BorderThickness="0,0,0,1" Padding="6,4">
                         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <!-- View Toggles: Nav Rail, Thumbnails, Full Screen -->
-                            <Button x:Name="BtnToggleNavRail" Content="◀ Rail" ToolTip="Toggle Navigation Rail (F4)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleNavRail_Click"/>
+                            <Button x:Name="BtnToggleNavRail" Content="◫ Hide Sidebar (F4)" ToolTip="Toggle Navigation Sidebar (F4)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleNavRail_Click"/>
                             <Button x:Name="BtnToggleThumbnails" Content="📑 Thumbs" ToolTip="Toggle Thumbnails Sidebar (Ctrl+T)" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnToggleThumbnails_Click"/>
                             <Button x:Name="BtnFullScreen" Content="⛶ Presentation (F11)" ToolTip="Dedicated Full Screen View (F11)" Style="{StaticResource AccentBtn}" Margin="1" Click="BtnToggleFullScreen_Click"/>
 

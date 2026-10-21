@@ -3,5 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <!-- Dynamic Theme Brushes (Global Application Scope for Native HWND Popups and ContextMenus) -->
+        <SolidColorBrush x:Key="WindowBgBrush" Color="#0F0F12"/>
+        <SolidColorBrush x:Key="WindowFgBrush" Color="#ECECEF"/>
+        <SolidColorBrush x:Key="HeaderBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="HeaderFgBrush" Color="#F4F4F5"/>
+        <SolidColorBrush x:Key="MenuBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="MenuFgBrush" Color="#ECECEF"/>
+        <SolidColorBrush x:Key="SubmenuBgBrush" Color="#27272A"/>
+        <SolidColorBrush x:Key="SubmenuFgBrush" Color="#F4F4F5"/>
+        <SolidColorBrush x:Key="ItemHoverBgBrush" Color="#3F3F46"/>
+        <SolidColorBrush x:Key="NavRailBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="CanvasBgBrush" Color="#09090B"/>
+        <SolidColorBrush x:Key="CardBgBrush" Color="#18181B"/>
+        <SolidColorBrush x:Key="BorderBrushDefault" Color="#27272A"/>
+        <SolidColorBrush x:Key="BorderBrushLight" Color="#3F3F46"/>
+        <SolidColorBrush x:Key="AccentBrushDefault" Color="#0284C7"/>
+        <SolidColorBrush x:Key="AccentHoverBrush" Color="#0369A1"/>
+        <SolidColorBrush x:Key="StatusBarBgBrush" Color="#0284C7"/>
+        <SolidColorBrush x:Key="StatusBarFgBrush" Color="#FFFFFF"/>
     </Application.Resources>
 </Application>
