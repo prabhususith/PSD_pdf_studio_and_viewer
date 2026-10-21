@@ -17,7 +17,10 @@ import android.graphics.Typeface;
 import android.graphics.pdf.PdfRenderer;
 import android.provider.MediaStore;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
@@ -60,6 +63,9 @@ public class MainActivity extends Activity {
     private static final int REQUEST_CODE_PICK_PDF = 2001;
     private static final int REQUEST_CODE_CAPTURE_IMAGE = 2002;
     private static final int REQUEST_CODE_PICK_IMAGE = 2003;
+
+    // High-performance background thread pool for zero-blocking I/O and library indexing
+    private static final ExecutorService sWorkerExecutor = Executors.newFixedThreadPool(2);
 
     // Core PDF Engine State
     private ParcelFileDescriptor mFileDescriptor;
@@ -810,6 +816,9 @@ public class MainActivity extends Activity {
         if (mPdfRenderer == null || mTotalPages == 0) return;
 
         try {
+            if (mPdfPageView != null) {
+                mPdfPageView.recycleBitmap();
+            }
             if (mCurrentPage != null) {
                 mCurrentPage.close();
                 mCurrentPage = null;
@@ -892,6 +901,9 @@ public class MainActivity extends Activity {
 
     private void closeCurrentPdf() {
         try {
+            if (mPdfPageView != null) {
+                mPdfPageView.recycleBitmap();
+            }
             if (mCurrentPage != null) {
                 mCurrentPage.close();
                 mCurrentPage = null;
@@ -987,10 +999,10 @@ public class MainActivity extends Activity {
     // DEVICE STORAGE SCANNER & LOCAL LIBRARY
     // =========================================================================
     private void refreshDeviceLibrary() {
-        new AsyncTask<Void, Void, List<File>>() {
+        sWorkerExecutor.execute(new Runnable() {
             @Override
-            protected List<File> doInBackground(Void... voids) {
-                List<File> pdfs = new ArrayList<>();
+            public void run() {
+                final List<File> pdfs = new ArrayList<>();
 
                 // Scan App-specific storage
                 File appDocs = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
@@ -1006,21 +1018,22 @@ public class MainActivity extends Activity {
                 File pubDocs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
                 if (pubDocs != null && pubDocs.exists()) scanDirectoryForPdfs(pubDocs, pdfs, 0);
 
-                return pdfs;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isFinishing()) return;
+                        mDiscoveredPdfFiles.clear();
+                        mDiscoveredPdfFiles.addAll(pdfs);
+                        if (mDiscoveredPdfFiles.isEmpty()) {
+                            ensureBundledDocumentsExtracted();
+                            File appDocs = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                            if (appDocs != null) scanDirectoryForPdfs(appDocs, mDiscoveredPdfFiles, 0);
+                        }
+                        filterLibraryItems(mSearchInput != null ? mSearchInput.getText().toString() : "");
+                    }
+                });
             }
-
-            @Override
-            protected void onPostExecute(List<File> files) {
-                mDiscoveredPdfFiles.clear();
-                mDiscoveredPdfFiles.addAll(files);
-                if (mDiscoveredPdfFiles.isEmpty()) {
-                    ensureBundledDocumentsExtracted();
-                    File appDocs = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-                    if (appDocs != null) scanDirectoryForPdfs(appDocs, mDiscoveredPdfFiles, 0);
-                }
-                filterLibraryItems(mSearchInput != null ? mSearchInput.getText().toString() : "");
-            }
-        }.execute();
+        });
     }
 
     private void scanDirectoryForPdfs(File dir, List<File> result, int depth) {

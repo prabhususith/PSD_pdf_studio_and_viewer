@@ -48,6 +48,7 @@ namespace OmniPdf.App.Core
         private static readonly ConcurrentDictionary<string, CachedBitmapEntry> _bitmapCache = new(StringComparer.Ordinal);
         private static long _currentBitmapCacheBytes = 0;
         private const long MaxBitmapCacheBytes = 256 * 1024 * 1024; // 256 MB high-res cache cap
+        private static readonly object _evictionLock = new();
 
         // Hardware-adaptive render concurrency throttler
         private static readonly SemaphoreSlim _renderThrottle = new(Math.Clamp(Environment.ProcessorCount, 2, 8));
@@ -231,25 +232,31 @@ namespace OmniPdf.App.Core
 
         /// <summary>
         /// Evicts least recently used bitmaps when approaching memory limit.
+        /// Thread-safe locked double-check pattern prevents eviction thrashing.
         /// </summary>
         private static void EnsureBitmapCacheCapacity(long requiredBytes)
         {
             if (Interlocked.Read(ref _currentBitmapCacheBytes) + requiredBytes <= MaxBitmapCacheBytes)
                 return;
 
-            // Trim oldest 30% of cache entries
-            var entries = _bitmapCache.ToArray();
-            Array.Sort(entries, (a, b) => a.Value.LastAccessedUtc.CompareTo(b.Value.LastAccessedUtc));
-
-            long targetBytes = MaxBitmapCacheBytes - requiredBytes - (32 * 1024 * 1024);
-            foreach (var kvp in entries)
+            lock (_evictionLock)
             {
-                if (Interlocked.Read(ref _currentBitmapCacheBytes) <= targetBytes)
-                    break;
+                if (Interlocked.Read(ref _currentBitmapCacheBytes) + requiredBytes <= MaxBitmapCacheBytes)
+                    return;
 
-                if (_bitmapCache.TryRemove(kvp.Key, out var removed))
+                long targetBytes = Math.Max(0, MaxBitmapCacheBytes - requiredBytes - (32 * 1024 * 1024));
+                var entries = _bitmapCache.ToArray();
+                Array.Sort(entries, static (a, b) => a.Value.LastAccessedUtc.CompareTo(b.Value.LastAccessedUtc));
+
+                foreach (var kvp in entries)
                 {
-                    Interlocked.Add(ref _currentBitmapCacheBytes, -removed.EstimatedSizeBytes);
+                    if (Interlocked.Read(ref _currentBitmapCacheBytes) <= targetBytes)
+                        break;
+
+                    if (_bitmapCache.TryRemove(kvp.Key, out var removed))
+                    {
+                        Interlocked.Add(ref _currentBitmapCacheBytes, -removed.EstimatedSizeBytes);
+                    }
                 }
             }
         }

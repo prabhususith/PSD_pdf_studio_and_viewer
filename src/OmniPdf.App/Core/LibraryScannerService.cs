@@ -168,6 +168,10 @@ namespace OmniPdf.App.Core
                     });
                 }, cancellationToken);
             }
+            catch (OperationCanceledException)
+            {
+                // Graceful cancellation requested by caller or UI navigation
+            }
             finally
             {
                 flushCts.Cancel();
@@ -195,13 +199,21 @@ namespace OmniPdf.App.Core
 
             if (chunk.Count == 0 && !isFinal) return;
 
-            Application.Current.Dispatcher.InvokeAsync(() =>
+            var app = Application.Current;
+            if (app == null || app.Dispatcher == null || app.Dispatcher.HasShutdownStarted || app.Dispatcher.HasShutdownFinished)
+                return;
+
+            try
             {
-                foreach (var item in chunk)
+                app.Dispatcher.InvokeAsync(() =>
                 {
-                    targetCollection.Add(item);
-                }
-            }, DispatcherPriority.Background);
+                    foreach (var item in chunk)
+                    {
+                        targetCollection.Add(item);
+                    }
+                }, DispatcherPriority.Background);
+            }
+            catch { }
 
             int currentCount = Volatile.Read(ref totalDiscovered);
             onProgress?.Invoke(currentCount, $"Indexed {currentCount} documents (PDF, Word, Office)...");

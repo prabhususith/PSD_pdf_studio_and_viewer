@@ -1583,6 +1583,10 @@ namespace OmniPdf.App
                 {
                     RealPdfRenderer.CloseDocument(doc.FilePath);
                 }
+                foreach (var page in doc.Pages)
+                {
+                    page.RenderedImage = null;
+                }
                 _documents.Remove(doc);
                 if (_documents.Count > 0)
                 {

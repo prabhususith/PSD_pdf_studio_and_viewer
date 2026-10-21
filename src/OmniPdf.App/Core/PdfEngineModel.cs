@@ -124,6 +124,10 @@ namespace OmniPdf.App.Core
             return LoadFromFile(path);
         }
 
+        private static readonly Regex PageTypeRegex = new(@"/Type\s*/Page(?!\w)", RegexOptions.Compiled, TimeSpan.FromMilliseconds(500));
+        private static readonly Regex BtEtRegex = new(@"BT\s*(.*?)\s*ET", RegexOptions.Singleline | RegexOptions.Compiled, TimeSpan.FromMilliseconds(1000));
+        private static readonly Regex TjRegex = new(@"\((.*?)\)\s*Tj", RegexOptions.Singleline | RegexOptions.Compiled, TimeSpan.FromMilliseconds(500));
+
         public static PdfDocumentModel LoadFromFile(string path)
         {
             var doc = new PdfDocumentModel
@@ -134,11 +138,25 @@ namespace OmniPdf.App.Core
 
             try
             {
-                var content = File.ReadAllText(path, Encoding.Latin1);
-                var pageMatches = Regex.Matches(content, @"/Type\s*/Page(?!\w)");
-                int count = Math.Max(1, pageMatches.Count);
+                var fi = new FileInfo(path);
+                // Bounded streaming read (up to 12MB) to prevent Large Object Heap (LOH) exhaustion
+                int maxBytesToRead = (int)Math.Min(fi.Length, 12 * 1024 * 1024);
+                byte[] buffer = new byte[maxBytesToRead];
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    int read = fs.Read(buffer, 0, maxBytesToRead);
+                }
 
-                // Extract text from stream
+                string content = Encoding.Latin1.GetString(buffer);
+                int count = 1;
+                try
+                {
+                    var pageMatches = PageTypeRegex.Matches(content);
+                    count = Math.Max(1, pageMatches.Count);
+                }
+                catch (RegexMatchTimeoutException) { }
+
+                // Extract text from stream with strict regex timeouts
                 var textBlocks = ExtractTextBlocks(content);
 
                 for (int i = 0; i < count; i++)
@@ -162,23 +180,34 @@ namespace OmniPdf.App.Core
         public static List<string> ExtractTextBlocks(string pdfContent)
         {
             var list = new List<string>();
-            var btMatches = Regex.Matches(pdfContent, @"BT\s*(.*?)\s*ET", RegexOptions.Singleline);
-            var sb = new StringBuilder();
-
-            foreach (Match m in btMatches)
+            try
             {
-                var textMatches = Regex.Matches(m.Groups[1].Value, @"\((.*?)\)\s*Tj", RegexOptions.Singleline);
-                foreach (Match tm in textMatches)
+                var btMatches = BtEtRegex.Matches(pdfContent);
+                var sb = new StringBuilder();
+
+                foreach (Match m in btMatches)
                 {
-                    sb.Append(tm.Groups[1].Value).Append(" ");
-                }
-                sb.AppendLine();
-            }
+                    try
+                    {
+                        var textMatches = TjRegex.Matches(m.Groups[1].Value);
+                        foreach (Match tm in textMatches)
+                        {
+                            sb.Append(tm.Groups[1].Value).Append(" ");
+                        }
+                        sb.AppendLine();
+                    }
+                    catch (RegexMatchTimeoutException) { }
 
-            if (sb.Length > 0)
-            {
-                list.Add(sb.ToString().Trim());
+                    if (sb.Length > 20000) break; // Memory bound safeguard
+                }
+
+                if (sb.Length > 0)
+                {
+                    list.Add(sb.ToString().Trim());
+                }
             }
+            catch (RegexMatchTimeoutException) { }
+
             return list;
         }
 

@@ -80,10 +80,27 @@ public class PdfPageView extends View {
     }
 
     public void setPageBitmap(Bitmap bitmap) {
+        if (mBitmap != null && mBitmap != bitmap && !mBitmap.isRecycled()) {
+            mBitmap.recycle();
+        }
         mBitmap = bitmap;
         resetZoomAndPan();
         mStrokes.clear();
         invalidate();
+    }
+
+    public void recycleBitmap() {
+        if (mBitmap != null && !mBitmap.isRecycled()) {
+            mBitmap.recycle();
+            mBitmap = null;
+            invalidate();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        recycleBitmap();
     }
 
     public Bitmap getPageBitmap() {
