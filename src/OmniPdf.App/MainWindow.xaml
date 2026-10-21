@@ -462,7 +462,8 @@
         <!-- Dashboard View Mode 1: Responsive Card Grid -->
         <DataTemplate x:Key="DashboardGridTemplate">
             <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" 
-                    BorderThickness="1" CornerRadius="6" Padding="12,10" Width="320" Margin="0,0,10,10">
+                    BorderThickness="1" CornerRadius="6" Padding="12,10" Width="320" Margin="0,0,10,10"
+                    MouseEnter="LibraryCard_MouseEnter" MouseLeave="LibraryCard_MouseLeave" Tag="{Binding}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -513,7 +514,8 @@
         <!-- Dashboard View Mode 2: Large Visual Cover Tile -->
         <DataTemplate x:Key="DashboardThumbnailTemplate">
             <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" 
-                    BorderThickness="1" CornerRadius="6" Width="170" Height="235" Margin="0,0,10,10" Padding="8">
+                    BorderThickness="1" CornerRadius="6" Width="170" Height="235" Margin="0,0,10,10" Padding="8"
+                    MouseEnter="LibraryCard_MouseEnter" MouseLeave="LibraryCard_MouseLeave" Tag="{Binding}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="120"/>
@@ -559,7 +561,8 @@
         <!-- Dashboard View Mode 3: High-Density Table Details Row -->
         <DataTemplate x:Key="DashboardCompactTemplate">
             <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushDefault}" 
-                    BorderThickness="0,0,0,1" Padding="10,6" Margin="0,0,0,1">
+                    BorderThickness="0,0,0,1" Padding="10,6" Margin="0,0,0,1"
+                    MouseEnter="LibraryCard_MouseEnter" MouseLeave="LibraryCard_MouseLeave" Tag="{Binding}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="42"/>
@@ -644,6 +647,11 @@
                         <ComboBoxItem Content="Emerald Forest"/>
                         <ComboBoxItem Content="Custom Theme"/>
                     </ComboBox>
+
+                    <!-- Dedicated Settings Button in Top-Right Header -->
+                    <Button x:Name="BtnHeaderSettings" Content="⚙️ Settings" ToolTip="Settings &amp; Workstation Preferences (Ctrl+,)"
+                            Style="{StaticResource ModernBtn}" Height="22" Padding="7,2" Margin="0,0,8,0" FontSize="10.5"
+                            Click="BtnSettings_Click"/>
 
                     <Separator Width="1" Height="16" Background="{DynamicResource BorderBrushLight}" Margin="0,0,6,0"/>
 
@@ -764,6 +772,8 @@
                         <Separator/>
                         <MenuItem Header="🔏  _PKCS#7 Digital Signature Stamp" Click="MenuToolSignature_Click"/>
                         <MenuItem Header="🔊  _Read Aloud (Text-to-Speech)" Click="BtnTtsPlay_Click"/>
+                        <Separator/>
+                        <MenuItem Header="⚙️  _Settings &amp; Preferences..." InputGestureText="Ctrl+," Click="BtnSettings_Click"/>
                     </MenuItem>
 
                     <MenuItem Header="_Help">
@@ -812,11 +822,11 @@
                     <!-- Workspace Navigation Action Items -->
                     <StackPanel DockPanel.Dock="Top">
                         <Button x:Name="NavBtnLibrary" Style="{StaticResource NavRailBtn}" Click="NavBtnLibrary_Click">
-                            <DockPanel Width="160">
+                            <DockPanel LastChildFill="True">
                                 <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="{DynamicResource AccentBrushDefault}" CornerRadius="9" Padding="6,1" Margin="4,0,0,0">
                                     <TextBlock x:Name="TxtLibraryBadge" Text="0" FontSize="8.5" FontWeight="Bold" Foreground="White"/>
                                 </Border>
-                                <TextBlock Text="📚  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="📚  Library Hub" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                             </DockPanel>
                         </Button>
 
@@ -951,7 +961,10 @@
                                 <Button x:Name="BtnDashboardThumbnails" Content="🖼️ Cover Tile" ToolTip="Visual Cover Gallery View" 
                                         Style="{StaticResource ModernBtn}" Padding="8,3" Margin="0,0,2,0" FontSize="10.5" Click="BtnDashboardThumbnails_Click"/>
                                 <Button x:Name="BtnDashboardCompact" Content="☰ Details List" ToolTip="High-Density Table View" 
-                                        Style="{StaticResource ModernBtn}" Padding="8,3" FontSize="10.5" Click="BtnDashboardCompact_Click"/>
+                                        Style="{StaticResource ModernBtn}" Padding="8,3" Margin="0,0,6,0" FontSize="10.5" Click="BtnDashboardCompact_Click"/>
+                                <Separator Width="1" Height="16" Background="{DynamicResource BorderBrushLight}" Margin="0,0,6,0"/>
+                                <Button x:Name="BtnToggleHoverPreview" Content="🔍 Hover Preview: ON" ToolTip="Toggle Automatic Document Hover Preview Popup" 
+                                        Style="{StaticResource ModernBtn}" Foreground="#38BDF8" Padding="8,3" FontSize="10.5" Click="BtnToggleHoverPreview_Click"/>
                             </StackPanel>
 
                             <!-- Left: Filter & Sort Controls -->
@@ -1065,6 +1078,55 @@
                                        HorizontalAlignment="Right" FontSize="9.5" Foreground="#71717A"/>
                         </DockPanel>
                     </Border>
+
+                    <!-- Floating Hover Preview Popup for Dashboard Document Items -->
+                    <Popup x:Name="PopupLibraryHoverPreview" AllowsTransparency="True" StaysOpen="False" Placement="Mouse" 
+                           HorizontalOffset="14" VerticalOffset="14" PopupAnimation="Fade">
+                        <Border Background="#1E1E24" BorderBrush="#38BDF8" BorderThickness="1.5" CornerRadius="8" 
+                                Padding="14" Width="340" SnapsToDevicePixels="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="20" ShadowDepth="6" Direction="270" Color="#000000" Opacity="0.65"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <DockPanel LastChildFill="True" Margin="0,0,0,8">
+                                    <Border x:Name="HoverBadgeContainer" Width="40" Height="26" CornerRadius="4" Background="#0284C7" DockPanel.Dock="Left" Margin="0,0,10,0">
+                                        <TextBlock x:Name="TxtHoverBadge" Text="PDF" FontWeight="Bold" FontSize="10.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock x:Name="TxtHoverTitle" Text="Document Title" FontWeight="Bold" FontSize="12.5" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtHoverPages" Text="12 Pages • 2.4 MB" FontSize="9.5" Foreground="#38BDF8" Margin="0,1,0,0"/>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <Border Height="1" Background="#2E2E38" Margin="0,2,0,8"/>
+
+                                <Grid Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Location:" FontSize="9.5" Foreground="#71717A" Margin="0,2"/>
+                                    <TextBlock x:Name="TxtHoverPath" Grid.Row="0" Grid.Column="1" Text="C:\Documents\..." FontSize="9.5" Foreground="#D4D4D8" TextTrimming="CharacterEllipsis" Margin="0,2"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Modified:" FontSize="9.5" Foreground="#71717A" Margin="0,2"/>
+                                    <TextBlock x:Name="TxtHoverDate" Grid.Row="1" Grid.Column="1" Text="Oct 21, 2026 18:30" FontSize="9.5" Foreground="#A1A1AA" Margin="0,2"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Security:" FontSize="9.5" Foreground="#71717A" Margin="0,2"/>
+                                    <TextBlock x:Name="TxtHoverSecurity" Grid.Row="2" Grid.Column="1" Text="Standard (Unrestricted)" FontSize="9.5" Foreground="#4ADE80" Margin="0,2"/>
+                                </Grid>
+
+                                <Border Background="#141418" CornerRadius="4" Padding="8,4" Margin="0,4,0,0">
+                                    <TextBlock Text="💡 Double-click card to open • Auto-hides on cursor exit" FontSize="9" Foreground="#71717A" HorizontalAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
                 </Grid>
 
                 <!-- ========================================================== -->
@@ -1275,7 +1337,10 @@
                                       ScrollChanged="MainScrollViewer_ScrollChanged"
                                       PreviewMouseDown="MainScrollViewer_PreviewMouseDown"
                                       PreviewMouseMove="MainScrollViewer_PreviewMouseMove"
-                                      PreviewMouseUp="MainScrollViewer_PreviewMouseUp">
+                                      PreviewMouseUp="MainScrollViewer_PreviewMouseUp"
+                                      PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel"
+                                      IsManipulationEnabled="True"
+                                      ManipulationDelta="MainScrollViewer_ManipulationDelta">
                             <ScrollViewer.ContextMenu>
                                 <ContextMenu x:Name="PdfContextMenu">
                                     <MenuItem Header="📋  Copy Text" InputGestureText="Ctrl+C" Click="MenuCopy_Click"/>
@@ -1732,8 +1797,9 @@
                     </Border>
 
                     <!-- Centered A4 Page Editing Canvas -->
-                    <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
-                                  Background="{DynamicResource CanvasBgBrush}" Padding="20">
+                    <ScrollViewer x:Name="WordScrollViewer" Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+                                  Background="{DynamicResource CanvasBgBrush}" Padding="20"
+                                  PreviewMouseWheel="WordScrollViewer_PreviewMouseWheel">
                         <Grid HorizontalAlignment="Center">
                             <Border Width="816" MinHeight="1056" Background="#FFFFFF" CornerRadius="4">
                                 <Border.Effect>
@@ -1792,7 +1858,8 @@
                 <!-- ========================================================== -->
                 <Grid x:Name="ViewPdfFullScreen" Visibility="Collapsed" Background="#000000">
                     <!-- Centered Presentation Image -->
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#000000">
+                    <ScrollViewer x:Name="FullScreenScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#000000"
+                                  PreviewMouseWheel="FullScreenScrollViewer_PreviewMouseWheel">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
                             <Image x:Name="ImgFullScreenPage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>

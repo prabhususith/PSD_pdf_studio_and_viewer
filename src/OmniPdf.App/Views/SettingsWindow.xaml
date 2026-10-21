@@ -1,0 +1,192 @@
+<Window x:Class="OmniPdf.App.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PSD PDF Studio &amp; Viewer — Settings &amp; Preferences"
+        Height="540" Width="720" MinHeight="420" MinWidth="560"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource WindowBgBrush}" Foreground="{DynamicResource WindowFgBrush}"
+        FontFamily="Segoe UI, Segoe UI Variable, Arial">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Title Header -->
+            <RowDefinition Height="*"/>    <!-- Settings Categories -->
+            <RowDefinition Height="Auto"/> <!-- Action Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="14,10" Margin="0,0,0,16">
+            <DockPanel LastChildFill="True">
+                <TextBlock Text="⚙️" FontSize="24" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Settings &amp; Preferences" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource WindowFgBrush}"/>
+                    <TextBlock Text="Configure workstation behavior, touchpad gestures, hover previews, and GPU hardware acceleration." 
+                               FontSize="10.5" Foreground="#A1A1AA" Margin="0,2,0,0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Tabbed Settings Categories -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderBrush="{DynamicResource BorderBrushLight}">
+            <!-- TAB 1: DASHBOARD & WORKSPACE -->
+            <TabItem Header="Dashboard &amp; Previews" FontSize="11" FontWeight="SemiBold">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="DOCUMENT LIBRARY &amp; HOVER PREVIEWS" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,8"/>
+
+                        <!-- Hover Preview Toggle -->
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <DockPanel LastChildFill="True">
+                                <CheckBox x:Name="ChkEnableHoverPreview" Content="Enable Instant Hover Previews on Document Cards" 
+                                          IsChecked="True" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- Hover Delay -->
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Hover Preview Delay (Latency)" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Time cursor must hover over a file before preview popup displays." FontSize="10" Foreground="#A1A1AA" Margin="0,2,0,8"/>
+                                <ComboBox x:Name="CmbHoverDelay" Width="200" HorizontalAlignment="Left">
+                                    <ComboBoxItem Content="Fast (150 ms)"/>
+                                    <ComboBoxItem Content="Standard (300 ms)" IsSelected="True"/>
+                                    <ComboBoxItem Content="Relaxed (500 ms)"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Default Dashboard View Mode -->
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Default Document Hub View Mode" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Layout used on startup when displaying local indexed files." FontSize="10" Foreground="#A1A1AA" Margin="0,2,0,8"/>
+                                <ComboBox x:Name="CmbDefaultViewMode" Width="220" HorizontalAlignment="Left">
+                                    <ComboBoxItem Content="⊞ Responsive Card Grid" IsSelected="True"/>
+                                    <ComboBoxItem Content="🖼️ Cover Tile Gallery"/>
+                                    <ComboBoxItem Content="☰ High-Density Details List"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- TAB 2: TOUCHPAD & GESTURES -->
+            <TabItem Header="Touchpad &amp; Gestures" FontSize="11" FontWeight="SemiBold">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="LAPTOP TOUCHPAD &amp; MOUSE WHEEL CONFIGURATION" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,8"/>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <CheckBox x:Name="ChkTouchpadPinchZoom" Content="Enable Precision Touchpad Pinch-to-Zoom (Ctrl + Wheel)" 
+                                          IsChecked="True" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Pinching two fingers zooms document in/out smoothly at sub-pixel resolution." FontSize="10" Foreground="#A1A1AA" Margin="22,4,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <CheckBox x:Name="ChkHorizontalScroll" Content="Enable Two-Finger Horizontal Touchpad Scrolling (Shift + Wheel)" 
+                                          IsChecked="True" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Allows panning wide documents horizontally using two-finger swipe." FontSize="10" Foreground="#A1A1AA" Margin="22,4,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Touchpad Zoom Sensitivity Multiplier" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Speed of magnification changes during pinch gestures." FontSize="10" Foreground="#A1A1AA" Margin="0,2,0,8"/>
+                                <ComboBox x:Name="CmbZoomSensitivity" Width="200" HorizontalAlignment="Left">
+                                    <ComboBoxItem Content="Smooth (5% per step)"/>
+                                    <ComboBoxItem Content="Standard (8% per step)" IsSelected="True"/>
+                                    <ComboBoxItem Content="High-Speed (15% per step)"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- TAB 3: HARDWARE & PERFORMANCE -->
+            <TabItem Header="Hardware &amp; Engine" FontSize="11" FontWeight="SemiBold">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="GPU HARDWARE ACCELERATION &amp; TILE CACHE" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,8"/>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <CheckBox x:Name="ChkGpuAcceleration" Content="DirectX WinRT GPU Hardware Vector Rendering" 
+                                          IsChecked="True" IsEnabled="False" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Active (120 FPS high-refresh Direct3D vector rasterizer enabled)." FontSize="10" Foreground="#4ADE80" Margin="22,4,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="LRU Off-Heap Tile Cache Allocation" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Maximum RAM committed to pre-rendering high-DPI document tiles." FontSize="10" Foreground="#A1A1AA" Margin="0,2,0,8"/>
+                                <ComboBox x:Name="CmbLruCacheSize" Width="200" HorizontalAlignment="Left">
+                                    <ComboBoxItem Content="32 MB (Conserve RAM)"/>
+                                    <ComboBoxItem Content="64 MB (Balanced)" IsSelected="True"/>
+                                    <ComboBoxItem Content="128 MB (High-DPI 4K)"/>
+                                    <ComboBoxItem Content="256 MB (Ultra Performance)"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <CheckBox x:Name="ChkAutoScanLibrary" Content="Background Device Document Discovery on Startup" 
+                                          IsChecked="True" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Automatically scans Documents and Downloads folders on launch." FontSize="10" Foreground="#A1A1AA" Margin="22,4,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- TAB 4: WORD SUITE & CREATOR -->
+            <TabItem Header="Word &amp; Authoring" FontSize="11" FontWeight="SemiBold">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="DOCUMENT AUTHORING &amp; AUTO-SAVE PREFERENCES" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,8"/>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Auto-Save Document Frequency" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Automatically saves Word Suite (.docx / .rtf) backup drafts." FontSize="10" Foreground="#A1A1AA" Margin="0,2,0,8"/>
+                                <ComboBox x:Name="CmbAutoSave" Width="200" HorizontalAlignment="Left">
+                                    <ComboBoxItem Content="Every 1 Minute"/>
+                                    <ComboBoxItem Content="Every 3 Minutes" IsSelected="True"/>
+                                    <ComboBoxItem Content="Every 5 Minutes"/>
+                                    <ComboBoxItem Content="Disabled"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Default Export Watermark Stamp" FontWeight="SemiBold" Foreground="{DynamicResource WindowFgBrush}"/>
+                                <TextBlock Text="Default label applied when compiling documents to PDF." FontSize="10" Foreground="#A1A1AA" Margin="0,2,0,8"/>
+                                <TextBox x:Name="TxtDefaultWatermark" Text="PSD PDF Studio Enterprise" Width="280" HorizontalAlignment="Left"
+                                         Background="{DynamicResource CanvasBgBrush}" Foreground="{DynamicResource WindowFgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" Padding="6,3"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <!-- Action Footer -->
+        <Border Grid.Row="2" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="0,1,0,0" Padding="0,12,0,0" Margin="0,16,0,0">
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="All settings take effect immediately." VerticalAlignment="Center" FontSize="10" Foreground="#71717A"/>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Content="Cancel" Width="90" Height="28" Margin="0,0,8,0" Click="BtnCancel_Click"/>
+                    <Button Content="Save &amp; Apply" Width="120" Height="28" Background="{DynamicResource AccentBrushDefault}" Foreground="White" FontWeight="Bold" Click="BtnSave_Click"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

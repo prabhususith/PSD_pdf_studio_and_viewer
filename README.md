@@ -34,7 +34,7 @@ All packages are compiled, cryptographically verified, and ready for immediate d
 | **Windows Portable Archive** | `.zip` | ~144.9 MB | Zero-install portability. Run directly from USB drives or without administrator privileges | [Download PSD-PDF-Studio-Portable.zip](https://github.com/prabhususith/PSD_pdf_studio_and_viewer/releases/download/v3.0.0/PSD-PDF-Studio-Portable.zip) |
 | **Windows Enterprise MSI** | `.msi` | ~71.6 MB | Enterprise IT silent rollouts via Active Directory, Group Policy (GPO), or Microsoft Intune | [Download PSD-PDF-Studio-Enterprise.msi](https://github.com/prabhususith/PSD_pdf_studio_and_viewer/releases/download/v3.0.0/PSD-PDF-Studio-Enterprise.msi) |
 | **Standalone Binary** | `.exe` | ~78.3 MB | Direct single-file executable for power users and command-line automation | [Download psd_pdf.exe](https://github.com/prabhususith/PSD_pdf_studio_and_viewer/releases/download/v3.0.0/psd_pdf.exe) |
-| **Android Universal Package** | `.apk` | ~21.1 KB | Android 8.0+ tablets and smartphones (ARM64, ARMv7, x86_64) | [Download PSD-PDF-Studio-Release-universal.apk](https://github.com/prabhususith/PSD_pdf_studio_and_viewer/releases/download/v3.0.0/PSD-PDF-Studio-Release-universal.apk) |
+| **Android Universal Package** | `.apk` | ~41.6 KB | Android 6.0+ through 14+ tablets & smartphones (dual ABI: ARM64 & ARMv7) | [Download PSD-PDF-Studio-Release-universal.apk](https://github.com/prabhususith/PSD_pdf_studio_and_viewer/releases/download/v3.0.0/PSD-PDF-Studio-Release-universal.apk) |
 | **Hardware Requirements PDF** | `.pdf` | ~13.2 KB | Official technical specification sheet (Hardware, RAM, GPU, OS compatibility) | [Download Hardware Requirements PDF](https://github.com/prabhususith/PSD_pdf_studio_and_viewer/releases/download/v3.0.0/PSD_PDF_Studio_Hardware_Requirements.pdf) |
 | **User Manual & Help Guide PDF** | `.pdf` | ~27.3 KB | Comprehensive guide covering features, hotkeys, enterprise templates, and AI copilot | [Download User Manual & Help Guide PDF](https://github.com/prabhususith/PSD_pdf_studio_and_viewer/releases/download/v3.0.0/PSD_PDF_Studio_User_Manual_and_Help_Guide.pdf) |
 
@@ -127,8 +127,10 @@ For the full detailed user guide, download the [PSD PDF Studio User Manual & Hel
 | `Ctrl + F` | Toggle Instant Text Search | `F11` | Toggle True Native Fullscreen View |
 | `Ctrl + +` / `Ctrl + -` | Zoom In / Zoom Out | `Ctrl + 0` | Fit Page to Viewport Width |
 | `Ctrl + B` | Toggle Bold Formatting | `Ctrl + I` | Toggle Italic Formatting |
-| `Ctrl + U` | Toggle Underline Formatting | `Ctrl + Z` / `Ctrl + Y` | Undo / Redo |
-| `Ctrl + N` | Create New Document from Template | `Ctrl + Q` | Clean Exit Application |
+| `Ctrl + U` | Toggle Underline Formatting | `Ctrl + ,` | Settings & Preferences Dialog |
+| `Ctrl + Z` / `Ctrl + Y` | Undo / Redo | `Touchpad Pinch` | Precision Touchpad Sub-Pixel Zoom |
+| `Ctrl + N` | Create New Document from Template | `Shift + Wheel` | Touchpad Horizontal Panning |
+| `F4` | Toggle Left Navigation Rail | `Ctrl + Q` | Clean Exit Application |
 
 ---
 
@@ -150,9 +152,13 @@ For the full detailed user guide, download the [PSD PDF Studio User Manual & Hel
 ```
 
 - **Unified Multi-Format Engine**: Native rendering and export for 10 industry formats: `PDF`, `DOCX`, `XLSX`, `PPTX`, `EPUB`, `MOBI`, `RTF`, `ODT`, `HTML`, and `Markdown`.
-- **True Multi-Page Continuous Scroll**: Dynamic viewport virtualization ensures immediate page rendering regardless of document page count.
+- **True Multi-Page Continuous Scroll & Precision Touchpad Gestures**: Dynamic viewport virtualization ensures immediate page rendering regardless of document page count. Laptop precision touchpad pinch-to-zoom (`Ctrl + MouseWheel`) and horizontal two-finger panning (`Shift + MouseWheel`) operate at sub-pixel resolution.
+- **Smart Dashboard & Hover Previews**: Instant interactive document preview popup cards when hovering over library items with customizable delay latency and one-click toggle.
+- **Camera Document Scanner (Windows & Android)**: Real hardware camera capture and image import with perspective homography warp calibration, Otsu binarization filters, and instant vector PDF compilation.
+- **Dedicated Settings Suite**: Comprehensive settings dialog (`Ctrl + ,`) accessible from `Tools -> Settings & Preferences...` and top-right header `[⚙️ Settings]` button.
+- **Enterprise Word Processing**: Complete MS Word feature parity including Heading 1-6 styles, font palettes, starter templates (Project Charter, Business Proposal, NDA, Minutes), live word/character/reading-time statistics, and Flesch-Kincaid readability scoring.
+- **Android Platform Parity**: Hardware-accelerated PdfRenderer engine with multi-touch pinch-to-zoom, camera scan capture to PDF, Word/Text-to-PDF creator with templates and live statistics, and local device indexing.
 - **Native Windows Desktop Integration**: Full custom titlebar with native Windows minimize, maximize/restore, and close buttons; per-monitor DPI awareness; system tray minimization.
-- **Enterprise Word Processing**: Complete MS Word feature parity including Heading 1-6 styles, font palettes, bullet & numbered lists, case conversion (UPPERCASE, lowercase, Title Case, Sentence case), word/character counters, and Flesch-Kincaid readability scoring.
 - **100% Offline AI Document Intelligence**: Embedded tokenization and vector similarity engine allows natural language search and Q&A over massive legal, financial, and technical documents with zero telemetry or cloud transmission.
 - **Digital E-Signature & Certifications**: Compliant with digital document security guidelines, providing SHA-256 hashing, visual stamp placement, audit timestamps, and integrity locking.
 

@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using OmniPdf.App.Core;
 using OmniPdf.App.Views;
+using System.Windows.Threading;
 
 namespace OmniPdf.App
 {
@@ -61,6 +62,12 @@ namespace OmniPdf.App
         private Color _activePdfPenColor = Color.FromRgb(220, 38, 38);
         private double _activePdfPenWidth = 2.5;
 
+        // Settings & Workstation Configuration State
+        private readonly AppSettingsState _settings = new();
+        private DispatcherTimer? _hoverTimer;
+        private DispatcherTimer? _hoverAutoHideTimer;
+        private PdfLibraryItem? _hoverPendingItem;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -80,6 +87,12 @@ namespace OmniPdf.App
                 }
             }
             catch { }
+
+            // Initialize Hover Preview Timers
+            _hoverTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(_settings.HoverPreviewDelayMs) };
+            _hoverTimer.Tick += HoverTimer_Tick;
+            _hoverAutoHideTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+            _hoverAutoHideTimer.Tick += HoverAutoHideTimer_Tick;
 
             // Safe UI initializations
             if (CmbTheme != null) CmbTheme.SelectedIndex = 0;
@@ -191,6 +204,90 @@ namespace OmniPdf.App
         private void BtnDashboardCompact_Click(object sender, RoutedEventArgs e)
         {
             SetDashboardViewMode(DashboardViewMode.Compact);
+        }
+
+        private void BtnToggleHoverPreview_Click(object sender, RoutedEventArgs e)
+        {
+            _settings.HoverPreviewEnabled = !_settings.HoverPreviewEnabled;
+            UpdateHoverPreviewToggleUi();
+        }
+
+        private void UpdateHoverPreviewToggleUi()
+        {
+            if (BtnToggleHoverPreview != null)
+            {
+                BtnToggleHoverPreview.Content = _settings.HoverPreviewEnabled ? "🔍 Hover Preview: ON" : "🔍 Hover Preview: OFF";
+                BtnToggleHoverPreview.Foreground = _settings.HoverPreviewEnabled
+                    ? new SolidColorBrush(Color.FromRgb(56, 189, 248))
+                    : new SolidColorBrush(Color.FromRgb(161, 161, 170));
+            }
+            if (!_settings.HoverPreviewEnabled && PopupLibraryHoverPreview != null)
+            {
+                PopupLibraryHoverPreview.IsOpen = false;
+            }
+        }
+
+        private void LibraryCard_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (!_settings.HoverPreviewEnabled) return;
+
+            if (sender is FrameworkElement fe && fe.DataContext is PdfLibraryItem item)
+            {
+                _hoverPendingItem = item;
+                _hoverAutoHideTimer?.Stop();
+                _hoverTimer?.Stop();
+                _hoverTimer?.Start();
+            }
+        }
+
+        private void LibraryCard_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _hoverTimer?.Stop();
+            _hoverAutoHideTimer?.Stop();
+            _hoverAutoHideTimer?.Start();
+        }
+
+        private void HoverTimer_Tick(object? sender, EventArgs e)
+        {
+            _hoverTimer?.Stop();
+            if (!_settings.HoverPreviewEnabled || _hoverPendingItem == null || PopupLibraryHoverPreview == null) return;
+
+            var item = _hoverPendingItem;
+            TxtHoverBadge.Text = item.FormatBadge;
+            TxtHoverTitle.Text = item.Title;
+            TxtHoverPages.Text = $"{item.PageCountDisplay} • {item.FormattedSize}";
+            TxtHoverPath.Text = item.FilePath;
+            TxtHoverDate.Text = item.FormattedDate;
+            TxtHoverSecurity.Text = "Standard (Local Sovereign)";
+
+            PopupLibraryHoverPreview.IsOpen = true;
+        }
+
+        private void HoverAutoHideTimer_Tick(object? sender, EventArgs e)
+        {
+            _hoverAutoHideTimer?.Stop();
+            if (PopupLibraryHoverPreview != null && PopupLibraryHoverPreview.IsOpen)
+            {
+                PopupLibraryHoverPreview.IsOpen = false;
+            }
+        }
+
+        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new SettingsWindow(_settings) { Owner = this };
+            if (win.ShowDialog() == true)
+            {
+                if (_hoverTimer != null)
+                {
+                    _hoverTimer.Interval = TimeSpan.FromMilliseconds(_settings.HoverPreviewDelayMs);
+                }
+                UpdateHoverPreviewToggleUi();
+
+                if ((int)_currentDashboardView != _settings.DefaultDashboardView)
+                {
+                    SetDashboardViewMode((DashboardViewMode)_settings.DefaultDashboardView);
+                }
+            }
         }
 
         private void CmbFilterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1525,6 +1622,87 @@ namespace OmniPdf.App
                     _currentZoom = Math.Clamp(targetH / PageBorder.Height, 0.4, 3.0);
                     ApplyZoom();
                 }
+            }
+        }
+
+        private void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (_settings.TouchpadPinchZoomEnabled && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                double step = _settings.ZoomSensitivityStep;
+                if (e.Delta > 0)
+                {
+                    _currentZoom = Math.Min(4.0, _currentZoom + step);
+                }
+                else if (e.Delta < 0)
+                {
+                    _currentZoom = Math.Max(0.25, _currentZoom - step);
+                }
+                ApplyZoom();
+                e.Handled = true;
+            }
+            else if (_settings.HorizontalScrollEnabled && (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+            {
+                if (MainScrollViewer != null)
+                {
+                    if (e.Delta > 0)
+                    {
+                        MainScrollViewer.LineLeft();
+                        MainScrollViewer.LineLeft();
+                    }
+                    else if (e.Delta < 0)
+                    {
+                        MainScrollViewer.LineRight();
+                        MainScrollViewer.LineRight();
+                    }
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void MainScrollViewer_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        {
+            if (_settings.TouchpadPinchZoomEnabled && (e.DeltaManipulation.Scale.X != 1.0 || e.DeltaManipulation.Scale.Y != 1.0))
+            {
+                double scaleDelta = (e.DeltaManipulation.Scale.X + e.DeltaManipulation.Scale.Y) / 2.0;
+                _currentZoom = Math.Clamp(_currentZoom * scaleDelta, 0.25, 4.0);
+                ApplyZoom();
+                e.Handled = true;
+            }
+        }
+
+        private void WordScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (_settings.TouchpadPinchZoomEnabled && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (SliderWordZoom != null)
+                {
+                    if (e.Delta > 0)
+                    {
+                        SliderWordZoom.Value = Math.Min(200, SliderWordZoom.Value + 10);
+                    }
+                    else if (e.Delta < 0)
+                    {
+                        SliderWordZoom.Value = Math.Max(50, SliderWordZoom.Value - 10);
+                    }
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void FullScreenScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (_settings.TouchpadPinchZoomEnabled && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (e.Delta > 0)
+                {
+                    BtnFsZoomIn_Click(sender, e);
+                }
+                else if (e.Delta < 0)
+                {
+                    BtnFsZoomOut_Click(sender, e);
+                }
+                e.Handled = true;
             }
         }
 
@@ -3412,12 +3590,22 @@ namespace OmniPdf.App
 
         private void BtnScanner_Click(object sender, RoutedEventArgs e)
         {
-            if (_activeDoc == null) return;
-            var win = new CameraScannerWindow(_activeDoc) { Owner = this };
+            ShowReaderView();
+            bool wasNull = (_activeDoc == null);
+            var targetDoc = _activeDoc ?? new PdfDocumentModel("Scanned_Document.pdf");
+            var win = new CameraScannerWindow(targetDoc) { Owner = this };
             if (win.ShowDialog() == true)
             {
-                SelectDocument(_activeDoc);
-                if (ThumbnailList != null) ThumbnailList.SelectedIndex = _activeDoc.Pages.Count - 1;
+                if (wasNull)
+                {
+                    _documents.Add(targetDoc);
+                    _activeDoc = targetDoc;
+                }
+                SelectDocument(_activeDoc!);
+                if (ThumbnailList != null && _activeDoc != null && _activeDoc.Pages.Count > 0)
+                {
+                    ThumbnailList.SelectedIndex = _activeDoc.Pages.Count - 1;
+                }
             }
         }
 
@@ -3585,6 +3773,7 @@ namespace OmniPdf.App
                 else if (e.Key == Key.R) { BtnRotatePage_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.T) { BtnToggleThumbnails_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.D) { BtnDocumentProperties_Click(this, new RoutedEventArgs()); e.Handled = true; }
+                else if (e.Key == Key.OemComma) { BtnSettings_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.I) { BtnDarkModeToggle_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.D1 || e.Key == Key.NumPad1) { BtnViewContinuous_Click(this, new RoutedEventArgs()); e.Handled = true; }
                 else if (e.Key == Key.D2 || e.Key == Key.NumPad2) { BtnViewSinglePage_Click(this, new RoutedEventArgs()); e.Handled = true; }

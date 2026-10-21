@@ -66,6 +66,13 @@ namespace OmniPdf.App.Core
         public string Subject { get; set; } = "";
         public string Keywords { get; set; } = "";
 
+        public PdfDocumentModel() { }
+
+        public PdfDocumentModel(string title)
+        {
+            Title = title;
+        }
+
         public static PdfDocumentModel CreateDefault(string title, int pageCount = 3)
         {
             var doc = new PdfDocumentModel { Title = title };

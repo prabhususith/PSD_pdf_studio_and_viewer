@@ -17,10 +17,12 @@ namespace OmniPdf.App.Views
         private readonly Point[] _corners = new Point[4];
         private readonly PdfDocumentModel _document;
 
-        public CameraScannerWindow(PdfDocumentModel document)
+        public PdfDocumentModel Document => _document;
+
+        public CameraScannerWindow(PdfDocumentModel? document = null)
         {
             InitializeComponent();
-            _document = document;
+            _document = document ?? new PdfDocumentModel("Scanned_Document.pdf");
             GenerateSampleScanImage();
         }
 
