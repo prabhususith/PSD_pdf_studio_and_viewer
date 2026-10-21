@@ -663,6 +663,9 @@ namespace OmniPdf.App
                 ThumbnailList.SelectedIndex = targetIndex;
                 ThumbnailList.ScrollIntoView(ThumbnailList.SelectedItem);
             }
+
+            // Immediately ensure visible viewport is prioritized and rendered
+            _ = EnsureViewportPagesRenderedAsync(_activeDoc, targetIndex);
         }
 
         private void MainScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -694,54 +697,119 @@ namespace OmniPdf.App
                     ThumbnailList.SelectedIndex = visible;
                     ThumbnailList.ScrollIntoView(ThumbnailList.SelectedItem);
                 }
+
+                // Adaptive multi-threaded viewport rasterization
+                _ = EnsureViewportPagesRenderedAsync(_activeDoc, visible);
             }
         }
+
+        private CancellationTokenSource? _viewportRenderCts;
 
         private async Task RenderDocumentPagesAsync(PdfDocumentModel doc)
         {
             if (string.IsNullOrEmpty(doc.FilePath) || !File.Exists(doc.FilePath)) return;
+            await EnsureViewportPagesRenderedAsync(doc, doc.CurrentPageIndex);
+        }
 
-            int activeIdx = Math.Clamp(doc.CurrentPageIndex, 0, doc.Pages.Count - 1);
-            var activeImg = await RealPdfRenderer.RenderPdfPageAsync(doc.FilePath, activeIdx, 1400);
-            if (activeImg != null)
+        private async Task EnsureViewportPagesRenderedAsync(PdfDocumentModel doc, int centerIdx)
+        {
+            if (string.IsNullOrEmpty(doc.FilePath) || !File.Exists(doc.FilePath) || doc.Pages.Count == 0) return;
+
+            _viewportRenderCts?.Cancel();
+            var cts = new CancellationTokenSource();
+            _viewportRenderCts = cts;
+            var token = cts.Token;
+
+            int totalPages = doc.Pages.Count;
+            centerIdx = Math.Clamp(centerIdx, 0, totalPages - 1);
+            double targetWidth = Math.Clamp(1400.0 * Math.Max(1.0, _currentZoom), 800.0, 3200.0);
+
+            // Phase 1: High-Priority Viewport Cluster (Center +/- 2 pages)
+            var priorityIndices = new List<int> { centerIdx };
+            for (int offset = 1; offset <= 2; offset++)
             {
-                doc.Pages[activeIdx].RenderedImage = activeImg;
-                Dispatcher.Invoke(() =>
-                {
-                    if (activeIdx < _pageImages.Count)
-                    {
-                        _pageImages[activeIdx].Source = activeImg;
-                        _pageImages[activeIdx].Visibility = Visibility.Visible;
-                        _pageTextBoxes[activeIdx].Visibility = Visibility.Collapsed;
-                    }
-                });
+                int next = centerIdx + offset;
+                if (next < totalPages) priorityIndices.Add(next);
+                int prev = centerIdx - offset;
+                if (prev >= 0) priorityIndices.Add(prev);
             }
 
-            _ = Task.Run(async () =>
+            // Render high-priority pages concurrently via native engine
+            var highPriorityTasks = priorityIndices.Select(async idx =>
             {
-                for (int i = 0; i < doc.Pages.Count; i++)
+                if (token.IsCancellationRequested) return;
+                if (doc.Pages[idx].RenderedImage != null)
                 {
-                    if (i == activeIdx) continue;
-                    var img = await RealPdfRenderer.RenderPdfPageAsync(doc.FilePath, i, 1400);
-                    if (img != null)
-                    {
-                        int pIdx = i;
-                        Dispatcher.Invoke(() =>
-                        {
-                            if (pIdx < doc.Pages.Count)
-                            {
-                                doc.Pages[pIdx].RenderedImage = img;
-                                if (pIdx < _pageImages.Count)
-                                {
-                                    _pageImages[pIdx].Source = img;
-                                    _pageImages[pIdx].Visibility = Visibility.Visible;
-                                    _pageTextBoxes[pIdx].Visibility = Visibility.Collapsed;
-                                }
-                            }
-                        });
-                    }
+                    Dispatcher.Invoke(() => ApplyPageRenderToUi(idx, doc.Pages[idx].RenderedImage));
+                    return;
+                }
+
+                var img = await RealPdfRenderer.RenderPdfPageAsync(doc.FilePath, idx, targetWidth);
+                if (img != null && !token.IsCancellationRequested)
+                {
+                    doc.Pages[idx].RenderedImage = img;
+                    Dispatcher.Invoke(() => ApplyPageRenderToUi(idx, img));
                 }
             });
+
+            await Task.WhenAll(highPriorityTasks);
+            if (token.IsCancellationRequested) return;
+
+            // Phase 2: Background pre-fetching ordered by distance from viewport
+            _ = Task.Run(async () =>
+            {
+                var distantIndices = Enumerable.Range(0, totalPages)
+                    .Where(i => !priorityIndices.Contains(i))
+                    .OrderBy(i => Math.Abs(i - centerIdx))
+                    .ToList();
+
+                foreach (int idx in distantIndices)
+                {
+                    if (token.IsCancellationRequested) break;
+                    if (doc.Pages[idx].RenderedImage != null) continue;
+
+                    // If user is far away and document is large, don't pre-render excessively to protect battery and memory
+                    if (totalPages > 30 && Math.Abs(idx - centerIdx) > 6)
+                        continue;
+
+                    var img = await RealPdfRenderer.RenderPdfPageAsync(doc.FilePath, idx, targetWidth);
+                    if (img != null && !token.IsCancellationRequested)
+                    {
+                        doc.Pages[idx].RenderedImage = img;
+                        Dispatcher.Invoke(() => ApplyPageRenderToUi(idx, img));
+                    }
+                }
+
+                // Phase 3: Intelligent LRU memory trimming for large documents (> 25 pages)
+                if (totalPages > 25)
+                {
+                    for (int i = 0; i < totalPages; i++)
+                    {
+                        if (Math.Abs(i - centerIdx) > 8 && doc.Pages[i].RenderedImage != null)
+                        {
+                            doc.Pages[i].RenderedImage = null; // Free up managed memory
+                            int evictedIdx = i;
+                            Dispatcher.Invoke(() =>
+                            {
+                                if (evictedIdx < _pageImages.Count && evictedIdx < _pageTextBoxes.Count)
+                                {
+                                    _pageImages[evictedIdx].Source = null;
+                                    _pageImages[evictedIdx].Visibility = Visibility.Collapsed;
+                                    _pageTextBoxes[evictedIdx].Visibility = Visibility.Visible;
+                                }
+                            });
+                        }
+                    }
+                }
+            }, token);
+        }
+
+        private void ApplyPageRenderToUi(int pIdx, BitmapSource? img)
+        {
+            if (img == null || pIdx >= _pageImages.Count || pIdx >= _pageTextBoxes.Count) return;
+            _pageImages[pIdx].Source = img;
+            _pageImages[pIdx].Visibility = Visibility.Visible;
+            _pageTextBoxes[pIdx].Visibility = Visibility.Collapsed;
         }
 
         private void UpdatePageRotation(int degrees)
@@ -765,7 +833,10 @@ namespace OmniPdf.App
                 StatusDimensions.Text = $"Dimensions: {(int)p.Width} x {(int)p.Height} pt";
             }
             if (StatusToolIndicator != null) StatusToolIndicator.Text = $"Tool: {_activeTool}";
-            if (StatusLru != null) StatusLru.Text = $"LRU: {_lruCache.CurrentBytes / (1024.0 * 1024.0):0.1} MB / 64 MB Cap";
+            
+            var (rasterizerBytes, docCount, pageCount) = RealPdfRenderer.GetEngineTelemetry();
+            double mb = rasterizerBytes / (1024.0 * 1024.0);
+            if (StatusLru != null) StatusLru.Text = $"Engine: {mb:0.1} MB ({pageCount} cached pages, {docCount} docs)";
         }
 
         private void BtnFirstPage_Click(object sender, RoutedEventArgs e) => ScrollToPage(0);
@@ -971,6 +1042,10 @@ namespace OmniPdf.App
         {
             if (sender is Button btn && btn.Tag is PdfDocumentModel doc)
             {
+                if (!string.IsNullOrEmpty(doc.FilePath))
+                {
+                    RealPdfRenderer.CloseDocument(doc.FilePath);
+                }
                 _documents.Remove(doc);
                 if (_documents.Count > 0)
                 {
@@ -1402,6 +1477,32 @@ namespace OmniPdf.App
             RtbWordEditor.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent);
             RtbWordEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, null);
             RtbWordEditor.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+        }
+
+        private object? _painterFontFamily;
+        private object? _painterFontSize;
+        private object? _painterFontWeight;
+        private object? _painterFontStyle;
+        private object? _painterForeground;
+        private object? _painterBackground;
+        private bool _isFormatPainterActive = false;
+
+        private void BtnWordFormatPainter_Click(object sender, RoutedEventArgs e)
+        {
+            if (RtbWordEditor == null) return;
+            var sel = RtbWordEditor.Selection;
+            _painterFontFamily = sel.GetPropertyValue(TextElement.FontFamilyProperty);
+            _painterFontSize = sel.GetPropertyValue(TextElement.FontSizeProperty);
+            _painterFontWeight = sel.GetPropertyValue(TextElement.FontWeightProperty);
+            _painterFontStyle = sel.GetPropertyValue(TextElement.FontStyleProperty);
+            _painterForeground = sel.GetPropertyValue(TextElement.ForegroundProperty);
+            _painterBackground = sel.GetPropertyValue(TextElement.BackgroundProperty);
+
+            _isFormatPainterActive = true;
+            if (BtnWordFormatPainter != null)
+            {
+                BtnWordFormatPainter.Background = new SolidColorBrush(Color.FromRgb(2, 132, 199));
+            }
         }
 
         private void BtnWordChangeCase_Click(object sender, RoutedEventArgs e)
@@ -1956,7 +2057,38 @@ namespace OmniPdf.App
 
         private void RtbWordEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            // Sync ribbon controls with caret selection
+            if (RtbWordEditor == null) return;
+
+            // Apply Format Painter if active
+            if (_isFormatPainterActive && !RtbWordEditor.Selection.IsEmpty)
+            {
+                var sel = RtbWordEditor.Selection;
+                if (_painterFontFamily != null && _painterFontFamily != DependencyProperty.UnsetValue)
+                    sel.ApplyPropertyValue(TextElement.FontFamilyProperty, _painterFontFamily);
+                if (_painterFontSize != null && _painterFontSize != DependencyProperty.UnsetValue)
+                    sel.ApplyPropertyValue(TextElement.FontSizeProperty, _painterFontSize);
+                if (_painterFontWeight != null && _painterFontWeight != DependencyProperty.UnsetValue)
+                    sel.ApplyPropertyValue(TextElement.FontWeightProperty, _painterFontWeight);
+                if (_painterFontStyle != null && _painterFontStyle != DependencyProperty.UnsetValue)
+                    sel.ApplyPropertyValue(TextElement.FontStyleProperty, _painterFontStyle);
+                if (_painterForeground != null && _painterForeground != DependencyProperty.UnsetValue)
+                    sel.ApplyPropertyValue(TextElement.ForegroundProperty, _painterForeground);
+                if (_painterBackground != null && _painterBackground != DependencyProperty.UnsetValue)
+                    sel.ApplyPropertyValue(TextElement.BackgroundProperty, _painterBackground);
+
+                _isFormatPainterActive = false;
+                if (BtnWordFormatPainter != null)
+                {
+                    BtnWordFormatPainter.ClearValue(Button.BackgroundProperty);
+                }
+            }
+
+            // Sync Ribbon Font Size
+            var curSize = RtbWordEditor.Selection.GetPropertyValue(TextElement.FontSizeProperty);
+            if (curSize is double sz && CmbWordFontSize != null)
+            {
+                CmbWordFontSize.Text = ((int)sz).ToString();
+            }
         }
 
         private void RtbWordEditor_TextChanged(object sender, TextChangedEventArgs e)
@@ -2727,7 +2859,18 @@ namespace OmniPdf.App
 
         #endregion
 
-        #region In-Document Search
+        #region In-Document Search & Text Highlighting Engine
+
+        public class DocumentSearchMatch
+        {
+            public int PageIndex { get; set; }
+            public int StartIndex { get; set; }
+            public int Length { get; set; }
+            public string Snippet { get; set; } = "";
+        }
+
+        private readonly List<DocumentSearchMatch> _searchMatches = new();
+        private int _currentMatchIndex = -1;
 
         private void BtnToggleSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -2736,46 +2879,150 @@ namespace OmniPdf.App
             if (SearchPanel.Visibility == Visibility.Visible && TxtSearchQuery != null)
             {
                 TxtSearchQuery.Focus();
+                TxtSearchQuery.SelectAll();
+                PerformSearch();
             }
         }
 
         private void BtnCloseSearch_Click(object sender, RoutedEventArgs e)
         {
             if (SearchPanel != null) SearchPanel.Visibility = Visibility.Collapsed;
+            _searchMatches.Clear();
+            _currentMatchIndex = -1;
+            if (TxtMatchCount != null) TxtMatchCount.Text = "0 matches";
         }
 
         private void TxtSearchQuery_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter)
+            {
+                if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+                {
+                    NavigateSearchMatch(-1);
+                }
+                else
+                {
+                    NavigateSearchMatch(1);
+                }
+                e.Handled = true;
+                return;
+            }
+            if (e.Key == Key.Escape)
+            {
+                BtnCloseSearch_Click(sender, e);
+                e.Handled = true;
+                return;
+            }
             PerformSearch();
         }
 
         private void BtnFindNext_Click(object sender, RoutedEventArgs e)
         {
-            PerformSearch();
+            NavigateSearchMatch(1);
+        }
+
+        private void BtnFindPrev_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateSearchMatch(-1);
         }
 
         private void PerformSearch()
         {
             if (TxtSearchQuery == null || TxtMatchCount == null) return;
             string query = TxtSearchQuery.Text.Trim();
-            if (string.IsNullOrEmpty(query))
+            _searchMatches.Clear();
+            _currentMatchIndex = -1;
+
+            if (string.IsNullOrEmpty(query) || _activeDoc == null)
             {
                 TxtMatchCount.Text = "0 matches";
                 return;
             }
 
-            int matches = 0;
-            if (_activeDoc != null)
+            for (int p = 0; p < _activeDoc.Pages.Count; p++)
             {
-                foreach (var p in _activeDoc.Pages)
+                string text = _activeDoc.Pages[p].ContentText;
+                if (string.IsNullOrEmpty(text)) continue;
+
+                int index = 0;
+                while ((index = text.IndexOf(query, index, StringComparison.OrdinalIgnoreCase)) != -1)
                 {
-                    if (p.ContentText.Contains(query, StringComparison.OrdinalIgnoreCase))
+                    int snippetStart = Math.Max(0, index - 25);
+                    int snippetLen = Math.Min(text.Length - snippetStart, query.Length + 50);
+                    string snippet = text.Substring(snippetStart, snippetLen).Replace("\n", " ").Replace("\r", "");
+
+                    _searchMatches.Add(new DocumentSearchMatch
                     {
-                        matches++;
-                    }
+                        PageIndex = p,
+                        StartIndex = index,
+                        Length = query.Length,
+                        Snippet = snippet
+                    });
+
+                    index += query.Length;
                 }
             }
-            TxtMatchCount.Text = $"{matches} page matches found";
+
+            if (_searchMatches.Count > 0)
+            {
+                _currentMatchIndex = 0;
+                UpdateSearchNavigationUi();
+                JumpToSearchMatch(_searchMatches[0]);
+            }
+            else
+            {
+                TxtMatchCount.Text = "0 matches found";
+            }
+        }
+
+        private void NavigateSearchMatch(int direction)
+        {
+            if (_searchMatches.Count == 0)
+            {
+                PerformSearch();
+                return;
+            }
+
+            _currentMatchIndex = (_currentMatchIndex + direction + _searchMatches.Count) % _searchMatches.Count;
+            UpdateSearchNavigationUi();
+            JumpToSearchMatch(_searchMatches[_currentMatchIndex]);
+        }
+
+        private void UpdateSearchNavigationUi()
+        {
+            if (TxtMatchCount == null) return;
+            if (_searchMatches.Count == 0 || _currentMatchIndex < 0)
+            {
+                TxtMatchCount.Text = "0 matches";
+            }
+            else
+            {
+                var match = _searchMatches[_currentMatchIndex];
+                TxtMatchCount.Text = $"Match {_currentMatchIndex + 1} of {_searchMatches.Count} (Page {match.PageIndex + 1})";
+            }
+        }
+
+        private void JumpToSearchMatch(DocumentSearchMatch match)
+        {
+            if (_activeDoc == null) return;
+
+            // Scroll to the matching page
+            ScrollToPage(match.PageIndex);
+
+            // Select and highlight text inside TextBox if visible
+            if (match.PageIndex < _pageTextBoxes.Count)
+            {
+                var tb = _pageTextBoxes[match.PageIndex];
+                if (tb.Visibility == Visibility.Visible)
+                {
+                    try
+                    {
+                        tb.Focus();
+                        tb.Select(match.StartIndex, match.Length);
+                    }
+                    catch { }
+                }
+            }
         }
 
         #endregion
@@ -2957,6 +3204,14 @@ namespace OmniPdf.App
             else if (e.Key == Key.F4)
             {
                 BtnToggleNavRail_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F3)
+            {
+                if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+                    NavigateSearchMatch(-1);
+                else
+                    NavigateSearchMatch(1);
                 e.Handled = true;
             }
             else if (e.Key == Key.Escape)

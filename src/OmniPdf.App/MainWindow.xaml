@@ -701,8 +701,9 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Search Document:" VerticalAlignment="Center" Margin="0,0,6,0" Foreground="#A1A1AA" FontSize="10.5"/>
                             <TextBox x:Name="TxtSearchQuery" Width="200" Background="#121214" Foreground="White" BorderBrush="{DynamicResource BorderBrushLight}" Padding="5,2" KeyUp="TxtSearchQuery_KeyUp"/>
-                            <Button x:Name="BtnFindNext" Content="Next Match" Style="{StaticResource ModernBtn}" Margin="4,0" Click="BtnFindNext_Click"/>
-                            <TextBlock x:Name="TxtMatchCount" Text="0 matches" VerticalAlignment="Center" Margin="6,0" Foreground="#A1A1AA" FontSize="10.5"/>
+                            <Button x:Name="BtnFindPrev" Content="◀ Prev" Style="{StaticResource ModernBtn}" Margin="4,0,2,0" Click="BtnFindPrev_Click"/>
+                            <Button x:Name="BtnFindNext" Content="Next ▶" Style="{StaticResource ModernBtn}" Margin="2,0,4,0" Click="BtnFindNext_Click"/>
+                            <TextBlock x:Name="TxtMatchCount" Text="0 matches" VerticalAlignment="Center" Margin="6,0" Foreground="#38BDF8" FontWeight="SemiBold" FontSize="10.5"/>
                             <Button x:Name="BtnCloseSearch" Content="Close" Style="{StaticResource ModernBtn}" Margin="4,0" Click="BtnCloseSearch_Click"/>
                         </StackPanel>
                     </Border>
@@ -917,6 +918,7 @@
                             <Button x:Name="BtnWordSubscript" Content="X₂" ToolTip="Subscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSubscript_Click"/>
                             <Button x:Name="BtnWordSuperscript" Content="X²" ToolTip="Superscript" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordSuperscript_Click"/>
                             <Button x:Name="BtnWordClearFormat" Content="🧹" ToolTip="Clear Formatting" Width="24" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordClearFormat_Click"/>
+                            <Button x:Name="BtnWordFormatPainter" Content="🖌️" ToolTip="Format Painter (Copy &amp; Apply Style)" Width="26" Height="22" Style="{StaticResource ModernBtn}" Margin="1" Click="BtnWordFormatPainter_Click"/>
                             <Button x:Name="BtnWordChangeCase" Content="Aa ▾" ToolTip="Change Case (Shift+F3)" Style="{StaticResource ModernBtn}" Margin="1" Padding="4,2" Click="BtnWordChangeCase_Click"/>
                             <Popup x:Name="PopupWordChangeCase" PlacementTarget="{Binding ElementName=BtnWordChangeCase}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
                                 <Border Background="#18181B" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="6" Padding="6" Width="160">
