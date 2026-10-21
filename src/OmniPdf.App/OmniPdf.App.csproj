@@ -18,7 +18,12 @@
     <Description>PSD PDF Studio and Viewer - Enterprise Vector PDF Engine, Reader &amp; Office Suite</Description>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
+    <ApplicationIcon>Assets\app_icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="Assets\app_icon.ico" />
+    <Resource Include="Assets\app_icon.png" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Speech" Version="10.0.13" />
   </ItemGroup>

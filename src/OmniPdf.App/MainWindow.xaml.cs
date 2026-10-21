@@ -260,6 +260,22 @@ namespace OmniPdf.App
             TxtHoverDate.Text = item.FormattedDate;
             TxtHoverSecurity.Text = "Standard (Local Sovereign)";
 
+            if (ImgHoverThumb != null && !string.IsNullOrEmpty(item.FilePath) && Path.GetExtension(item.FilePath).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+            {
+                _ = Task.Run(async () =>
+                {
+                    var bmp = await RealPdfRenderer.RenderPdfPageAsync(item.FilePath, 0, 400);
+                    if (bmp != null)
+                    {
+                        await Dispatcher.InvokeAsync(() =>
+                        {
+                            ImgHoverThumb.Source = bmp;
+                            ImgHoverThumb.Visibility = Visibility.Visible;
+                        });
+                    }
+                });
+            }
+
             PopupLibraryHoverPreview.IsOpen = true;
         }
 
@@ -527,6 +543,138 @@ namespace OmniPdf.App
                 await LoadPdfPathAsync(path);
                 ShowReaderView();
                 BtnTextConverter_Click(sender, e);
+            }
+        }
+
+        private void LibraryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item)
+            {
+                _ = UpdateInspectorPreviewAsync(item);
+            }
+        }
+
+        private async Task UpdateInspectorPreviewAsync(PdfLibraryItem item)
+        {
+            if (TxtInspectorTitle == null) return;
+
+            try
+            {
+                TxtInspectorTitle.Text = item.Title;
+                TxtInspectorBadge.Text = item.FormatBadge;
+                TxtInspectorSize.Text = item.FormattedSize;
+                TxtInspectorDate.Text = item.FormattedDate;
+                TxtInspectorPages.Text = item.PageCountDisplay;
+                TxtInspectorPath.Text = item.FilePath;
+
+                if (PanelInspectorPlaceholder != null) PanelInspectorPlaceholder.Visibility = Visibility.Collapsed;
+                if (BorderInspectorLoading != null) BorderInspectorLoading.Visibility = Visibility.Visible;
+
+                string ext = Path.GetExtension(item.FilePath).ToLowerInvariant();
+                if (ext == ".pdf" && File.Exists(item.FilePath))
+                {
+                    var bmp = await RealPdfRenderer.RenderPdfPageAsync(item.FilePath, 0, 800);
+                    if (bmp != null && ImgInspectorPage != null)
+                    {
+                        ImgInspectorPage.Source = bmp;
+                        if (InspectorPillBorder != null) InspectorPillBorder.Visibility = Visibility.Visible;
+                        if (TxtInspectorPagePill != null) TxtInspectorPagePill.Text = $"{item.PageCountDisplay} • 800px Native";
+                    }
+                }
+                else
+                {
+                    if (ImgInspectorPage != null) ImgInspectorPage.Source = null;
+                    if (InspectorPillBorder != null) InspectorPillBorder.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch { }
+            finally
+            {
+                if (BorderInspectorLoading != null) BorderInspectorLoading.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void BtnTogglePreviewPane_Click(object sender, RoutedEventArgs e)
+        {
+            if (ColDashboardPreviewPane == null) return;
+            bool isOpen = ColDashboardPreviewPane.Width.Value > 0;
+            if (isOpen)
+            {
+                ColDashboardPreviewPane.Width = new GridLength(0);
+                if (SplitterDashboardPreview != null) SplitterDashboardPreview.Visibility = Visibility.Collapsed;
+                if (BtnTogglePreviewPane != null) BtnTogglePreviewPane.Content = "Preview Pane: OFF";
+            }
+            else
+            {
+                ColDashboardPreviewPane.Width = new GridLength(360);
+                if (SplitterDashboardPreview != null) SplitterDashboardPreview.Visibility = Visibility.Visible;
+                if (BtnTogglePreviewPane != null) BtnTogglePreviewPane.Content = "Preview Pane: ON";
+
+                if (LibraryList?.SelectedItem is PdfLibraryItem item)
+                {
+                    _ = UpdateInspectorPreviewAsync(item);
+                }
+                else if (LibraryList?.Items.Count > 0 && LibraryList.Items[0] is PdfLibraryItem firstItem)
+                {
+                    LibraryList.SelectedIndex = 0;
+                }
+            }
+        }
+
+        private async void BtnInspectorOpenReader_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                string ext = Path.GetExtension(item.FilePath).ToLowerInvariant();
+                if (ext == ".docx" || ext == ".rtf" || ext == ".txt" || ext == ".md" || ext == ".html")
+                {
+                    OpenWordDocumentPath(item.FilePath);
+                }
+                else
+                {
+                    await LoadPdfPathAsync(item.FilePath);
+                    ShowReaderView();
+                }
+            }
+        }
+
+        private void BtnInspectorOpenWord_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                OpenWordDocumentPath(item.FilePath);
+            }
+        }
+
+        private async void BtnInspectorConvert_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                await LoadPdfPathAsync(item.FilePath);
+                ShowReaderView();
+                BtnTextConverter_Click(sender, e);
+            }
+        }
+
+        private async void BtnInspectorAiCopilot_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                await LoadPdfPathAsync(item.FilePath);
+                ShowReaderView();
+                BtnToggleAiCopilot_Click(sender, e);
+            }
+        }
+
+        private void BtnInspectorExplorer_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibraryList?.SelectedItem is PdfLibraryItem item && File.Exists(item.FilePath))
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{item.FilePath}\"");
+                }
+                catch { }
             }
         }
 

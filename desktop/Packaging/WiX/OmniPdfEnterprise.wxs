@@ -9,6 +9,9 @@
 
     <MediaTemplate EmbedCab="yes" />
 
+    <Icon Id="AppIcon" SourceFile="P:\prabhu\projects\git\Omni PDF Desktop\src\OmniPdf.App\Assets\app_icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
+
     <StandardDirectory Id="ProgramFiles6432Folder">
       <Directory Id="INSTALLFOLDER" Name="PSD PDF Studio and Viewer" />
     </StandardDirectory>
